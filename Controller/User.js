@@ -43,7 +43,7 @@ const getUsers = async (req,res)=>{
         const command = new ScanCommand(params);
         const data = await client.send(command);
         console.log('Items retrieved:', data.Items);
-        res.json(data)
+        res.json({count:data.Count, data:data.Items})
       } catch (err) {
         console.error('Error scanning table:', err);
       }
