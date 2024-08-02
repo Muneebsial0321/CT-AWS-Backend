@@ -13,6 +13,7 @@ app.get('/',(req,res)=>{
 
 app.use('/users',require('./Routes/User'))
 app.use('/admin',require('./Routes/Dashboard'))
+app.use('/upload',require('./Routes/Videos'))
 
 // app.post('/', async (req, res) => {
 //     try {

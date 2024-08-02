@@ -14,10 +14,10 @@ const createUser = async (req,res)=>{
             TableName: 'Users',
             Item: {
               Users_PK: { S: pk }, // Ensure the type of each attribute is specified
-              name: { S: name }, // Similarly, specify the type for 'name'
-              email: { S: email }, // Ensure the type of each attribute is specified
-              password: { S: password } ,// Similarly, specify the type for 'name'
-              role: { S: role } ,// Similarly, specify the type for 'name'
+              name: { S: name?name:'' }, // Similarly, specify the type for 'name'
+              email: { S: email?email:'' }, // Ensure the type of each attribute is specified
+              password: { S: password?password:'' } ,// Similarly, specify the type for 'name'
+              role: { S: role?role:'' } ,// Similarly, specify the type for 'name'
             }
           };
       
