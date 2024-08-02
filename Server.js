@@ -12,6 +12,7 @@ app.get('/',(req,res)=>{
 })
 
 app.use('/users',require('./Routes/User'))
+app.use('/admin',require('./Routes/Dashboard'))
 
 // app.post('/', async (req, res) => {
 //     try {
