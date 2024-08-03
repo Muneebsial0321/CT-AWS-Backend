@@ -9,6 +9,7 @@ const s3 = require("../Config/aws-s3")
 
 
   const uploadVideo = async(req,res) =>{
+ 
     if (!req.file) {
       return res.status(400).send('Error: No file uploaded');
     }
@@ -39,6 +40,8 @@ const s3 = require("../Config/aws-s3")
   
   }
   const viewVideo = async(req,res) =>{
+    console.log("range is")
+    console.log(req.headers.range)
     try {
     
       const key = req.params.id;
@@ -60,6 +63,9 @@ const s3 = require("../Config/aws-s3")
   }
 
   
+  const viewStream = async (req, res) => {
+   
+  }
   const deleteVideo = async (req, res) => {
     const userId = req.params.id
     const pic = await Video.findOne({userId:userId})
