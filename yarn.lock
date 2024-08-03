@@ -164,7 +164,7 @@
     "@smithy/util-utf8" "^3.0.0"
     tslib "^2.6.2"
 
-"@aws-sdk/client-dynamodb@^3.622.0":
+"@aws-sdk/client-dynamodb@^3.484.0", "@aws-sdk/client-dynamodb@^3.622.0":
   version "3.622.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/client-dynamodb/-/client-dynamodb-3.622.0.tgz#db61cb279a79091fff9e7db3fffac2286021840a"
   integrity sha512-rzbxDj0JjWYg/t9JSjTJYp1bphSAZvX/wwHqO7FHxRuCzYTEKB9iAQC/eBrWRDJBbSEoI0PMwa0kR0V7yS+whQ==
@@ -986,7 +986,7 @@
   dependencies:
     tslib "^2.6.2"
 
-"@aws-sdk/util-dynamodb@3.622.0":
+"@aws-sdk/util-dynamodb@3.622.0", "@aws-sdk/util-dynamodb@^3.484.0":
   version "3.622.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.622.0.tgz#dcb924165819c5c9048ce5b98843cfbdeb2a2090"
   integrity sha512-IsxVmqgCsGKIZFeUNYMep55+6YPP0qb65h8wUVoi50LWoIPTlKl7wkh2GwJHpTHduALtuNwMWUKH5mbjlXCOFg==
@@ -1841,6 +1841,23 @@ dotenv@^16.4.5:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.4.5.tgz#cdd3b3b604cb327e286b4762e13502f717cb099f"
   integrity sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==
 
+dynamoose-utils@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/dynamoose-utils/-/dynamoose-utils-4.0.1.tgz#cde55a0e2000693fffabc1b4d34f8f1317cffdee"
+  integrity sha512-IjgfhVVnpw9N/efSsoITm/CZaNZ1eHxsmmFMAmuQ9MoX3+bnM4ckWQioKYl3I9P7TgLc5UewbJvALeN/fNpSYw==
+  dependencies:
+    js-object-utilities "^2.2.0"
+
+dynamoose@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/dynamoose/-/dynamoose-4.0.1.tgz#4aadcbb55eb915972262ea546fd393b74309fe64"
+  integrity sha512-w8WcPuYT/dBqoyksUsNWsjqzjp44MX2L2fzg2j5OD4Nd2Abal4/I/RCfmfqSemww16AowR8Vrqlg1/YMALHN9g==
+  dependencies:
+    "@aws-sdk/client-dynamodb" "^3.484.0"
+    "@aws-sdk/util-dynamodb" "^3.484.0"
+    dynamoose-utils "^4.0.1"
+    js-object-utilities "^2.2.0"
+
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
@@ -2148,6 +2165,11 @@ jmespath@0.16.0:
   version "0.16.0"
   resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.16.0.tgz#b15b0a85dfd4d930d43e69ed605943c802785076"
   integrity sha512-9FzQjJ7MATs1tSpnco1K6ayiYE3figslrXA72G2HQ/n76RzvYlofyi5QM+iX4YRs/pu3yzxlVQSST23+dMDknw==
+
+js-object-utilities@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/js-object-utilities/-/js-object-utilities-2.2.0.tgz#4677a7fd3174369fb8f0d8c10fb9f7381c71fd0d"
+  integrity sha512-gVw7FwD6r7mNNjzSKJ74uxvqNIGu7hb67K+Xvwus9JRBTWLezxcg77cCFOmTbiToV09BqdYmIJ+zfL3UiWDtpQ==
 
 media-typer@0.3.0:
   version "0.3.0"

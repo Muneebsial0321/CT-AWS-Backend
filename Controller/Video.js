@@ -2,7 +2,9 @@
 
 const {client,PutItemCommand ,GetItemCommand, UpdateItemCommand, DeleteItemCommand ,ScanCommand } = require('../Config/aws-dynamoDB')
 const { v4: uuidv4 } = require('uuid');
-
+const { GetObjectCommand,DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const { Readable } = require('stream');
+const s3 = require("../Config/aws-s3")
 
 
 
@@ -38,9 +40,9 @@ const { v4: uuidv4 } = require('uuid');
   }
   const viewVideo = async(req,res) =>{
     try {
-      const userId = req.params.id
-      const vid = await Video.findOne({userId:userId})
-      const key = vid.videoName;
+    
+      const key = req.params.id;
+      console.log(key)
           const params = {
               Bucket: process.env.AWS_BUCKET_NAME,
               Key: key,
@@ -81,4 +83,4 @@ const { v4: uuidv4 } = require('uuid');
   }
 
 
-  module.exports = {uploadVideo}
+  module.exports = {uploadVideo,viewVideo}
