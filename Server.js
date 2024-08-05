@@ -1,10 +1,12 @@
 require('dotenv').config()
 const express = require("express")
 const app = express()
+const cors = require('cors')
 // const db = require('./Config/aws-dynamoDB')
 // const { DynamoDBClient, PutItemCommand } = require('@aws-sdk/client-dynamodb');
 // const client = new DynamoDBClient({ region: 'us-east-1' });
 app.use(express.json())
+app.use(cors())
 
 
 app.get('/',(req,res)=>{
@@ -14,6 +16,7 @@ app.get('/',(req,res)=>{
 app.use('/users',require('./Routes/User'))
 app.use('/admin',require('./Routes/Dashboard'))
 app.use('/upload',require('./Routes/Videos'))
+app.use('/',require('./Routes/GoogleAuth'))
 
 // app.post('/', async (req, res) => {
 //     try {
