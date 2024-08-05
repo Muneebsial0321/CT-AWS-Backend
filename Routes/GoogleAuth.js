@@ -89,6 +89,11 @@ app.get("/auth/google",passport.authenticate("google",{
     failureRedirect:"http://localhost:5173/login" 
 }))
 
+// app.get("/auth/google/callback", passport.authenticate("google", { failureRedirect: "http://localhost:5173/login" }), (req, res) => {
+//     // You can add additional logic here if needed
+//     res.redirect("http://localhost:5173/dashboard");
+// });
+
 app.get("/login/sucess",async(req,res)=>{
 
     if(req.user){
