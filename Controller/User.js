@@ -1,56 +1,55 @@
-const {client,PutItemCommand ,GetItemCommand, UpdateItemCommand, DeleteItemCommand ,ScanCommand } = require('../Config/aws-dynamoDB')
 const { v4: uuidv4 } = require('uuid');
+const User = require('../Schemas/User')
 
 
-
-
-const createUser = async (req,res)=>{
-
+const createUser = async(req,res)=>{
     try {
-       const {name,email,password,role} = req.body
-       console.log(req.body)
-       const pk = uuidv4();
-          const params = {
-            TableName: 'Users',
-            Item: {
-              Users_PK: { S: pk }, // Ensure the type of each attribute is specified
-              name: { S: name?name:'' }, // Similarly, specify the type for 'name'
-              email: { S: email?email:'' }, // Ensure the type of each attribute is specified
-              password: { S: password?password:'' } ,// Similarly, specify the type for 'name'
-              role: { S: role?role:'' } ,// Similarly, specify the type for 'name'
-            }
-          };
-      
-          // Create and send the PutItem command
-          const command = new PutItemCommand(params);
-          const data = await client.send(command);
-      
-          // Send the response back to the client
-          res.send(data);
-      
-        } catch (err) {
-          // Log and respond with the error
-          console.error('Unable to add item. Error JSON:', JSON.stringify(err, null, 2));
-          res.status(500).send({ error: 'Failed to add item', details: err.message });
+       const _id = uuidv4();
+        const newUser = new User({ _id,...req.body});
+        await newUser.save();
+        res.status(201).json(newUser);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+const getUser= async (req, res) => {
+    try {
+        const user = await User.get(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 }
-const getUsers = async (req,res)=>{
-    const params = {
-        TableName: 'Users', // Name of your DynamoDB table
-      };
+const getAllUsers= async (req, res) => {
+    try {
+        const users = await User.scan().exec();
+        res.status(200).json({count:users.length,data:users});
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+const updateUser=  async (req, res) => {
+    try {
+        console.log(req.body)
     
-      try {
-        const command = new ScanCommand(params);
-        const data = await client.send(command);
-        console.log('Items retrieved:', data.Items);
-        res.json({count:data.Count, data:data.Items})
-      } catch (err) {
-        console.error('Error scanning table:', err);
-      }
-
+        const user = await User.update({ _id: req.params.id },req.body);
+        res.status(200).json(user);
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message:error.message });
+    }
 }
-const updateUser = (req,res)=>{}
-const deleteUser = (req,res)=>{}
-const getAUser = (req,res)=>{}
+const deleteUser=  async (req, res) => {
+    try {
+        await User.delete(req.params.id);
+        res.status(204).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 
-module.exports = {createUser,getUsers}
+
+module.exports= {createUser,updateUser,getAllUsers,getUser,deleteUser}

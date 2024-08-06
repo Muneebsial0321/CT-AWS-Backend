@@ -15,7 +15,8 @@ app.get('/',(req,res)=>{
 
 app.use('/users',require('./Routes/User'))
 app.use('/jobs',require('./Routes/Job'))
-app.use('/admin',require('./Routes/Dashboard'))
+app.use('/events',require('./Routes/Event'))
+// app.use('/admin',require('./Routes/Dashboard'))
 app.use('/upload',require('./Routes/Videos'))
 app.use('/',require('./Routes/GoogleAuth'))
 
