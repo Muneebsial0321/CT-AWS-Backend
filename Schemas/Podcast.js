@@ -2,6 +2,10 @@ const dynamoose = require('dynamoose');
 const Schema = dynamoose.Schema;
 
 const podcastSchema = new Schema({
+    _id: {
+        type: String,
+        hashKey: true
+    },
     publisher: {
         type: String,
     },
@@ -29,12 +33,11 @@ const podcastSchema = new Schema({
         type: Number,
     },
     speakers: {
-        type: [String],
+        type: Array,
+        schema: [String],
     }
-}, {
-    timestamps: true
 });
 
-const Podcast = dynamoose.model('Podcast', podcastSchema);
+const Podcast = dynamoose.model('Podcasts', podcastSchema);
 
 module.exports = Podcast;
