@@ -5,6 +5,9 @@ const videoSchema = new Schema({
 videoName:String,
 userId:String,
 videoUrl:String,
+videoDesc:String,
+videoVisibility:String,
+videoRating:String,
 }, {
   timestamps: true
 });

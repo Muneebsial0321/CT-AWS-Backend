@@ -2,71 +2,59 @@ const dynamoose = require('dynamoose');
 const Schema = dynamoose.Schema;
 
 const jobSchema = new Schema({
+  _id:{
+    type:String,
+    hashKey:true
+  },
   jobTitle: {
     type: String,
-    // required: true,
-    // trim: true
   },
   educationLevel: {
     type: String,
-    // required: true
   },
   jobDescription: {
     type: String,
-    // required: true
   },
   companySize: {
     type: String,
-    // required: true
   },
   jobCategory: {
     type: String,
-    // required: true
   },
   workplaceType: {
     type: String,
-    // required: true
   },
   location: {
     type: String,
-    // required: true
   },
   skills: {
-    type: [String],
-    // required: true
+    type: Array,
+    schema: [String],
   },
   jobType: {
     type: String,
-    // required: true
   },
   applicationDeadline: {
-    type: Date,
-    required: true
+    type: String,
   },
   experienceLevel: {
     type: String,
-    // required: true
   },
   languages: {
-    type: [String],
-    // required: true
+    type: Array,
+    schema: [String],
   },
   salaryRange: {
     type: String,
-    // required: true
   },
   jobShift: {
     type: String,
-    // required: true
   },
   travelRequirement: {
     type: String,
-    // required: true
   }
-}, {
-  timestamps: true
 });
 
-const Job = dynamoose.model('Job', jobSchema);
+const Job = dynamoose.model('Jobs', jobSchema);
 
 module.exports = Job;
