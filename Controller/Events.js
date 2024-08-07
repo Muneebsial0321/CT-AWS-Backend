@@ -52,5 +52,23 @@ const deleteEvent=  async (req, res) => {
     }
 }
 
+const searchEvents= async( req,res)=>{
+    let result = await find_(req.body)
+     res.json(result)
+  }
 
-module.exports= {createEvent,updateEvent,getAllEvents,getEvent,deleteEvent} 
+  async function find_(params) {
+    let scan = await Event.scan();
+    for (const key in params) {
+      if (params[key]) {
+        scan = await scan.where(key).eq(params[key]);
+      }
+    }
+  
+    const result = await scan.exec();
+    console.log(result)
+    return  {count:result.length,data:result};
+  }
+
+
+module.exports= {createEvent,updateEvent,getAllEvents,getEvent,deleteEvent,searchEvents} 

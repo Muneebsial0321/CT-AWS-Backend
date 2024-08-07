@@ -1,5 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 const Job = require('../Schemas/Jobs')
+const find = require('../Functions/find')
 
 
 const createJob = async(req,res)=>{
@@ -52,6 +53,27 @@ const deleteJob=  async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
-const searchJob= async( req,res)=>{}
+const searchJob= async( req,res)=>{
+    let result = await find_(req.body)
+    console.log(result)
+     res.json(result)
+  }
 
-module.exports= {createJob,updateJob,getAllJobs,getJob,updateJob,deleteJob}
+  async function find_(params) {
+    let scan = await Job.scan();
+    console.log(scan)
+    console.log(params)
+  
+    for (const key in params) {
+      if (params[key]) {
+        scan = await scan.where(key).eq(params[key]);
+        console.log(scan)
+      }
+    }
+  
+    const result = await scan.exec();
+    console.log(result)
+    return  {count:result.length,data:result};
+  }
+    
+module.exports= {createJob,updateJob,getAllJobs,getJob,updateJob,deleteJob,searchJob}

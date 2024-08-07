@@ -1,7 +1,7 @@
 const dynamoose = require('dynamoose');
 
 const subscriptionSchema = new dynamoose.Schema({
-    id: {
+    _id: {
         type: String,
         hashKey: true,
     },

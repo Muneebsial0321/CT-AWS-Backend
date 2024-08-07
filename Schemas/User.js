@@ -1,7 +1,8 @@
 const dynamoose = require('dynamoose');
 
 const userSchema = new dynamoose.Schema({
-    id: {
+    
+    Users_PK : {
         type: String,
         hashKey: true,
     },
@@ -41,6 +42,6 @@ const userSchema = new dynamoose.Schema({
     }
 });
 
-const User = dynamoose.model('User', userSchema);
+const User = dynamoose.model('Users', userSchema);
 
 module.exports = User;
