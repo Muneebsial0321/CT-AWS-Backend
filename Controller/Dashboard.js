@@ -1,30 +1,5 @@
 const {ddbDocClient,ScanCommand,client} = require('../Config/aws-dynamoDB');
 
-// async function searchTable(tableName, searchKey, searchValue) {
-//     const params = {
-//         TableName: tableName,
-//         FilterExpression: "#key = :value",
-//         ExpressionAttributeNames: {
-//             "#key": 'role',
-//         },
-//         ExpressionAttributeValues: {
-//             ":value": 'investor',
-//         },
-//     };
-
-//     try {
-//         const data = await ddbDocClient.send(new ScanCommand(params));
-//         if (!data.Items) {
-//             throw new Error("No items found");
-//         }
-//         return data.Items;
-//     } catch (err) {
-//         console.error("Error searching table:", err);
-//         throw new Error("Could not search table");
-//     }
-// }
-
-
 const getAll=async()=>{
 
     const params = {

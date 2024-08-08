@@ -2,11 +2,16 @@ require('dotenv').config()
 const express = require("express")
 const app = express()
 const cors = require('cors')
+const cookie = require("cookie-parser")
 
 // middlewares
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+    origin: process.env.FRONT_URL, // Your frontend URL
+    credentials: true
+}));
+app.use(cookie())
 
 // middlewares end
 

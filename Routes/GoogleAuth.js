@@ -6,6 +6,7 @@ const OAuth2Strategy = require("passport-google-oauth2").Strategy;
 const app = express.Router()
 const {client,PutItemCommand  } = require('../Config/aws-dynamoDB')
 const { v4: uuidv4 } = require('uuid');
+const client_ = require('../Middlewares/Client')
 
 
 
@@ -37,7 +38,7 @@ passport.use(
     async(accessToken,refreshToken,profile,done)=>{
         console.log(profile)
         try {
-        let user = profile.id
+        let user = profile.email
         const name=profile.name.givenName
         const email=profile.email
         const password=''
@@ -84,23 +85,30 @@ passport.serializeUser((user, done) => {
 // initial google ouath login
 app.get("/auth",passport.authenticate("google",{scope:["profile","email"]}));
 
-app.get("/auth/google",passport.authenticate("google",{
-    successRedirect:"http://localhost:5173/dashboard",
-    failureRedirect:"http://localhost:5173/login" 
-}))
+// app.get("/auth/google",passport.authenticate("google",{
+//     successRedirect:"http://localhost:5173/dashboard",
+//     failureRedirect:"http://localhost:5173/login" 
+// }))
+app.get('/auth/google', 
+    passport.authenticate('google', { failureRedirect: 'http://localhost:5173/login' }),
+    (req, res) => {
+      // Successful authentication, set a cookie
+      res.cookie('user', req.user);
+      res.redirect('http://localhost:5173');
+    }
+  );
+
+
 
 // app.get("/auth/google/callback", passport.authenticate("google", { failureRedirect: "http://localhost:5173/login" }), (req, res) => {
 //     // You can add additional logic here if needed
 //     res.redirect("http://localhost:5173/dashboard");
 // });
 
-app.get("/login/sucess",async(req,res)=>{
-
-    if(req.user){
-        res.status(200).json({message:"user Login",user:req.user})
-    }else{
-        res.status(400).json({message:"Not Authorized"})
-    }
+app.get("/login/success",client_,async(req,res)=>{
+    console.log("user is")
+    console.log(req.cookies.user)
+    res.json({"working":"true"})
 })
 
 app.get("/logout",(req,res,next)=>{
