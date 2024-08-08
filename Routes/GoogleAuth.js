@@ -35,6 +35,7 @@ passport.use(
         callbackURL:"/auth/google",
         scope:["profile","email"]
     },
+    
     async(accessToken,refreshToken,profile,done)=>{
         console.log(profile)
         try {
@@ -110,6 +111,7 @@ app.get("/login/success",client_,async(req,res)=>{
     console.log(req.cookies.user)
     res.json({"working":"true"})
 })
+
 
 app.get("/logout",(req,res,next)=>{
     req.logout(function(err){
