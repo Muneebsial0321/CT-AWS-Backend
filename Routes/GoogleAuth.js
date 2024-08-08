@@ -35,7 +35,7 @@ passport.use(
         callbackURL:"/auth/google",
         scope:["profile","email"]
     },
-    
+
     async(accessToken,refreshToken,profile,done)=>{
         console.log(profile)
         try {
@@ -95,7 +95,7 @@ app.get('/auth/google',
     (req, res) => {
       // Successful authentication, set a cookie
       res.cookie('user', req.user);
-      res.redirect('http://localhost:5173');
+      res.redirect('http://localhost:5173/videos');
     }
   );
 
