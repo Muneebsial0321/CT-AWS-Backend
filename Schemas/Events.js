@@ -51,6 +51,9 @@ const eventSchema = new Schema({
   eventFamilyName: {
     type: String,
   },
+  eventSpeakersName: {
+    type: String,
+  },
 
 
 
