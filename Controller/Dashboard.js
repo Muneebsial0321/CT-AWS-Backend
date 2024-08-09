@@ -1,4 +1,21 @@
 const {ddbDocClient,ScanCommand,client} = require('../Config/aws-dynamoDB');
+const User = require('../Schemas/User')
+// const searchUser= async( req,res)=>{
+//     let result = await find_(req.body)
+//      res.json(result)
+//   }
+
+  async function find_(params) {
+    let scan = await User.scan();
+    console.log(scan)
+    console.log(params)
+    scan = await scan.where('role').eq(params);
+    console.log(scan)
+    const result = await scan.exec();
+    console.log(result)
+    return  {count:result.length,data:result};
+  }
+
 
 const getAll=async()=>{
 
@@ -22,11 +39,7 @@ const getAll=async()=>{
 const getInvesters = async(req,res)=>{
     console.log("investor")
     try {
-        const data = await getAll()
-       const filter  =  data.Items.filter( e => e.role.S=='invester' )
-        // let filter = data.Items.map((e)=>{console.log()})
-        console.log("filter is")
-        console.log(filter)
+        const filter =  await  find_("investor")
         res.json({count:filter.length,data:filter})   
     } catch (error) {
         res.send(error)
@@ -35,11 +48,7 @@ const getInvesters = async(req,res)=>{
 }
 const get_Users = async(req,res)=>{
     try {
-        const data = await getAll()
-       const filter  =  data.Items.filter( e => e.role.S=='user' )
-        // let filter = data.Items.map((e)=>{console.log()})
-        console.log("filter is")
-        console.log(filter)
+        const filter =  await  find_("user")
         res.json({count:filter.length,data:filter})    
     } catch (error) {
         res.send(error)
@@ -48,11 +57,7 @@ const get_Users = async(req,res)=>{
 }
 const getEntreperneurs = async(req,res)=>{
     try {
-        const data = await getAll()
-        const filter  =  data.Items.filter( e => e.role.S=='entrepreneur' )
-        // let filter = data.Items.map((e)=>{console.log()})
-        console.log("filter is")
-        console.log(filter)
+      const filter =  await  find_("entrepreneur")
         res.json({count:filter.length,data:filter})    
     } catch (error) {
         res.send(error)
