@@ -9,7 +9,7 @@ const createJob = async(req,res)=>{
        const _id = uuidv4();
         const newJob = new Job({ _id,...req.body});
         await newJob.save();
-        res.status(201).json(newJob);
+        res.status(201).json({message:"success",data:newJob});
         // res.json(req.body)
     } catch (error) {
         res.status(500).json({ message: error.message });
