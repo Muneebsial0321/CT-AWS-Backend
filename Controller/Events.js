@@ -6,8 +6,10 @@ const createEvent = async(req,res)=>{
     try {
        const _id = uuidv4();
         const newEvent = new Event({ _id,...req.body});
+        console.log(newEvent)
         await newEvent.save();
-        res.json(newEvent);
+        res.json({message:"success",data:newEvent}); 
+        console.log("saved")
 
     } catch (error) {
         res.status(500).json({ message: error.message });

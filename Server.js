@@ -3,10 +3,12 @@ const express = require("express")
 const app = express()
 const cors = require('cors')
 const cookie = require("cookie-parser")
+const parser = require("body-parser")
 
 // middlewares
-
+app.use(express.urlencoded({extended:true}))
 app.use(express.json())
+app.use(parser.json())
 app.use(cors({
     origin: process.env.FRONT_URL, // Your frontend URL
     credentials: true

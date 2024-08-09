@@ -2,10 +2,10 @@ const dynamoose = require('dynamoose');
 const Schema = dynamoose.Schema;
 
 const eventSchema = new Schema({
-  _id:{
-    type:String,
-    hashKey:true
-  },
+  _id: {
+    type: String,
+    hashKey: true
+  },          
   eventTitle: {
     type: String,
   },
@@ -39,6 +39,19 @@ const eventSchema = new Schema({
   eventNetworkOps: {
     type: String,
   },
+  eventCoverImg: {
+    type: String,
+  },
+  eventPrivacySettings: {
+    type: String,
+  },
+  eventBusinessLink: {
+    type: String,
+  },
+  eventFamilyName: {
+    type: String,
+  },
+
 
 
 });
@@ -59,4 +72,3 @@ module.exports = Event;
 //     "eventTicketType": "Paid",
 //     "eventNetworkOps": "Wi-Fi available"
 //   }
-  
