@@ -42,6 +42,9 @@ const eventSchema = new Schema({
   eventCoverImg: {
     type: String,
   },
+  eventCoverUrl: {
+    type: String,
+  },
   eventPrivacySettings: {
     type: String,
   },
