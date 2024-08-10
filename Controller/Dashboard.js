@@ -9,7 +9,7 @@ const User = require('../Schemas/User')
     let scan = await User.scan();
     console.log(scan)
     console.log(params)
-    scan = await scan.where('role').eq(params);
+    scan = await scan.where('role').contains(params);
     console.log(scan)
     const result = await scan.exec();
     console.log(result)
@@ -39,7 +39,8 @@ const getAll=async()=>{
 const getInvesters = async(req,res)=>{
     console.log("investor")
     try {
-        const filter =  await  find_("investor")
+        const filter =  await find_("invester")
+        console.log(filter)
         res.json({count:filter.length,data:filter})   
     } catch (error) {
         res.send(error)
