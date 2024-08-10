@@ -4,8 +4,9 @@ const Event = require('../Schemas/Events')
 
 const createEvent = async(req,res)=>{
     try {
-        const eventCoverImg =req.file.key || ''
-        const  eventCoverUrl =req.file.location || ''
+        if(req.file){
+            const eventCoverImg =req.file.key || ''
+            const  eventCoverUrl =req.file.location || ''}
        const _id = uuidv4();
         const newEvent = new Event({ _id,...req.body,eventCoverImg,eventCoverUrl});
         console.log(newEvent)

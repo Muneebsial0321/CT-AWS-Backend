@@ -9,12 +9,7 @@ const podcastSchema = new Schema({
     publisher: {
         type: String,
     },
-    audio: {
-        type: String,
-    },
-    customizeCover: {
-        type: String,
-    },
+
     episodeTitle: {
         type: String,
     },
@@ -35,7 +30,11 @@ const podcastSchema = new Schema({
     speakers: {
         type: Array,
         schema: [String],
-    }
+    },
+    audioName:String,
+    picName:String,
+    picUrl:String,
+    audioUrl:String
 });
 
 const Podcast = dynamoose.model('Podcasts', podcastSchema);

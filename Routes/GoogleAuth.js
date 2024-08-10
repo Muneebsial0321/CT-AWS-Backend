@@ -7,14 +7,15 @@ const app = express.Router()
 const {client,PutItemCommand  } = require('../Config/aws-dynamoDB')
 const { v4: uuidv4 } = require('uuid');
 const client_ = require('../Middlewares/Client')
+const User = require('../Schemas/User')
 
+async function find_(params) {
+  let scan = await User.scan();
+  scan = await scan.where('email').contains(params);
+  const result = await scan.exec();
+  return  {count:result.length,data:result};
+}
 
-
-// app.use(cors({
-//     origin:"http://localhost:5173",
-//     methods:"GET,POST,PUT,DELETE",
-//     credentials:true
-// }));
 
 
 // setup session
@@ -44,8 +45,6 @@ passport.use(
         const email=profile.email
         const password=''
         const role=''
-  
-
         const pk = uuidv4();
            const params = {
              TableName: 'Users',
@@ -92,9 +91,12 @@ app.get("/auth",passport.authenticate("google",{scope:["profile","email"]}));
 // }))
 app.get('/auth/google', 
     passport.authenticate('google', { failureRedirect: 'http://localhost:5173/login' }),
-    (req, res) => {
+   async (req, res) => {
       // Successful authentication, set a cookie
-      res.cookie('user', req.user);
+      const data = await find_(req.user)
+      console.log("data is ")
+      console.log(data.data[0].Users_PK)
+      res.cookie('user', data.data[0].Users_PK);
       res.redirect('http://localhost:5173/videos');
     }
   );

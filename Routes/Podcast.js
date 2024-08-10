@@ -5,7 +5,10 @@ const upload = require('../Functions/Upload')
 
 
 //http://localhost:5000/jobs/
-router.post('/',upload.single('audio'),createPodcast)
+router.post('/', upload.fields([
+    { name: 'image', maxCount: 1 },
+    { name: 'audio', maxCount: 1 }
+]),createPodcast)
 router.get('/:id',getPodcast)
 router.get('/',getAllPodcasts)
 router.put('/:id',updatePodcast)

@@ -10,6 +10,7 @@ const s3 = require("../Config/aws-s3")
 const upload = multer({
     storage: multerS3({
         s3: s3,
+        acl: 'public-read',
         bucket: process.env.AWS_BUCKET_NAME,
         key: function (req, file, cb) {
             cb(null, Date.now().toString() + '-' + file.originalname);

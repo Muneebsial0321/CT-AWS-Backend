@@ -40,8 +40,12 @@ const userSchema = new dynamoose.Schema({
         type: String,
         // default: "user"
     },
+
     picName:String,
+    isActivated:String,
     picUrl:String,
+    cvName:String,
+    cvUrl:String,
 });
 
 const User = dynamoose.model('Users', userSchema);

@@ -4,8 +4,16 @@ const Podcast = require('../Schemas/Podcast')
 
 const createPodcast = async(req,res)=>{
     try {
+        console.log(req.files)
+        const picName = req.files.image[0].key || ''
+        const picUrl =  req.files.image[0].location || ''
+  
+        const audioName = req.files.audio[0].key || ''
+        const audioUrl =  req.files.audio[0].location || ''
+  console.log({picName,audioName,audioUrl,picUrl})
+        //  console.log(req.params.id)
        const _id = uuidv4();
-        const newPodcast = new Podcast({ _id,...req.body});
+        const newPodcast = new Podcast({ _id,...req.body,audioName,audioUrl,picName,picUrl});
         await newPodcast.save();
         res.status(201).json(newPodcast);
     } catch (error) {
