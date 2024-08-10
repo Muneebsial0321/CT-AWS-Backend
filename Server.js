@@ -10,6 +10,7 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 app.use(parser.json())
 app.use(cors({
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     origin: process.env.FRONT_URL, // Your frontend URL
     credentials: true
 }));
