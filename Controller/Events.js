@@ -7,7 +7,7 @@ const createEvent = async(req,res)=>{
         if(req.file){
             const eventCoverImg =req.file.key || ''
             const  eventCoverUrl =req.file.location || ''}
-    //    const _id = uuidv4();
+       const _id = uuidv4();
         // const newEvent = new Event({ _id,...req.body,eventCoverImg,eventCoverUrl});
         const newEvent = new Event({ _id,...req.body});
         console.log(newEvent)
