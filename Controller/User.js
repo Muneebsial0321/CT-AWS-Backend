@@ -43,7 +43,7 @@ const updateUser=  async (req, res) => {
           console.log("file is")
           console.log(req.file)
           console.log("email is")
-          console.log(req.body)   
+          console.log(req.body.ProfileData)   
           console.log("param")
            console.log(req.params.id)
         const user = await User.update({ Users_PK: req.params.id },{picName,picUrl,...req.body});
