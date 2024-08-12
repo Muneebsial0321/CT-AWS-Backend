@@ -37,15 +37,17 @@ const updateUser=  async (req, res) => {
 
 
     try {
-          const picUrl = req.file.location || ''
-          const picName = req.file.key || ''
-          console.log(picName,picUrl)
+          const picUrl =  ''
+          const picName = ''
+        //   const picUrl = req.file.location || ''
+        //   const picName = req.file.key || ''
+        //   console.log(picName,picUrl)
           console.log("file is")
-          console.log(req.file)
+        //   console.log(req.file)
           console.log("email is")
-          console.log(req.body.ProfileData)   
+        //   console.log(req.body.ProfileData)   
           console.log("param")
-           console.log(req.params.id)
+        //    console.log(req.params.id)
         const user = await User.update({ Users_PK: req.params.id },{picName,picUrl,...req.body});
         res.status(200).json({"message":"success",data:user});
     } catch (error) {

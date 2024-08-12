@@ -42,7 +42,7 @@ const userSchema = new dynamoose.Schema({
     },
 
     picName:String,
-    isActivated:String,
+    isBlocked:String,
     picUrl:String,
     cvName:String,
     cvUrl:String,

@@ -2,12 +2,16 @@ const dynamoose = require('dynamoose');
 const Schema = dynamoose.Schema;
 
 const chatRoomSchema = new Schema({
+  _id:{
+   type:String,
+   hashKey:true
+  },
   users: {
     type: [String],
-    // validate: [arrayLimit, '{PATH} exceeds the limit of 2'],
     required: true
   },
   messages: [{
+    type:Object,
     sender:String,
     message:String,
    timestamp: {
@@ -20,9 +24,6 @@ const chatRoomSchema = new Schema({
   timestamps: true
 });
 
-// function arrayLimit(val) {
-//   return val.length === 2;
-// }
 
 const ChatRoom = dynamoose.model('ChatRoom', chatRoomSchema);
 
