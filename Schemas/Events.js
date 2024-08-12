@@ -57,6 +57,17 @@ const eventSchema = new Schema({
   eventSpeakersName: {
     type: String,
   },
+  mediaFiles: {
+    type: Array,
+    schema: [
+      {
+        type: Object,
+        eventMediaName: String,
+        eventMediaUrl: String,
+    
+      },
+    ], 
+  },
 
 
 
