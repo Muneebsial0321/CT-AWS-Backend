@@ -8,7 +8,7 @@ const admin = require('../Middlewares/isAdmin');
 //http://localhost:5000/users/
 router.post('/',createUser)
 router.post('/search',searchUser)
-router.get('/',admin,getAllUsers)
+router.get('/',getAllUsers)
 router.get('/:id',getUser)
 // router.put('/:id',upload.single("profilePic"),updateUser)
 router.put('/:id',updateUser)
