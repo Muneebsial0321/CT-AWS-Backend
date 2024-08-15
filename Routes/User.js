@@ -3,10 +3,12 @@ const router = express.Router()
 const {createUser,deleteUser,getAllUsers,getUser,updateUser,searchUser} = require('../Controller/User')
 const upload = require('../Functions/Upload')
 const admin = require('../Middlewares/isAdmin');
+const message  = require('../Controller/ChatRoom')
 
 
 //http://localhost:5000/users/
 router.post('/',createUser)
+router.post('/msg',message)
 router.post('/search',searchUser)
 router.get('/',getAllUsers)
 router.get('/:id',getUser)
