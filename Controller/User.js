@@ -16,7 +16,7 @@ const createUser = async(req,res)=>{
 }
 const getUser= async (req, res) => {
     try {
-        const user = await User.get(req.params.id);
+        const {password,...user} = await User.get(req.params.id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -28,7 +28,11 @@ const getUser= async (req, res) => {
 const getAllUsers= async (req, res) => {
     try {
         const users = await User.scan().exec();
-        res.status(200).json({count:users.length,data:users});
+        const users__ = users.map(user => {
+            const { password, ...userWithoutPassword } = user;
+            return userWithoutPassword;
+        });
+        res.status(200).json({count:users__.length,data:users__});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

@@ -1,11 +1,13 @@
 const { v4: uuidv4 } = require('uuid');
 const Event = require('../Schemas/Events')
+const Notification = require('../Schemas/Notifications')
+const nf = require('../Functions/Notification_Factory')
 
 
 const createEvent = async (req, res) => {
     try {
         console.log("body is")
-        console.log(req.body)
+        console.log(req.cookies) 
         const _id = uuidv4();
         let eventCoverImg =''
         let eventCoverUrl = ''
@@ -35,6 +37,19 @@ const createEvent = async (req, res) => {
 
         console.log(newEvent)
         await newEvent.save();
+        // const adminNote = new Notification({
+        //     _id:uuidv4(),
+        //     createdBy:req.user,
+        //     notiTitle:"Event created",
+        //     notiDesc:`Event ${req.body.eventTitle} was created`
+
+        // })
+     
+        // await adminNote.save()
+        console.log("not yet")
+        const ad = process.env.ADMIN_ID
+        await nf(ad,'48402292-1bd9-48cf-b2c7-04b4d944d097','created','Event')
+
         res.json({ message: "success", data: newEvent });
         console.log("saved")
         //  res.send("done")
