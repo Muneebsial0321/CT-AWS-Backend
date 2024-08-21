@@ -61,7 +61,7 @@ const paymentByStripe = async (req, res) => {
      
         },
       });
-  
+  console.log(session)
       res.json({
         sessionId: session.id, // Return the session ID to the client
       });
