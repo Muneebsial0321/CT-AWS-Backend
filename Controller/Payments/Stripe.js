@@ -46,7 +46,7 @@ const paymentByStripe = async (req, res) => {
                     userName: `UserName is ${user.name}`
                   },
               },
-              unit_amount: parseInt(eventPrice)*10, // Ticket price in cents
+              unit_amount: parseInt(eventPrice)*100, // Ticket price in cents
             },
             quantity: 1,
           },
@@ -72,23 +72,7 @@ const paymentByStripe = async (req, res) => {
   
 
 
-// Webhook to handle payment confirmation (optional)
-// app.post('/webhook', bodyParser.raw({ type: 'application/json' }), (req, res) => {
-//   const event = req.body;
 
-//   switch (event.type) {
-//     case 'payment_intent.succeeded':
-//       const paymentIntent = event.data.object;
-//       console.log('PaymentIntent was successful!', paymentIntent);
-//       // Handle post-payment logic, such as updating order status
-//       break;
-//     // Handle other event types
-//     default:
-//       console.log(`Unhandled event type ${event.type}`);
-//   }
-
-//   res.json({ received: true });
-// });
 
 
 
