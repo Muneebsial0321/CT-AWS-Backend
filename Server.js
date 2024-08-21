@@ -45,6 +45,7 @@ app.use('/events',require('./Routes/Event'))
 app.use('/podcasts',require('./Routes/Podcast'))
 app.use('/admin',require('./Routes/Dashboard'))
 app.use('/upload',require('./Routes/Videos'))
+app.use('/payment',require('./Routes/Stripe'))
 
 
 // routes end

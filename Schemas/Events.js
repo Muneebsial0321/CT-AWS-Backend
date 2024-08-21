@@ -9,6 +9,9 @@ const eventSchema = new Schema({
   eventTitle: {
     type: String,
   },
+  eventCreatedBy: {
+    type: String,
+  },
   eventDescription: {
     type: String,
   },
@@ -54,6 +57,9 @@ const eventSchema = new Schema({
   eventFamilyName: {
     type: String,
   },
+  eventTicketPrice: {
+    type: Number,
+  },
   eventSpeakersName: {
     type: String,
   },
@@ -77,15 +83,23 @@ const Event = dynamoose.model('Events', eventSchema);
 
 module.exports = Event;
 // {
-//     "eventTitle": "Tech Conference",
-//     "eventDescription": "A gathering of tech enthusiasts",
-//     "eventCategory": "Technology",
-//     "eventDate": "2024-11-15",
-//     "eventLocation": "Faisalabad Expo Center",
-//     "eventFormat": "In-person",
-//     "eventType": "Conference",
-//     "eventDuration": "2 days",
-//     "eventNoOfPeople": "1000",
-//     "eventTicketType": "Paid",
-//     "eventNetworkOps": "Wi-Fi available"
-//   }
+//   "_id": "e1fddf8c-b8c2-4d54-8769-4b7a0b69f1b5",
+//   "eventTitle": "Tech Innovators Conference 2024",
+//   "eventCreatedBy": "7e3fceb1-0bd2-4f7f-bf81-3bed717bead6",
+//   "eventDescription": "A conference bringing together leading tech innovators to discuss the future of technology.",
+//   "eventCatagory": "Conference",
+//   "eventDate": "2024-10-15",
+//   "eventLocation": "San Francisco, CA",
+//   "eventFormat": "In-Person",
+//   "eventType": "Technology",
+//   "eventDuration": "3 Days",
+//   "eventNO_of_People": "500",
+//   "eventTicketType": "Paid",
+//   "eventNetworkOps": "Available",
+//   "eventPrivacySettings": "Public",
+//   "eventBusinessLink": "https://example.com/tech-innovators",
+//   "eventFamilyName": "Innovators",
+//   "eventTicketPrice": 299.99,
+//   "eventSpeakersName": "Jane Smith, Bob Johnson",
+//
+// },
