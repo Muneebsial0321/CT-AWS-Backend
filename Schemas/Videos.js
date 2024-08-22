@@ -2,6 +2,10 @@ const dynamoose = require('dynamoose');
 const Schema = dynamoose.Schema;
 
 const videoSchema = new Schema({
+  _id:{
+    type:String,
+    hashKey:true
+},
 videoName:String,
 userId:String,
 videoUrl:String,

@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const upload = require('../Functions/Upload')
 const { uploadVideo,viewVideo,viewStream} = require('../Controller/Video')
+const isNotUser = require('../Middlewares/videoCheck')
 
 
 
