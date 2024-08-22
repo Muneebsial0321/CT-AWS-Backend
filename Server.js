@@ -11,6 +11,7 @@ const socketHandler = require('./Handlers/socketHandler');
 
 // middlewares
 app.use(express.urlencoded({extended:true}))
+app.use('/payment/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json())
 app.use(parser.json())
 app.use(cors({

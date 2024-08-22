@@ -16,10 +16,11 @@ const tickets = new Map([
 const paymentByStripe = async (req, res) => {
     const event = await Event.get(req.params.id);
     let userWhoCreatedEventID = event.eventCreatedBy;
+    let userWhoBoughtTicket = 'some name';
     const user = await User.get(userWhoCreatedEventID);
     let eventID = event._id;
     let eventPrice = event.eventTicketPrice;
-    console.log({eventID,eventPrice,userWhoCreatedEventID,user})
+    // console.log({eventID,eventPrice,userWhoCreatedEventID,user})
     // let userWhoCreatedEventStripeID;
     ticketId = 'ticket_2'; // Use ticket_2 for testing purposes
   
@@ -39,12 +40,8 @@ const paymentByStripe = async (req, res) => {
                 name: `Event ID: ${eventID}`, // 
                 description: `\n\n\n\n\n\n\n\n
                 *USER ID*: ${userWhoCreatedEventID}\n\n
-                *EMAIL*: ${user.email}\n\n`,
-                metadata: {
-                    userID: `UserName is ${userWhoCreatedEventID}`,
-                    userEmail: `UserEmail is ${user.email}`,
-                    userName: `UserName is ${user.name}`
-                  },
+                *EMAIL*: ${user.email}\n\n`
+            
               },
               unit_amount: parseInt(eventPrice)*100, // Ticket price in cents
             },
@@ -58,10 +55,16 @@ const paymentByStripe = async (req, res) => {
           transfer_data: {
             destination: 'acct_1Pq51ARswB9V3ruE', // Seller's Stripe Account ID
           },
+          metadata: {
+            ticketEventId:eventID, 
+            ticketSellerId: userWhoCreatedEventID,
+            ticketSellerId:user.email,
+            ticketBuyerId: userWhoBoughtTicket
+          },
      
         },
-      });
-  console.log(session)
+      }); 
+  // console.log(session)
       res.json({
         sessionId: session.id, // Return the session ID to the client
       });
