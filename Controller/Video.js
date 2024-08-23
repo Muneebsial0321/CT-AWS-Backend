@@ -6,6 +6,7 @@ const { GetObjectCommand, DeleteObjectCommand, HeadObjectCommand } = require('@a
 const { Readable } = require('stream');
 const s3 = require("../Config/aws-s3")
 const Video = require('../Schemas/Videos')
+const Comments = require('../Schemas/VideoComments')
 
 
 
@@ -72,6 +73,41 @@ const viewVideo = async (req, res) => {
   } catch (error) {
     res.send("error occured")
 
+  }
+
+}
+
+const getUserVideos = async(req,res) =>{
+  try { 
+    const id = req.params.id
+    const vid = await Video.scan('userId').eq(id).exec()
+    res.json({count:vid.length,data:vid})
+  } catch (error) {
+    console.log(error)
+    res.json({message:"error occured",error})
+  }
+
+}
+const getVideo = async(req,res) =>{
+  try { 
+    console.log("all videos")
+    const vid = await Video.get(req.params.id)
+    const com = await Comments.scan('onVideoId').eq(req.params.id).exec()
+    res.json({count:vid.length,data:vid,commments:com})
+  } catch (error) {
+    console.log(error)
+    res.json({message:"error occured",error})
+  }
+
+}
+const getAllVideos = async(req,res) =>{
+  try { 
+    console.log("all videos")
+    const vid = await Video.scan().exec()
+    res.json({count:vid.length,data:vid})
+  } catch (error) {
+    console.log(error)
+    res.json({message:"error occured",error})
   }
 
 }
@@ -166,4 +202,4 @@ const deleteVideo = async (req, res) => {
 }
 
 
-module.exports = { uploadVideo, viewVideo, viewStream }
+module.exports = { uploadVideo, viewVideo, viewStream ,getUserVideos,getAllVideos,getVideo}

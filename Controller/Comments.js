@@ -13,12 +13,12 @@ const createComment=async(req,res)=>{
         res.json({"message":"error occured",error}) } 
         
     }
-}
+
 const getComments=async(req,res)=>{
     try {
         const id = req.params.id
-        let result = await Comment.query('onVideoId').eq(id).exec();
-        res.json(result)
+        let result = await Comment.scan('onVideoId').eq(id).exec();
+        res.json({count:result.length,data:result})
     } catch (error) {
         console.log("error is ",error)
         res.send(error)

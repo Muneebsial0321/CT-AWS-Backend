@@ -1,12 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const {createJob,getAllJobs,updateJob,deleteJob,getJob,searchJob} = require('../Controller/Job')
+const {createComment,getComments,deleteComments} = require('../Controller/Comments')
 
 
 
 //http://localhost:5000/jobs/
-router.post('/',createJob)
-router.get('/:id',getJob)
-router.delete('/:id',deleteJob)
+router.post('/:id',createComment)
+// router.get('/',(req,res)=>res.send("working"))
+router.get('/:id',getComments)
+router.delete('/:id',deleteComments)
 
-module.exports = router
+module.exports = router 
