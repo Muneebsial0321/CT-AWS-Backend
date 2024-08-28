@@ -56,4 +56,27 @@ app.use('/comments',require('./Routes/Comments'))
 // Use the socket handler
 socketHandler(io);
 
+// for zoom code in frontend
+app.get('/zoom/callback', async (req, res) => {
+    const { code } = req.query;
+    try {
+      const response = await axios.post('https://zoom.us/oauth/token', null, {
+        params: {
+          grant_type: 'authorization_code',
+          code,
+          redirect_uri: redirectUri,
+        },
+        auth: {
+          username: process.env.ZOOM_ID,
+          password: process.env.ZOOM_SECRET,
+        },
+      });
+  
+      const { access_token } = response.data;
+      res.redirect(`http://localhost:5173?access_token=${encodeURIComponent(access_token)}`);
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  });
+
 server.listen(process.env.PORT,()=>{console.log(`listening to port ${process.env.PORT}`)}) 
