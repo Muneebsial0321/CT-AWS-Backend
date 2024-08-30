@@ -41,7 +41,7 @@ passport.use(
     async (accessToken, refreshToken, profile, done) => {
       console.log(profile)
       try {
-        let user = profile.email
+        let user
         const name = profile.name.givenName
         const email = profile.email
         const password = ''
@@ -50,40 +50,25 @@ passport.use(
 
         let Users_PK = uuidv4();
         let users = await User.scan('email').eq(email).exec()
-        console.log("users")
-        console.log({ users })
+   
         if (users.length > 0) {
           Users_PK = users[0].Users_PK
+          user=Users_PK
+          
           console.log("user already exists")
+          console.log({Users_PK})
         }
         else {
-          
-          console.log("new user created")
+          user=Users_PK
           const user_ = new User({
             Users_PK, name, email, role
           })
           await user_.save()
+          console.log("new user created")
 
         }
-        // const params = {
-        //   TableName: 'Users',
-        //   Item: {
-        //     Users_PK: { S: pk }, // Ensure the type of each attribute is specified
-        //     name: { S: name ? name : '' }, // Similarly, specify the type for 'name'
-        //     email: { S: email ? email : '' }, // Ensure the type of each attribute is specified
-        //     password: { S: password ? password : '' },// Similarly, specify the type for 'name'
-        //     role: { S: role ? role : '' },// Similarly, specify the type for 'name'
-        //   }
-        // };
 
-        // // Create and send the PutItem command
-        // const command = new PutItemCommand(params);
-        // const data__ = await client.send(command);
-        // console.log('DynamoDB response:', data__);
-
-        // exp end
-
-        return done(null, Users_PK)
+        return done(null,user)
       } catch (error) {
         return done(error, null)
       }
@@ -92,37 +77,32 @@ passport.use(
 )
 
 passport.serializeUser((user, done) => {
-  console.log('Serializing user:', user); // Debug: log user being serialized
+  // console.log('Serializing user:', user); // Debug: log user being serialized
   done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
-  console.log('Deserializing user:', user); // Debug: log user being deserialized
+  // console.log('Deserializing user:', user); // Debug: log user being deserialized
   done(null, user);
 });
 
 // initial google ouath login
 app.get("/auth", passport.authenticate("google", { scope: ["profile", "email"] }));
 
-// app.get("/auth/google",passport.authenticate("google",{
-//     successRedirect:"http://localhost:5173/dashboard",
-//     failureRedirect:"http://localhost:5173/login" 
-// }))
 app.get('/auth/google',
   passport.authenticate('google', { failureRedirect: 'http://localhost:5173/login' }),
   async (req, res) => {
-    // Successful authentication, set a cookie
-    const data = await find_(req.user)
-    // console.log("data is ")
-    // console.log(data.data[0].Users_PK)
-
+    const data = await User.get(req.user)
+    // console.log(data.Users_PK)
+    const _id = data.Users_PK
     const payload = {
-      user: data.data[0].Users_PK
+      user: _id
     }
     const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
+    // console.log({authtoken,_id})
 
 
-    res.cookie('user', data.data[0].Users_PK);
+    res.cookie('user',_id);
     res.cookie('jwt', authtoken, { httpOnly: true, secure: false })
     res.redirect('http://localhost:5173/videos');
   }
