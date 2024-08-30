@@ -41,7 +41,8 @@ const socketHandler = (io) => {
 
     });
 
-    socket.on('zoomAuth', async (roomId) => {
+    socket.on('zoomAuth', async () => {
+      console.log("zoomauth socket")
       // if (socket.rooms.has(roomId)) {
       //   const zoomAuthUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientID}&redirect_uri=${redirectUri}`;
       //   // Emit the Zoom authorization URL to all clients in the room, excluding the sender
@@ -51,9 +52,10 @@ const socketHandler = (io) => {
       // }
  
       const zoomAuthUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${clientID}&redirect_uri=${redirectUri}`;
-   
-      socket.to(roomId).emit('receiveAuthUrl', zoomAuthUrl);
-
+      console.log({zoomAuthUrl})
+      // socket.to(roomId).emit('receiveAuthUrl', zoomAuthUrl);
+      socket.emit('receiveAuthUrl', zoomAuthUrl);
+ 
       // }
     });
 

@@ -46,26 +46,44 @@ passport.use(
         const email = profile.email
         const password = ''
         const role = ''
-        const pk = uuidv4();
-        const params = {
-          TableName: 'Users',
-          Item: {
-            Users_PK: { S: pk }, // Ensure the type of each attribute is specified
-            name: { S: name ? name : '' }, // Similarly, specify the type for 'name'
-            email: { S: email ? email : '' }, // Ensure the type of each attribute is specified
-            password: { S: password ? password : '' },// Similarly, specify the type for 'name'
-            role: { S: role ? role : '' },// Similarly, specify the type for 'name'
-          }
-        };
 
-        // Create and send the PutItem command
-        const command = new PutItemCommand(params);
-        const data__ = await client.send(command);
-        console.log('DynamoDB response:', data__);
+
+        let Users_PK = uuidv4();
+        let users = await User.scan('email').eq(email).exec()
+        console.log("users")
+        console.log({ users })
+        if (users.length > 0) {
+          Users_PK = users[0].Users_PK
+          console.log("user already exists")
+        }
+        else {
+          
+          console.log("new user created")
+          const user_ = new User({
+            Users_PK, name, email, role
+          })
+          await user_.save()
+
+        }
+        // const params = {
+        //   TableName: 'Users',
+        //   Item: {
+        //     Users_PK: { S: pk }, // Ensure the type of each attribute is specified
+        //     name: { S: name ? name : '' }, // Similarly, specify the type for 'name'
+        //     email: { S: email ? email : '' }, // Ensure the type of each attribute is specified
+        //     password: { S: password ? password : '' },// Similarly, specify the type for 'name'
+        //     role: { S: role ? role : '' },// Similarly, specify the type for 'name'
+        //   }
+        // };
+
+        // // Create and send the PutItem command
+        // const command = new PutItemCommand(params);
+        // const data__ = await client.send(command);
+        // console.log('DynamoDB response:', data__);
 
         // exp end
 
-        return done(null, user)
+        return done(null, Users_PK)
       } catch (error) {
         return done(error, null)
       }

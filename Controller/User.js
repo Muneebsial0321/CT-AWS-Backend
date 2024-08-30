@@ -39,21 +39,22 @@ const getAllUsers= async (req, res) => {
 }
 const updateUser=  async (req, res) => {
 
-
     try {
-          const picUrl =  ''
-          const picName = ''
-        //   const picUrl = req.file.location || ''
-        //   const picName = req.file.key || ''
-        //   console.log(picName,picUrl)
-          console.log("file is")
-        //   console.log(req.file)
-          console.log("email is")
-        //   console.log(req.body.ProfileData)   
-          console.log("param")
-        //    console.log(req.params.id)
-        const user = await User.update({ Users_PK: req.params.id },{picName,picUrl,...req.body});
-        res.status(200).json({"message":"success",data:user});
+
+        const updateData = { ...req.body }; // Start with the request body data
+        
+        if (req.file) {
+            // Handle file upload
+            const picName = req.file.key;
+            const picUrl = req.file.location;
+            updateData.picUrl = picUrl;
+            updateData.picName = picName;
+        }
+            const user = await User.update({ Users_PK: req.params.id },updateData);
+            res.json({"message":"success",data:user});
+    
+        
+       
     } catch (error) {
         console.log(error)
         res.json({ message:error.message });

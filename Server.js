@@ -7,6 +7,9 @@ const cookie = require("cookie-parser")
 const parser = require("body-parser")
 const socketIo = require('socket.io');
 const socketHandler = require('./Handlers/socketHandler'); 
+const redirectUri = 'http://localhost:5000/zoom/callback'; 
+const axios = require('axios'); 
+
 
 
 // middlewares
@@ -62,7 +65,7 @@ app.get('/zoom/callback', async (req, res) => {
     try {
       const response = await axios.post('https://zoom.us/oauth/token', null, {
         params: {
-          grant_type: 'authorization_code',
+          grant_type: 'authorization_code', 
           code,
           redirect_uri: redirectUri,
         },
