@@ -55,6 +55,7 @@ app.use('/admin',require('./Routes/Dashboard'))
 app.use('/upload',require('./Routes/Videos'))
 app.use('/payment',require('./Routes/Stripe'))
 app.use('/comments',require('./Routes/Comments'))
+app.use('/tickets',require('./Routes/Tickets'))
 
 
 // routes end
