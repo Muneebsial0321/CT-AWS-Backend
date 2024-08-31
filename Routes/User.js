@@ -11,8 +11,8 @@ router.post('/',createUser)
 router.post('/search',searchUser)
 router.get('/',getAllUsers)
 router.get('/:id',getUser)
-router.put('/:id',upload.single("profilePic"),updateUser)
-// router.put('/:id',updateUser)
+// router.put('/:id',upload.single("profilePic"),updateUser)
+router.put('/:id',updateUser)
 router.delete('/:id',deleteUser) 
 
 module.exports = router

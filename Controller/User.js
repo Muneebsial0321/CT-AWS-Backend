@@ -40,9 +40,10 @@ const getAllUsers= async (req, res) => {
 const updateUser=  async (req, res) => {
 
     try {
+        
 
         const updateData = { ...req.body }; // Start with the request body data
-        
+        console.log({updateData})
         if (req.file) {
             // Handle file upload
             const picName = req.file.key;
@@ -51,6 +52,7 @@ const updateUser=  async (req, res) => {
             updateData.picName = picName;
         }
             const user = await User.update({ Users_PK: req.params.id },updateData);
+            console.log({"message":"success",data:user})
             res.json({"message":"success",data:user});
     
         

@@ -49,7 +49,6 @@ const createEvent = async (req, res) => {
         console.log("not yet")
         const ad = process.env.ADMIN_ID
         await nf(ad,'48402292-1bd9-48cf-b2c7-04b4d944d097','created','Event')
-
         res.json({ message: "success", data: newEvent });
         console.log("saved")
         //  res.send("done")
@@ -72,9 +71,11 @@ const getEvent = async (req, res) => {
 const getAllEvents = async (req, res) => {
     try {
         const events = await Event.scan().exec();
-        res.status(200).json({ count: events.length, data: events });
+        console.log(events)
+        res.json({ count: events.length, data: events });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.log(error)
+        res.json({ message: error.message });
     }
 }
 const updateEvent = async (req, res) => {

@@ -65,6 +65,15 @@ const getEntreperneurs = async(req,res)=>{
     }
 
 }
+const getBLockedUsers = async(req,res)=>{
+    try {
+      const filter = await User.scan('isBlocked').eq('true').exec()  
+        res.json({count:filter.length,data:filter})    
+    } catch (error) {
+        res.send(error)
+    }
+
+}
 
 
-module.exports = {getEntreperneurs,getInvesters,get_Users}
+module.exports = {getEntreperneurs,getInvesters,get_Users,getBLockedUsers}

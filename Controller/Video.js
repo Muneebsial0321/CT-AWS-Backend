@@ -6,6 +6,7 @@ const { GetObjectCommand, DeleteObjectCommand, HeadObjectCommand } = require('@a
 const { Readable } = require('stream');
 const s3 = require("../Config/aws-s3")
 const Video = require('../Schemas/Videos')
+const User = require('../Schemas/User')
 const Comments = require('../Schemas/VideoComments')
 
 
@@ -90,10 +91,10 @@ const getUserVideos = async(req,res) =>{
 }
 const getVideo = async(req,res) =>{
   try { 
-    console.log("all videos")
     const vid = await Video.get(req.params.id)
     const com = await Comments.scan('onVideoId').eq(req.params.id).exec()
-    res.json({count:vid.length,data:vid,commments:com})
+    const {password,...user} = await User.get(vid.userId);
+    res.json({count:vid.length,data:vid,commments:com,user:user})
   } catch (error) {
     console.log(error)
     res.json({message:"error occured",error})

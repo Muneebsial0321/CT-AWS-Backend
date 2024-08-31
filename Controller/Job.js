@@ -1,5 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 const Job = require('../Schemas/Jobs')
+const User = require('../Schemas/User')
 const find = require('../Functions/find')
 
 
@@ -18,10 +19,12 @@ const createJob = async(req,res)=>{
 const getJob= async (req, res) => {
     try {
         const job = await Job.get(req.params.id);
+        const {password,...user} = await User.get(job.userId);
+
         if (!job) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.status(200).json(job);
+        res.status(200).json({job,user});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -48,7 +51,7 @@ const updateJob=  async (req, res) => {
 const deleteJob=  async (req, res) => {
     try {
         await Job.delete(req.params.id);
-        res.status(204).json({ message: 'User deleted successfully' });
+        res.json({ message: 'User deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

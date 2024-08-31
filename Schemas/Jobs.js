@@ -9,6 +9,9 @@ const jobSchema = new Schema({
   jobTitle: {
     type: String,
   },
+  userId: {
+    type: String,
+  },
   educationLevel: {
     type: String,
   },
