@@ -6,7 +6,7 @@ const podcastSchema = new Schema({
         type: String,
         hashKey: true
     },
-    publisher: {
+    userID: {
         type: String,
     },
 
@@ -39,3 +39,17 @@ const podcastSchema = new Schema({
 const Podcast = dynamoose.model('Podcasts', podcastSchema);
 
 module.exports = Podcast;
+// {
+//     "publisher": "7e3fceb1-0bd2-4f7f-bf81-3bed717bead6",
+//     "episodeTitle": "The Future of AI",
+//     "episodeDescription": "In this episode, we dive deep into the advancements in artificial intelligence and its impact on various industries.",
+//     "podcastType": "Technology",
+//     "seasonNumber": 3,
+//     "episodeNumber": 7,
+//     "speakers": "John Doe",
+//     "audioName": "future_of_ai_episode_7.mp3",
+//     "picName": "ai_podcast_cover.jpg",
+//     "picUrl": "https://example.com/images/ai_podcast_cover.jpg",
+//     "audioUrl": "https://example.com/audio/future_of_ai_episode_7.mp3"
+//   }
+  

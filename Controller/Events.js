@@ -1,7 +1,8 @@
 const { v4: uuidv4 } = require('uuid');
 const Event = require('../Schemas/Events')
 const Notification = require('../Schemas/Notifications')
-const nf = require('../Functions/Notification_Factory')
+const nf = require('../Functions/Notification_Factory');
+const User = require('../Schemas/User');
 
 
 const createEvent = async (req, res) => {
@@ -60,10 +61,12 @@ const createEvent = async (req, res) => {
 const getEvent = async (req, res) => {
     try {
         const event = await Event.get(req.params.id);
+        const user =  await User.get(event.eventCreatedBy);
+        
         if (!event) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.status(200).json(event);
+        res.status(200).json({event,user});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
