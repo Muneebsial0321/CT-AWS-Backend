@@ -56,6 +56,8 @@ app.use('/upload',require('./Routes/Videos'))
 app.use('/payment',require('./Routes/Stripe'))
 app.use('/comments',require('./Routes/Comments'))
 app.use('/tickets',require('./Routes/Tickets'))
+app.use('/meetings',require('./Routes/Meeting'))
+app.use('/chatrooms',require('./Routes/ChatRoom'))
 
 
 // routes end
@@ -88,3 +90,16 @@ app.get('/zoom/callback', async (req, res) => {
   });
 
 server.listen(process.env.PORT,()=>{console.log(`listening to port ${process.env.PORT}`)}) 
+
+
+// Product.query('category')
+//   .eq('Electronics')
+//   .sort('descending')
+//   .limit(5)
+//   .exec()
+//   .then((products) => {
+//     console.log(products);
+//   })
+//   .catch((err) => {
+//     console.error(err);
+//   });

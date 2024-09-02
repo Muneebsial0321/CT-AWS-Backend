@@ -23,14 +23,14 @@ const createChatRoom = async (req,res) => {
     console.error('Error creating chat room:', error);
   }
 };
-// const getAllChatRooms= async(req,res)=>{
-//   const cr = await ChatRoom.scan().exec()
-//   console.log(cr)
-//   res.json(cr)
+const getAllChatRooms= async(req,res)=>{
+  const cr = await ChatRoom.scan().attributes(['_id','users']).exec()
 
+  res.json({count:cr.length,data:cr})
 
-// }
+// Cat.scan().attributes(["id", "name"]); // Return all items but only return the `id` & `name` properties for each item
+}
 const getMyChatRooms= async(req,res)=>{}
 const deleteChatRoom= async(req,res)=>{}
-// module.exports = {getAllChatRooms}
+module.exports = {getMyChatRooms,deleteChatRoom,getAllChatRooms,createChatRoom}
 
