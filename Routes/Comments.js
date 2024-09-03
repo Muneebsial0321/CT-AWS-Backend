@@ -4,7 +4,7 @@ const {createComment,getComments,deleteComments} = require('../Controller/Commen
 
 
 
-//http://localhost:5000/jobs/
+//http://localhost:5000/comments/
 router.post('/:id',createComment)
 // router.get('/',(req,res)=>res.send("working"))
 router.get('/:id',getComments)
