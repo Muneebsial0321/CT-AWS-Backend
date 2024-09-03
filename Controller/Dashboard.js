@@ -1,9 +1,4 @@
-const {ddbDocClient,ScanCommand,client} = require('../Config/aws-dynamoDB');
 const User = require('../Schemas/User')
-// const searchUser= async( req,res)=>{
-//     let result = await find_(req.body)
-//      res.json(result)
-//   }
 
   async function find_(params) {
     let scan = await User.scan();
@@ -15,26 +10,6 @@ const User = require('../Schemas/User')
     console.log(result)
     return  {count:result.length,data:result};
   }
-
-
-const getAll=async()=>{
-
-    const params = {
-        TableName: 'Users', // Name of your DynamoDB table
-    };
-    
-    try {
-        const command = new ScanCommand(params);
-        const data = await client.send(command);
-        return data
-    } catch (err) {
-        console.error('Error scanning table:', err);
-    }
-}
-
-
-
-
 
 const getInvesters = async(req,res)=>{
     console.log("investor")
@@ -72,6 +47,10 @@ const getBLockedUsers = async(req,res)=>{
     } catch (error) {
         res.send(error)
     }
+
+}
+
+const adminAnalytics= async (req,res)=> {
 
 }
 

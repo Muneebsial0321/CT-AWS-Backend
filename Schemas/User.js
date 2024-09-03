@@ -38,7 +38,7 @@ const userSchema = new dynamoose.Schema({
     },
     role: {
         type: String,
-        // default: "user"
+        default: "user"
     },
 
     picName:String,
@@ -46,7 +46,11 @@ const userSchema = new dynamoose.Schema({
     picUrl:String,
     cvName:String,
     cvUrl:String,
-});
+    
+},{
+    timestamps:true
+}
+);
 
 const User = dynamoose.model('Users', userSchema);
 

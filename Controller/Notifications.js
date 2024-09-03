@@ -38,4 +38,4 @@ const deleteNotification=  async (req, res) => {
     }
 }
 
-module.exports= {getAllNotifications,getNotification,deleteNotification}
+module.exports= {getAllNotifications,getMyNotifications,deleteNotification}
