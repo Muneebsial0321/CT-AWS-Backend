@@ -30,7 +30,25 @@ const getAllChatRooms= async(req,res)=>{
 
 // Cat.scan().attributes(["id", "name"]); // Return all items but only return the `id` & `name` properties for each item
 }
-const getMyChatRooms= async(req,res)=>{}
+const getMyChatRooms= async(req,res)=>{
+  try {
+    const { id } = req.params;
+    // const chatRooms = await ChatRoom.scan().attributes(['users','_id']).exec();
+    const chatRooms = await ChatRoom.scan().exec();
+    const myRooms = chatRooms.map((e)=>{
+    //  checking if user is in the array os users
+     if(e.users.includes(id)){
+       return e
+     }
+
+    }
+  )
+    res.status(200).json({count:myRooms.length,data:myRooms});
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
+}
 const deleteChatRoom= async(req,res)=>{}
 module.exports = {getMyChatRooms,deleteChatRoom,getAllChatRooms,createChatRoom}
 
