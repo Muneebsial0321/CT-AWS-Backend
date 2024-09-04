@@ -44,7 +44,7 @@ const getMyChatRooms = async (req, res) => {
       }
     }
     ))
-    console.log({myRooms})
+    // console.log({myRooms})
     res.status(200).json({ count: myRooms.length, data: myRooms });
   } catch (error) {
     console.error(error);

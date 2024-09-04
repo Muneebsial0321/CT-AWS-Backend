@@ -59,6 +59,25 @@ const deletePodcast=  async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+const searchPodcast = async (req, res) => {
+    console.log("searccing")
+    let result = await find_(req.body)
+    res.json(result)
+}
+
+async function find_(params) {
+    let scan = await Podcast.scan();
+    for (const key in params) {
+        if (params[key]) {
+            scan = await scan.where(key).eq(params[key]);
+        }
+    }
+
+    const result = await scan.exec();
+    console.log(result)
+    return { count: result.length, data: result };
+}
 
 
-module.exports= {createPodcast,updatePodcast,getAllPodcasts,getPodcast,deletePodcast}
+
+module.exports= {createPodcast,updatePodcast,getAllPodcasts,getPodcast,deletePodcast,searchPodcast}

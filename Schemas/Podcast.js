@@ -30,6 +30,7 @@ const podcastSchema = new Schema({
     speakers: {
         type:String
     },
+    familyName:String,
     audioName:String,
     picName:String,
     picUrl:String,
