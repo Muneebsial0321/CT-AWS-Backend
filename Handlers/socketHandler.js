@@ -1,34 +1,39 @@
 // socketHandler.js
-const ChatRoom = require('../Schemas/ChatRoom'); // Adjust the path as necessary
+const e = require('express');
+const ChatRoom = require('../Schemas/ChatRoom');
 const clientID = process.env.ZOOM_ID
 const axios = require('axios'); 
+const { decrypt } = require('dotenv');
 const redirectUri = 'http://localhost:5000/zoom/callback'; 
 
 // 728bd845-a3de-4d17-babd-4e7d87cbce69
 
 const socketHandler = (io) => {
+  try {
+    
+
   io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
-
-
-    socket.on('joinRoom', async ({ roomId, userId }) => {
+    socket.on('joinRoom', async ({roomId,userId}) => {
       socket.join(roomId);
       console.log(`User ${userId} joined room ${roomId}`);
       const chatRoom = await ChatRoom.get(roomId);
-      // if (chatRoom) {
+      // // if (chatRoom) {
       console.log("chatRoom")
-      console.log(chatRoom)
+      console.log({messages:chatRoom.messages})
 
       socket.emit('previousMessages', chatRoom.messages);
+      // socket.emit('previousMessages', 'messages'); 
       // }
     });
 
     socket.on('sendMessage', async ({ roomId, sender, message }) => {
       const timestamp = new Date();
-
+      console.log("getting message")
 
       // Fetch or create the chat room
       let chatRoom = await ChatRoom.get(roomId);
+      // console.log({chatRoom})
       if (chatRoom.users.includes(sender)) {
 
         await ChatRoom.update(
@@ -36,7 +41,7 @@ const socketHandler = (io) => {
           { $ADD: { messages: [{ sender, message, timestamp }] } }
         );
         io.to(roomId).emit('receiveMessage', { sender, message, timestamp });
-        console.log('message was added', chatRoom)
+        console.log('message was added')
       }
 
     });
@@ -92,7 +97,11 @@ const socketHandler = (io) => {
       console.log('A user disconnected:', socket.id);
     });
   });
-};
+}
+ catch (error) {
+  console.log(error)
+}}
 
-module.exports = socketHandler;
+
+module.exports = socketHandler;  
 
