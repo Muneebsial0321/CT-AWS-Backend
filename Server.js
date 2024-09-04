@@ -58,6 +58,7 @@ app.use('/comments',require('./Routes/Comments'))
 app.use('/tickets',require('./Routes/Tickets'))
 app.use('/meetings',require('./Routes/Meeting'))
 app.use('/chatrooms',require('./Routes/ChatRoom'))
+app.use('/notifications',require('./Routes/Notifications'))
 
 
 // routes end

@@ -7,7 +7,7 @@ const Notification_Factory = async (adminId,userId,event, tableName ) => {
     const adminNote = new Notification({
         _id:uuidv4(),
         createdBy:userId,
-        for:userId,
+        for:process.env.ADMIN_ID,
         notiTitle:`${tableName} was ${event}`,
         notiDesc:`${tableName} was ${event} by user: ${userId}`
 

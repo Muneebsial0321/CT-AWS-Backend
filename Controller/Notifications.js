@@ -22,7 +22,7 @@ const getAllNotifications= async (req, res) => {
 const getMyNotifications= async (req, res) => {
     try {
         const id = req.params.id
-        let notifications = await Notification.query('for').eq(id).exec();
+        let notifications = await Notification.scan('for').eq(id).exec();
         res.status(200).json({count:notifications.length,data:notifications});
     } catch (error) {
         res.status(500).json({ message: error.message });
