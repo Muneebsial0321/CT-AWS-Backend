@@ -31,7 +31,11 @@ const createMeeting = async (req, res) => {
       const { id } = req.params;
       const meeting = await Meeting.get(id);
       const {users} = await ChatRoom.get(meeting.chatroomID);
-      const user= await Promise.all(users.map(async(e)=>await Users.get(e)))
+      const user= await Promise.all(users.map(async(e)=>{
+       const u = await Users.get(e)
+       let {password,...r} = u
+       return r
+      }))
       console.log({user})
       if (!meeting) {
         return res.status(404).json({ error: 'Meeting not found' });
