@@ -1,9 +1,13 @@
 const Meeting = require('../Schemas/Meetings')
+const ChatRoom = require('../Schemas/ChatRoom')
+const Users = require('../Schemas/User')
+const { v4: uuidv4 } = require('uuid');
 
 const createMeeting = async (req, res) => {
     try {
       const meetingData = req.body;
-      const newMeeting = new Meeting(meetingData);
+      const _id= uuidv4()
+      const newMeeting = new Meeting({_id:_id,...meetingData});
       await newMeeting.save();
       res.json({message:"success",data:newMeeting});
     } catch (error) {
@@ -26,10 +30,13 @@ const createMeeting = async (req, res) => {
     try {
       const { id } = req.params;
       const meeting = await Meeting.get(id);
+      const {users} = await ChatRoom.get(meeting.chatroomID);
+      const user= await Promise.all(users.map(async(e)=>await Users.get(e)))
+      console.log({user})
       if (!meeting) {
         return res.status(404).json({ error: 'Meeting not found' });
       }
-      res.status(200).json(meeting);
+      res.status(200).json({meeting,user});
     } catch (error) {
         console.log(error)
         res.send( error);

@@ -76,7 +76,7 @@ const socketHandler = (io) => {
 
       console.log("metting")
       const response = await axios.post('https://api.zoom.us/v2/users/me/meetings', {
-        topic: "none bxxb",
+        topic: "none",
         type: 2, // Scheduled meeting
         start_time: Date.now(),
         duration: 45,
