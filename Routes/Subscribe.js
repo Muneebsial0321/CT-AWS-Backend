@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const Subscription = require('../Schemas/Subscription'); // Adjust the path as needed
 
 // Create a new subscription
-router.post('/subscriptions', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const { subscriberId, subscribedToId } = req.body;
 
@@ -23,10 +23,18 @@ router.post('/subscriptions', async (req, res) => {
 });
 
 // Get all subscriptions for a subscriber
-router.get('/subscriptions/:subscriberId', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const { subscriberId } = req.params;
-        const subscriptions = await Subscription.scan('subscriberId').eq(subscriberId).exec();
+        const subscriptions = await Subscription.scan().exec();
+        res.status(200).json({count:subscriptions.length,data:subscriptions});
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+router.get('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const subscriptions = await Subscription.scan('subscribedToId').eq(id).exec();
         res.status(200).json(subscriptions);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -34,7 +42,7 @@ router.get('/subscriptions/:subscriberId', async (req, res) => {
 });
 
 // Delete a subscription
-router.delete('/subscriptions/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;
         await Subscription.delete({ _id: id });

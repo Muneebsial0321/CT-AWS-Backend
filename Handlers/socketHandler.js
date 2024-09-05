@@ -10,8 +10,6 @@ const redirectUri = 'http://localhost:5000/zoom/callback';
 
 const socketHandler = (io) => {
   try {
-    
-
   io.on('connection', (socket) => {
     console.log('A user connected:', socket.id);
     socket.on('joinRoom', async ({roomId,userId}) => {
@@ -65,8 +63,8 @@ const socketHandler = (io) => {
     });
 
     socket.on('sendMeetingUrl', async (accessToken) => {
-      console.log("token is")
-      console.log(accessToken)
+      console.log("token is") 
+      console.log(accessToken) 
       //   socket.join(roomId);
       //   console.log(`User ${userId} joined room ${roomId}`);
       //   const chatRoom = await ChatRoom.get(roomId);

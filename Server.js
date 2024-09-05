@@ -59,6 +59,7 @@ app.use('/tickets',require('./Routes/Tickets'))
 app.use('/meetings',require('./Routes/Meeting'))
 app.use('/chatrooms',require('./Routes/ChatRoom'))
 app.use('/notifications',require('./Routes/Notifications'))
+app.use('/Subscribe',require('./Routes/Subscribe'))
 
 
 // routes end
@@ -84,7 +85,7 @@ app.get('/zoom/callback', async (req, res) => {
       });
   
       const { access_token } = response.data;
-      res.redirect(`http://localhost:5173?access_token=${encodeURIComponent(access_token)}`);
+      res.redirect(`http://localhost:5173/messages/user1?access_token=${encodeURIComponent(access_token)}`);
     } catch (error) {
       res.status(500).send(error);
     }

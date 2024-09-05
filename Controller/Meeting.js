@@ -74,7 +74,7 @@ const createMeeting = async (req, res) => {
     createMeeting,
     getAllMeetings,
     getMeetingById,
-    updateMeetingById,
+    // updateMeetingById,
     deleteMeetingById,
   };
   
