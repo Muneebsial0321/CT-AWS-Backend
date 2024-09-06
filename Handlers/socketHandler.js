@@ -19,7 +19,6 @@ const socketHandler = (io) => {
       // // if (chatRoom) {
       console.log("chatRoom")
       console.log({messages:chatRoom.messages})
-
       socket.emit('previousMessages', chatRoom.messages);
       // socket.emit('previousMessages', 'messages'); 
       // }

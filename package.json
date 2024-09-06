@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "start":"nodemon ./Server"
+  },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.622.0",
     "@aws-sdk/client-dynamodb": "^3.622.0",
