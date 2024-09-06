@@ -31,10 +31,23 @@ router.get('/', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-router.get('/:id', async (req, res) => {
+
+// gets my subscribers
+router.get('/my/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const subscriptions = await Subscription.scan('subscribedToId').eq(id).exec();
+        res.status(200).json(subscriptions);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// gets people whom i subscribed to
+router.get('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const subscriptions = await Subscription.scan('subscriberId').eq(id).exec();
         res.status(200).json(subscriptions);
     } catch (error) {
         res.status(500).json({ message: error.message });
