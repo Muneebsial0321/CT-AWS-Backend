@@ -1,5 +1,9 @@
 const { v4: uuidv4 } = require('uuid');
 const User = require('../Schemas/User')
+const Podcasts = require('../Schemas/Podcast')
+const Videos = require('../Schemas/Videos')
+const Jobs = require('../Schemas/Jobs')
+const Events = require('../Schemas/Events')
 const Pic= require('../Schemas/Picture')
 
 
@@ -17,10 +21,12 @@ const createUser = async(req,res)=>{
 const getUser= async (req, res) => {
     try {
         const {password,...user} = await User.get(req.params.id);
+        const data = await __init__(req.params.id)
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.status(200).json(user);
+        console.log({data})
+        res.status(200).json({user,data});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -90,6 +96,17 @@ const searchUser= async( req,res)=>{
     const result = await scan.exec();
     console.log(result)
     return  {count:result.length,data:result};
+  }
+
+  const __init__ =async(userId)=>{
+    const events  = await Events.scan('eventCreatedBy').eq(userId).exec() 
+    const  jobs = await Jobs.scan('userId').eq(userId).exec() 
+    const videos = await Videos.scan('userId').eq(userId).exec() 
+    const podcast = await Podcasts.scan('userID').eq(userId).exec() 
+
+  let data={events,videos,podcast,jobs}
+  console.log(data)
+  return await data
   }
 
 module.exports= {createUser,updateUser,getAllUsers,getUser,deleteUser,searchUser}

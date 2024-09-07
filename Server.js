@@ -46,6 +46,7 @@ const io = new socketIo.Server(server, {
 // routes
 
 
+app.use('/',require('./Routes/GithubAuth'))
 app.use('/',require('./Routes/GoogleAuth'))
 app.use('/users',require('./Routes/User'))
 app.use('/jobs',require('./Routes/Job'))
