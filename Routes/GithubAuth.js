@@ -39,7 +39,7 @@ passport.use(
 
     async (accessToken, refreshToken, profile, done) => {
         console.log("github")
-    //   console.log(profile)
+      console.log(profile)
       try {
         let user=profile
         const name = user.displayName
@@ -105,7 +105,7 @@ app.get('/auth', passport.authenticate('github', { scope: [ 'user:email' ] }));
 
 app.get('/auth/github', 
     passport.authenticate('github', { failureRedirect: '/faliure' }),
-    async (req, res) => {
+    async  (req, res) => {
           const data = await User.get(req.user)
     // console.log(data.Users_PK)
     const _id = data.Users_PK
