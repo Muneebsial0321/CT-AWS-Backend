@@ -93,8 +93,8 @@ const searchUser = async (req, res) => {
 }
 async function find_(params) {
     let scan = await User.scan();
-    console.log(scan)
-    console.log(params)
+    // console.log(scan)
+    // console.log(params)
 
     for (const key in params) {
         if (params[key]) {
@@ -104,7 +104,7 @@ async function find_(params) {
     }
 
     const result = await scan.exec();
-    console.log(result)
+    // console.log(result)
     return { count: result.length, data: result };
 }
 const __init__ = async (userId) => {
@@ -114,7 +114,7 @@ const __init__ = async (userId) => {
     const podcast = await Podcasts.scan('userID').eq(userId).exec()
 
     let data = { events, videos, podcast, jobs }
-    console.log(data)
+    // console.log(data)
     return await data
 }
 

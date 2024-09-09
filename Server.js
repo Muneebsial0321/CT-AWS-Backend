@@ -27,7 +27,7 @@ app.use(cors({
     credentials: true
 }));
 app.use(cookie())
-// middlewares end
+// middlewares end   
 
 
 // sockets
