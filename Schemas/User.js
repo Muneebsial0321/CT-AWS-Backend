@@ -12,7 +12,9 @@ const userSchema = new dynamoose.Schema({
     },
     email: {
         type: String,
-        // required: true,
+    },
+    userName: {
+        type: String,
     },
     password: {
         type: String,
@@ -46,6 +48,7 @@ const userSchema = new dynamoose.Schema({
     picUrl:String,
     cvName:String,
     cvUrl:String,
+    signedInBy:String,
     
 },{
     timestamps:true

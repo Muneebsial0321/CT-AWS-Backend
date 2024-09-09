@@ -4,13 +4,13 @@ const Podcasts = require('../Schemas/Podcast')
 const Videos = require('../Schemas/Videos')
 const Jobs = require('../Schemas/Jobs')
 const Events = require('../Schemas/Events')
-const Pic= require('../Schemas/Picture')
+const Pic = require('../Schemas/Picture')
 
 
-const createUser = async(req,res)=>{
+const createUser = async (req, res) => {
     try {
-       const Users_PK  = uuidv4();
-        const newUser = new User({ Users_PK ,...req.body});
+        const Users_PK = uuidv4();
+        const newUser = new User({ Users_PK, ...req.body });
         await newUser.save();
         res.json(newUser);
     } catch (error) {
@@ -18,57 +18,68 @@ const createUser = async(req,res)=>{
         res.status(500).json({ message: error.message });
     }
 }
-const getUser= async (req, res) => {
+const getUser = async (req, res) => {
     try {
-        const {password,...user} = await User.get(req.params.id);
+        const { password, ...user } = await User.get(req.params.id);
         const data = await __init__(req.params.id)
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        console.log({data})
-        res.status(200).json({user,data});
+        console.log({ data })
+        res.status(200).json({ user, data });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 }
-const getAllUsers= async (req, res) => {
+const getAllUsers = async (req, res) => {
     try {
         const users = await User.scan().exec();
         const users__ = users.map(user => {
             const { password, ...userWithoutPassword } = user;
             return userWithoutPassword;
         });
-        res.status(200).json({count:users__.length,data:users__});
+        res.status(200).json({ count: users__.length, data: users__ });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 }
-const updateUser=  async (req, res) => {
+const updateUser = async (req, res) => {
 
     try {
-        
+        const updateData = { ...req.body };
+        const user = await User.update({ Users_PK: req.params.id }, updateData);
+        console.log({ "message": "success", data: user })
+        res.json({ "message": "success", data: user });
+    } catch (error) {
+        console.log(error)
+        res.json({ message: error.message });
+    }
+}
+const updateUserPicture = async (req, res) => {
 
-        const updateData = { ...req.body }; // Start with the request body data
-        console.log({updateData})
+    try {
+        console.log(req.file)
         if (req.file) {
             // Handle file upload
             const picName = req.file.key;
             const picUrl = req.file.location;
-            updateData.picUrl = picUrl;
-            updateData.picName = picName;
+            console.log({picName,picUrl})
+            const user = await User.update({ Users_PK: req.params.id },{picName,picUrl});
+            console.log({ "message": "success", data: user })
+            res.json({ "message": "success", data: user });
         }
-            const user = await User.update({ Users_PK: req.params.id },updateData);
-            console.log({"message":"success",data:user})
-            res.json({"message":"success",data:user});
-    
-        
-       
+        else{
+            res.send("no picture was uploaded")
+        }
+
+
+
     } catch (error) {
         console.log(error)
-        res.json({ message:error.message });
+        res.json({ message: error.message });
     }
 }
-const deleteUser=  async (req, res) => {
+const deleteUser = async (req, res) => {
     try {
         await User.delete(req.params.id);
         res.status(204).json({ message: 'User deleted successfully' });
@@ -76,37 +87,35 @@ const deleteUser=  async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
-const searchUser= async( req,res)=>{
+const searchUser = async (req, res) => {
     let result = await find_(req.body)
-     res.json(result)
-  }
-
-  async function find_(params) {
+    res.json(result)
+}
+async function find_(params) {
     let scan = await User.scan();
     console.log(scan)
     console.log(params)
-  
+
     for (const key in params) {
-      if (params[key]) {
-        scan = await scan.where(key).contains(params[key]);
-        console.log(scan)
-      }
+        if (params[key]) {
+            scan = await scan.where(key).contains(params[key]);
+            console.log(scan)
+        }
     }
-  
+
     const result = await scan.exec();
     console.log(result)
-    return  {count:result.length,data:result};
-  }
+    return { count: result.length, data: result };
+}
+const __init__ = async (userId) => {
+    const events = await Events.scan('eventCreatedBy').eq(userId).exec()
+    const jobs = await Jobs.scan('userId').eq(userId).exec()
+    const videos = await Videos.scan('userId').eq(userId).exec()
+    const podcast = await Podcasts.scan('userID').eq(userId).exec()
 
-  const __init__ =async(userId)=>{
-    const events  = await Events.scan('eventCreatedBy').eq(userId).exec() 
-    const  jobs = await Jobs.scan('userId').eq(userId).exec() 
-    const videos = await Videos.scan('userId').eq(userId).exec() 
-    const podcast = await Podcasts.scan('userID').eq(userId).exec() 
+    let data = { events, videos, podcast, jobs }
+    console.log(data)
+    return await data
+}
 
-  let data={events,videos,podcast,jobs}
-  console.log(data)
-  return await data
-  }
-
-module.exports= {createUser,updateUser,getAllUsers,getUser,deleteUser,searchUser}
+module.exports = { createUser, updateUser, getAllUsers, getUser, deleteUser, searchUser,updateUserPicture }

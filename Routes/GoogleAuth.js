@@ -44,8 +44,8 @@ passport.use(
         let user
         const name = profile.name.givenName
         const email = profile.email
-        const password = ''
-        const role = ''
+        const role = 'viewer'
+        const signedInBy = 'google'
 
         let Users_PK = uuidv4();
         let users = await User.scan('email').eq(email).exec()
@@ -60,7 +60,7 @@ passport.use(
         else {
           user=Users_PK
           const user_ = new User({
-            Users_PK, name, email, role
+            Users_PK, name, email, role, signedInBy
           })
           await user_.save()
           console.log("new user created")

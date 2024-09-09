@@ -43,12 +43,11 @@ passport.use(
       try {
         let user=profile
         const name = user.displayName
-        const email = user.username
-        console.log({name,email})
-        const role = 'user'
-
+        const userName = profile.username
+        const role = 'viewer'
+        const signedInBy = 'github'
         let Users_PK = uuidv4();
-        let users = await User.scan('email').eq(email).exec()
+        let users = await User.scan('userName').eq(userName).exec()
    
         if (users.length > 0) {
           Users_PK = users[0].Users_PK
@@ -59,7 +58,7 @@ passport.use(
         else {
           user=Users_PK
           const user_ = new User({
-            Users_PK, name, email, role
+            Users_PK, name, userName, role ,signedInBy
           })
           await user_.save()
           console.log("new user created")
@@ -84,24 +83,8 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-// initial google ouath login
-// app.get("/auth", passport.authenticate("google", { scope: ["profile", "email"] }));
+// initial github
 app.get('/auth', passport.authenticate('github', { scope: [ 'user:email' ] }));
-// app.get('/auth/google',
-//   passport.authenticate('google', { failureRedirect: 'http://localhost:5173/login' }),
-//   async (req, res) => {
-//     const data = await User.get(req.user)
-//     // console.log(data.Users_PK)
-//     const _id = data.Users_PK
-//     const payload = {
-//       user: _id
-//     }
-//     const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
-//     res.cookie('user',_id);
-//     res.cookie('jwt', authtoken, { httpOnly: true, secure: false })
-//     res.redirect('http://localhost:5173/videos');
-//   }
-// );
 
 app.get('/auth/github', 
     passport.authenticate('github', { failureRedirect: '/faliure' }),
@@ -118,9 +101,6 @@ app.get('/auth/github',
       res.redirect('http://localhost:5173/videos');  // You can change this to any route
     }
   );
-
-
-
 app.get("/login/success", client_, async (req, res) => {
   console.log("user is")
   console.log(req.cookies.user)
