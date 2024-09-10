@@ -38,18 +38,8 @@ const createEvent = async (req, res) => {
 
         console.log(newEvent)
         await newEvent.save();
-        // const adminNote = new Notification({
-        //     _id:uuidv4(),
-        //     createdBy:req.user,
-        //     notiTitle:"Event created",
-        //     notiDesc:`Event ${req.body.eventTitle} was created`
-
-        // })
-     
-        // await adminNote.save()
-        console.log("not yet")
         const ad = process.env.ADMIN_ID
-        await nf(ad,'48402292-1bd9-48cf-b2c7-04b4d944d097','created','Event')
+        await nf(ad,req.body.eventCreatedBy,'created','Event')
         res.json({ message: "success", data: newEvent });
         console.log("saved")
         //  res.send("done")
@@ -67,6 +57,7 @@ const getEvent = async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
         res.status(200).json({event,user});
+        // res.status(200).json({event});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

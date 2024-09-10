@@ -24,7 +24,7 @@ const getInvesters = async(req,res)=>{
 }
 const get_Users = async(req,res)=>{
     try {
-        const filter =  await  find_("user")
+        const filter =  await  find_("viewer")
         res.json({count:filter.length,data:filter})    
     } catch (error) {
         res.send(error)

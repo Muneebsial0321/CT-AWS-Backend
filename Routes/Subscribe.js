@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Get all subscriptions for a subscriber
+// Get all subscriptions
 router.get('/', async (req, res) => {
     try {
         const subscriptions = await Subscription.scan().exec();

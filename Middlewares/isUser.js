@@ -4,7 +4,7 @@ const isUser = async (req, res, next) => {
    
         const string = req.cookies.user
         let result = await User.get(string)
-        if (result.role == 'user') {
+        if (result.role == 'viewer') {
             console.log("it is an user")
             next()
         }

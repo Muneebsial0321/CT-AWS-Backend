@@ -60,7 +60,7 @@ app.use('/tickets',require('./Routes/Tickets'))
 app.use('/meetings',require('./Routes/Meeting'))
 app.use('/chatrooms',require('./Routes/ChatRoom'))
 app.use('/notifications',require('./Routes/Notifications'))
-app.use('/Subscribe',require('./Routes/Subscribe'))
+app.use('/subscribe',require('./Routes/Subscribe'))
 
 
 // routes end
