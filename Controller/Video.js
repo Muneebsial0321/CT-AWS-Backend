@@ -8,6 +8,7 @@ const s3 = require("../Config/aws-s3")
 const Video = require('../Schemas/Videos')
 const User = require('../Schemas/User')
 const Comments = require('../Schemas/VideoComments')
+const Reviews = require('../Schemas/Reviews')
 
 
 
@@ -92,7 +93,7 @@ const getUserVideos = async(req,res) =>{
 const getVideo = async(req,res) =>{
   try { 
     const vid = await Video.get(req.params.id)
-    const com = await Comments.scan('onVideoId').eq(req.params.id).exec()
+    const com = await Reviews.scan('reviewItemId').eq(req.params.id).exec()
     const {password,...user} = await User.get(vid.userId);
     res.json({count:vid.length,data:vid,commments:com,user:user})
   } catch (error) {

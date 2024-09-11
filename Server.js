@@ -61,6 +61,7 @@ app.use('/meetings',require('./Routes/Meeting'))
 app.use('/chatrooms',require('./Routes/ChatRoom'))
 app.use('/notifications',require('./Routes/Notifications'))
 app.use('/subscribe',require('./Routes/Subscribe'))
+app.use('/reviews',require('./Routes/Reviews'))
 
 
 // routes end

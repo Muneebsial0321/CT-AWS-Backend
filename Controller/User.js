@@ -5,14 +5,16 @@ const Videos = require('../Schemas/Videos')
 const Jobs = require('../Schemas/Jobs')
 const Events = require('../Schemas/Events')
 const Pic = require('../Schemas/Picture')
+const jwt = require('jsonwebtoken')
 
 
 const createUser = async (req, res) => {
     try {
         const Users_PK = uuidv4();
-        const newUser = new User({ Users_PK, ...req.body });
+        const signedInBy = 'local'
+        const newUser = new User({ Users_PK, ...req.body,signedInBy });
         await newUser.save();
-        res.json(newUser);
+        res.json({message:"success",newUser});
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: error.message });
@@ -117,5 +119,41 @@ const __init__ = async (userId) => {
     // console.log(data)
     return await data
 }
+const login =async (req,res)=>{
+    // const {email,password} = req.body
+    console.log("password")
+    console.log(req.body)
+    res.send().end()
+    // console.log({email,password})
+    // const user = await User.scan('email').eq(email).exec()
+    // const data = await User.get(user[0].Users_PK)
+    // // console.log(data)
+    // if(password==user[0].password){  
+    // const _id = data.Users_PK
+    // const payload = {
+    //   user: _id
+    // }
+    // const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
+    // res.cookie('user',_id);
+    // res.cookie('jwt', authtoken, { httpOnly: true, secure: false })
+    // res.json({message:"success"})
+    
+    // }
+    // else if(password!=user[0].password){
+    //     res.send("wrong password")
+    // }
 
-module.exports = { createUser, updateUser, getAllUsers, getUser, deleteUser, searchUser,updateUserPicture }
+    // const _id = data.Users_PK
+    // const payload = {
+    //   user: _id
+    // }
+    // const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
+    // res.cookie('user',_id);
+    // res.cookie('jwt', authtoken, { httpOnly: true, secure: false })
+    // res.redirect('http://localhost:5173/videos');
+    // res.json(data)
+
+
+} 
+
+module.exports = { createUser, updateUser, getAllUsers, getUser, deleteUser, searchUser,updateUserPicture ,login}

@@ -19,6 +19,6 @@ router.get('/entrepreneur',getEntreperneurs)
 router.get('/not',getAllNotifications)
 //http://localhost:5000/admin/blocked
 router.get('/blocked',getBLockedUsers)
-// router.get('/cr',getAllChatRooms)
+// router.get('/cr',getAllChatRooms)   
 
 module.exports = router
