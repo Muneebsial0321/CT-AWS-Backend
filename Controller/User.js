@@ -12,9 +12,21 @@ const createUser = async (req, res) => {
     try {
         const Users_PK = uuidv4();
         const signedInBy = 'local'
-        const newUser = new User({ Users_PK, ...req.body,signedInBy });
-        await newUser.save();
-        res.json({message:"success",newUser});
+        // pre check
+        const u = await User.scan('email').eq(req.body.email).exec()
+        console.log(req.body.email)
+     if(u.length==0){
+        console.log("creating new user")
+          const newUser = new User({ Users_PK, signedInBy,...req.body}); 
+          await newUser.save();
+          res.json({message:"success",newUser});
+     }
+     else{
+        console.log("already a userx")
+        res.json({message:"error",d:"already a user"});
+     }
+
+      
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: error.message });
@@ -22,7 +34,7 @@ const createUser = async (req, res) => {
 }
 const getUser = async (req, res) => {
     try {
-        const { password, ...user } = await User.get(req.params.id);
+        const { password, ...user } = await User.get(req.params.id); 
         const data = await __init__(req.params.id)
         if (!user) {
             return res.status(404).json({ message: 'User not found' });

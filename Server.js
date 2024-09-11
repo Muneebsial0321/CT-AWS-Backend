@@ -26,6 +26,11 @@ app.use(cors({
     origin: process.env.FRONT_URL, // Your frontend URL
     credentials: true
 }));
+// app.use(cors({
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//     origin: '*', // Your frontend URL
+ 
+// }));
 app.use(cookie())
 // middlewares end   
 
