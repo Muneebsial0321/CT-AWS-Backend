@@ -50,8 +50,9 @@ const getMyChatRooms = async (req, res) => {
     const myRooms = await Promise.all(chatRooms.map(async (e) => {
       if (e.users.includes(id)) {
         let data = e.users.filter((e) => e != id)
-        let { name, picUrl, Users_PK, email } = await User.get(data[0])
-        return await { ...e, sender: { name, picUrl, Users_PK, email } }
+        let sender = await User.get(data[0])
+        console.log({sender}) 
+        return await { ...e, sender }
       }
     }
     ))
