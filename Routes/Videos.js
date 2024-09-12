@@ -6,13 +6,20 @@ const isNotUser = require('../Middlewares/videoCheck')
 
 
 
-//http://localhost:5000/users/
+//http://localhost:5000/upload/
+
+// for uploading a video takes userId as a param
 router.post('/:id',upload.single('video'),uploadVideo)
-// router.get('/:id',viewStream)
+
+// for fetching a single video along side uploader info and reviews takes video Id as a param
 router.get('/:id',getVideo)
+
+// for fetching all videosof user takes user Id as a param
 router.get('/user/:id',getUserVideos)
+
+// just gets all videos
 router.get('/videos/all',getAllVideos)
-// router.get('/:id',viewVideo)
+
 router.delete('/:id')
 
 module.exports = router

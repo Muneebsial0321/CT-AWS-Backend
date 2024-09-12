@@ -5,7 +5,7 @@ const {deleteChatRoom,getAllChatRooms,getMyChatRooms,createChatRoom,getARoom} = 
 
 //http://localhost:5000/jobs/
 
-router.post('/', createChatRoom);
+router.post('/:id', createChatRoom);
 router.get('/', getAllChatRooms);
 router.get('/:id', getMyChatRooms);
 router.get('/room/:id', getARoom);
