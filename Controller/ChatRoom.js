@@ -8,9 +8,11 @@ const createChatRoom = async (req, res) => {
     const self__ = req.params.id
     const user__ = req.body.user
     const chatRooms = await ChatRoom.scan().exec();
+    console.log({self__,user__})
     const myRooms = chatRooms.filter((e) => (e.users.includes(user__) && e.users.includes(self__)) ? e : '')
 
     if (myRooms.length > 0) {
+      console.log({ error: "dublicate room error", message: "chatroom already exist" })
       res.json({ error: "dublicate room error", message: "chatroom already exist" })
     }
     else {
@@ -36,7 +38,7 @@ const createChatRoom = async (req, res) => {
 
 const getAllChatRooms = async (req, res) => {
   const cr = await ChatRoom.scan().attributes(['_id', 'users']).exec()
-
+ 
   res.json({ count: cr.length, data: cr })
 
   // Cat.scan().attributes(["id", "name"]); // Return all items but only return the `id` & `name` properties for each item
@@ -73,6 +75,15 @@ const getARoom = async (req, res) => {
     res.send(error);
   }
 }
-const deleteChatRoom = async (req, res) => { }
+const deleteChatRoom = async (req, res) => { 
+  try {
+    const { id } = req.params;
+    const chatRoom = await ChatRoom.delete(id);
+    res.json({message:"deleted",chatRoom});
+  } catch (error) {
+    console.error(error);
+    res.send(error);
+  }
+}
 module.exports = { getMyChatRooms, deleteChatRoom, getAllChatRooms, createChatRoom, getARoom }
 

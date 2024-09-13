@@ -49,7 +49,7 @@ const uploadVideo = async (req, res) => {
 
     await vid.save()
 
-    res.json({message:"File was uploaded successfully"});
+    res.json({message:"File was uploaded successfully",vid});
   } catch (error) {
     console.log("error occured", error)
 
