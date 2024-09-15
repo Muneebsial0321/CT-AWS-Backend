@@ -24,20 +24,6 @@ const uploadVideo = async (req, res) => {
   console.log({userId, videoName, videoUrl,videoDesc,videoVisibility})
   try {
     const _id = uuidv4();
-    // const params = {
-    //   TableName: 'Videos',
-    //   Item: {
-    //     _id: { S: pk },
-    //     videoName: { S: videoName },
-    //     videoId: { S: userId }, 
-    //     videoUrl: { S: videoUrl } 
-    //   }
-    // };
-    // console.log("inserting into db")
-    // const command = new PutItemCommand(params);
-    // const data = await client.send(command);
-    // console.log(data)
-
     const vid = new Video({
       _id,
       userId,
