@@ -21,12 +21,12 @@ const createPodcast = async (req, res) => {
                 const audioUrl = req.files.audio[0].location
                 console.log({audioName,audioUrl})
                 data = { ...data, audioUrl, audioName }
-            }
+            } 
         }
         const _id = uuidv4();
-        const seasonNumber = +req.body.seasonNumber
-        const episodeNumber  = +req.body.episodeNumber 
-        console.log({seasonNumber})
+        const seasonNumber = req.body.seasonNumber && +req.body.seasonNumber
+        const episodeNumber  = req.body.episodeNumber &&  +req.body.episodeNumber 
+        console.log({seasonNumber,episodeNumber})
         const podcast = new Podcast({_id,...data,seasonNumber,episodeNumber})
         await podcast.save() 
         res.json({message:"success",data:podcast})
