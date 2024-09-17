@@ -168,8 +168,8 @@ const viewStream = async (req, res) => {
 };
 
 const deleteVideo = async (req, res) => {
-  const userId = req.params.id
-  const pic = await Video.findOne({ userId: userId })
+  const Id = req.params.id
+  const pic = await Video.get(Id)
   const key = pic.videoName;
   try {
     const params = {
@@ -181,7 +181,7 @@ const deleteVideo = async (req, res) => {
     await s3.send(command);
 
     // Optionally, remove the file reference from the database
-    await Video.deleteOne({ videoName: key });
+    await Video.delete(Id);
 
     res.status(200).json({ message: 'File deleted successfully' });
   } catch (err) {
@@ -190,4 +190,4 @@ const deleteVideo = async (req, res) => {
 }
 
 
-module.exports = { uploadVideo, viewVideo, viewStream ,getUserVideos,getAllVideos,getVideo}
+module.exports = { uploadVideo, viewVideo, viewStream ,getUserVideos,getAllVideos,getVideo,deleteVideo}

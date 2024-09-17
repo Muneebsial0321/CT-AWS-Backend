@@ -51,7 +51,7 @@ const updateJob=  async (req, res) => {
 const deleteJob=  async (req, res) => {
     try {
         await Job.delete(req.params.id);
-        res.json({ message: 'User deleted successfully' });
+        res.json({ message: 'Job deleted successfully',jobId:req.params.id });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

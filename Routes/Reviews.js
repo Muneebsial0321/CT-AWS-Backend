@@ -13,9 +13,9 @@ router.get('/:id', reviewController.getAllVideoReviews);
 router.get('/', reviewController.getAllReviews);
 
 // Update a review by ID
-router.put('/reviews/:id', reviewController.updateReviewById);
+router.put('/:id', reviewController.updateReviewById);
 
 // Delete a review by ID
-router.delete('/reviews/:id', reviewController.deleteReviewById);
+router.delete('/:id', reviewController.deleteReviewById);
 
 module.exports = router;

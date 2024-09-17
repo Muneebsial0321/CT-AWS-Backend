@@ -16,7 +16,7 @@ const userSchema = new dynamoose.Schema({
     userName: {
         type: String,
     },
-    password: {
+    password: { 
         type: String,
     },
     work_experience: {

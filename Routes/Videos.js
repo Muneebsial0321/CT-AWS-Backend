@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const upload = require('../Functions/Upload')
-const { uploadVideo,viewVideo,viewStream,getUserVideos,getAllVideos,getVideo} = require('../Controller/Video')
+const { uploadVideo,viewVideo,getUserVideos,getAllVideos,getVideo,deleteVideo} = require('../Controller/Video')
 const isNotUser = require('../Middlewares/videoCheck')
 
 
@@ -20,6 +20,6 @@ router.get('/user/:id',getUserVideos)
 // just gets all videos
 router.get('/videos/all',getAllVideos)
 
-router.delete('/:id')
+router.delete('/:id',deleteVideo)
 
 module.exports = router
