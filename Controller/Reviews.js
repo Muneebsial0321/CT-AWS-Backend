@@ -65,11 +65,12 @@ exports.updateReviewById = async (req, res) => {
 // Delete a review by ID
 exports.deleteReviewById = async (req, res) => {
     try {
-        const deletedReview = await Review.delete({ _id: req.params.id });
-        if (!deletedReview) {
-            return res.status(404).json({ error: 'Review not found' });
-        }
+        const deletedReview = await Review.delete(req.params.id);
+        console.log({deletedReview})
         res.status(200).json({ message: 'Review deleted successfully' });
+        // if (!deletedReview) {
+        //     return res.status(404).json({ error: 'Review not found' });
+        // }
     } catch (error) {
         res.status(500).json({ error: 'Error deleting review', details: error });
     }

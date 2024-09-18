@@ -11,22 +11,22 @@ const createPodcast = async (req, res) => {
                 const picName = req.files.image[0].key
                 const picUrl = req.files.image[0].location
                 data = { ...data, picName, picUrl }
-                console.log({ picUrl, picName })
-                console.log({data})
+                // console.log({ picUrl, picName })
+                // console.log({data})
 
             }
             if (req.files.audio!= null) {
-                console.log("no audio")
+                // console.log("no audio")
                 const audioName = req.files.audio[0].key
                 const audioUrl = req.files.audio[0].location
-                console.log({audioName,audioUrl})
+                // console.log({audioName,audioUrl})
                 data = { ...data, audioUrl, audioName }
             } 
         }
         const _id = uuidv4();
         const seasonNumber = req.body.seasonNumber && +req.body.seasonNumber
         const episodeNumber  = req.body.episodeNumber &&  +req.body.episodeNumber 
-        console.log({seasonNumber,episodeNumber})
+        // console.log({seasonNumber,episodeNumber})
         const podcast = new Podcast({_id,...data,seasonNumber,episodeNumber})
         await podcast.save() 
         res.json({message:"success",data:podcast})
@@ -56,8 +56,7 @@ const getAllPodcasts = async (req, res) => {
 }
 const updatePodcast = async (req, res) => {
     try {
-        console.log(req.body)
-
+        // console.log(req.body)
         const podcast = await Podcast.update({ _id: req.params.id }, req.body);
         res.status(200).json(podcast);
     } catch (error) {
@@ -68,6 +67,7 @@ const updatePodcast = async (req, res) => {
 const deletePodcast = async (req, res) => {
     try {
         await Podcast.delete(req.params.id);
+        console.log("podcast deleted")
         res.json({ message: 'Podcast deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -88,7 +88,7 @@ async function find_(params) {
     }
 
     const result = await scan.exec();
-    console.log(result)
+    // console.log(result)
     return { count: result.length, data: result };
 }
 
