@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
 const Subscription = require('../Schemas/Subscription'); // Adjust the path as needed
+const User = require('../Schemas/User'); // Adjust the path as needed
 
 // Create a new subscription
 router.post('/', async (req, res) => {
@@ -47,7 +48,15 @@ router.get('/my/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const subscriptions = await Subscription.scan('subscribedToId').eq(id).exec();
-        res.status(200).json(subscriptions);
+        console.log({subscriptions})
+        const data = await Promise.all(subscriptions.map(async (e) =>{
+            const user = await User.get(e.subscriberId)
+            return {
+                ...e,user  }
+                
+            }))
+            console.log({data})
+        res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
