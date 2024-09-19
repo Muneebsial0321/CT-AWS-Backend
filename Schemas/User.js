@@ -40,7 +40,7 @@ const userSchema = new dynamoose.Schema({
     },
     role: {
         type: String,
-        default: "user"
+        default: "viewer"
     },
 
     picName:String,
@@ -49,11 +49,16 @@ const userSchema = new dynamoose.Schema({
     cvName:String,
     cvUrl:String,
     signedInBy:String,
+    geoPoints:String,
+    videoPreferences:{
+        type:Array,
+        schema: [String],
+    },
     
 },{
     timestamps:true
 }
-);
+); 
 
 const User = dynamoose.model('Users', userSchema);
 
