@@ -50,10 +50,14 @@ const userSchema = new dynamoose.Schema({
     cvUrl:String,
     signedInBy:String,
     geoPoints:String,
-    videoPreferences:{
+    videoTags:{
         type:Array,
         schema: [String],
     },
+    // videoPreferences:{
+    //     type:Array,
+    //     schema: [String],
+    // },
     
 },{
     timestamps:true

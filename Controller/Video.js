@@ -105,16 +105,31 @@ const getAllVideos = async (req, res) => {
 }
 const getMyFeed = async (req, res) => {
   // get user feed
-  const user = User.get(req.params.id)
-  const myFeed = user.videoPrefrences ? user.videoPrefrences : []
+  const user = await User.get(req.params.id)
+  const myFeed = user.videoTags ? user.videoTags : ['general']
+  console.log({myFeed})
+  // const myFeed = ['general']
   // get videos of that feed
-  const videos = await Promise.all(myFeed.map(async (e) => {
-    const vid = await Video.scan('videoTags').contains(e).exec()
-    return vid
-  }
-  )
-  )
-  res.json(videos)
+  const videos = await Video.scan().exec()
+  // const feed = await Promise.all(videos.map(async (e) => {
+  //        for(let i =0;i<myFeed.length;i++){
+  //            if(e.videoTags.include(myFeed[i])){
+  //             return e
+  //            }
+  //        }
+  // }
+  // )
+  // )
+  const feed = await Promise.all(videos.map(async (video) => {
+    if (myFeed.some((pref) => video.videoTags && video.videoTags.includes(pref))) {
+      return video;
+    }
+    return null; // Return null for videos that don't match
+  }));
+
+  // Remove null values (non-matching videos)
+  const filteredFeed = feed.filter(video => video !== null);
+  res.json({filteredFeed})
 
 
 
