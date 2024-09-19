@@ -1,10 +1,12 @@
 const { v4: uuidv4 } = require('uuid');
 const Podcast = require('../Schemas/Podcast');
 const { response } = require('express');
+const mm = require('music-metadata')
 
 
 const createPodcast = async (req, res) => {
     try {
+        console.log("creating podcast")
         let data = { ...req.body }
         if (req.files != null) {
             if (req.files.image!= null) {
@@ -19,7 +21,7 @@ const createPodcast = async (req, res) => {
                 // console.log("no audio")
                 const audioName = req.files.audio[0].key
                 const audioUrl = req.files.audio[0].location
-                // console.log({audioName,audioUrl})
+                console.log({adudioFIleis:req.files.audio[0]})
                 data = { ...data, audioUrl, audioName }
             } 
         }

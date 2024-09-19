@@ -2,16 +2,20 @@ const dynamoose = require('dynamoose');
 const Schema = dynamoose.Schema;
 
 const videoSchema = new Schema({
-  _id:{
-    type:String,
-    hashKey:true
-},
-videoName:String,
-userId:String,
-videoUrl:String,
-videoDesc:String,
-videoVisibility:String,
-videoRating:String,
+  _id: {
+    type: String,
+    hashKey: true
+  },
+  videoName: String,
+  userId: String,
+  videoUrl: String,
+  videoDesc: String,
+  videoVisibility: String,
+  videoRating: String,
+  videoTags: {
+    type: Array,
+    schema: [String],
+  },
 }, {
   timestamps: true
 });

@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const upload = require('../Functions/Upload')
-const { uploadVideo,viewVideo,getUserVideos,getAllVideos,getVideo,deleteVideo} = require('../Controller/Video')
+const { uploadVideo,getMyFeed,getUserVideos,getAllVideos,getVideo,deleteVideo} = require('../Controller/Video')
 const isNotUser = require('../Middlewares/videoCheck')
 
 
@@ -16,7 +16,8 @@ router.get('/:id',getVideo)
 
 // for fetching all videosof user takes user Id as a param
 router.get('/user/:id',getUserVideos)
-
+// fetching feed
+router.get('/user/feed/:id',getMyFeed)
 // just gets all videos
 router.get('/videos/all',getAllVideos)
 
