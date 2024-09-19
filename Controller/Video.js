@@ -21,9 +21,9 @@ const uploadVideo = async (req, res) => {
   const videoUrl = req.file.location
   const videoName = req.file.key
   const { videoDesc, videoVisibility } = req.body
-  const videoTags = req.body.videoTags?JSON.parse(req.body.videoTags):['general']
-  console.log({videoTags})
-  console.log({ userId, videoName, videoUrl, videoDesc, videoVisibility,videoTags })
+  const videoTags = req.body.videoTags ? JSON.parse(req.body.videoTags) : ['general']
+  console.log({ videoTags })
+  console.log({ userId, videoName, videoUrl, videoDesc, videoVisibility, videoTags })
   try {
     const _id = uuidv4();
     const vid = new Video({
@@ -124,7 +124,7 @@ const getMyFeed = async (req, res) => {
 const deleteVideo = async (req, res) => {
   console.log("deleting video")
   const Id = req.params.id
-  const pic = await Video.get(Id) 
+  const pic = await Video.get(Id)
   const key = pic.videoName;
   try {
     const params = {
