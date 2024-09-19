@@ -108,7 +108,6 @@ const getMyFeed = async (req, res) => {
   const user = await User.get(req.params.id)
   const myFeed = user.videoTags ? user.videoTags : ['general']
   console.log({myFeed})
-  // const myFeed = ['general']
   // get videos of that feed
   const videos = await Video.scan().exec()
   // const feed = await Promise.all(videos.map(async (e) => {
