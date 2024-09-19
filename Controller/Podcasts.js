@@ -1,7 +1,8 @@
 const { v4: uuidv4 } = require('uuid');
 const Podcast = require('../Schemas/Podcast');
 const { response } = require('express');
-const mm = require('music-metadata')
+const mm = require('music-metadata');
+const User = require('../Schemas/User');
 
 
 const createPodcast = async (req, res) => {
@@ -51,8 +52,33 @@ const getPodcast = async (req, res) => {
 const getAllPodcasts = async (req, res) => {
     try {
         const podcasts = await Podcast.scan().exec();
-        res.status(200).json({ count: podcasts.length, data: podcasts });
+        const data = await Promise.all(podcasts.map(async(e)=>{
+            try {
+                const user = await User.get(e.userID);
+                // console.log({user})
+                return {
+                    ...e,
+                    user: user || null // If user doesn't exist, set to null
+                };
+            } catch (userError) {
+                // // Handle any errors in fetching the user, e.g. if User.get fails
+                // console.error(`Error fetching user with ID ${e.userID}:`, userError);
+                return {
+                    ...e,
+                    user: null // Set user as null if not found or any error occurs
+                };
+            // if (user) {
+            //     return {
+            //         ...e,
+            //         user
+            //     };
+            // }
+            // return {...e}; 
+     } }))
+        res.status(200).json({ count: data.length, data});
+        // res.status(200).json({ count: podcasts.length, podcasts});
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: error.message });
     }
 }

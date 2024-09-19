@@ -48,14 +48,12 @@ router.get('/my/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const subscriptions = await Subscription.scan('subscribedToId').eq(id).exec();
-        console.log({subscriptions})
         const data = await Promise.all(subscriptions.map(async (e) =>{
             const user = await User.get(e.subscriberId)
             return {
                 ...e,user  }
                 
             }))
-            console.log({data})
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });

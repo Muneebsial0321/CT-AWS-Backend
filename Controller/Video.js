@@ -21,7 +21,9 @@ const uploadVideo = async (req, res) => {
   const videoUrl = req.file.location
   const videoName = req.file.key
   const { videoDesc, videoVisibility } = req.body
-  console.log({ userId, videoName, videoUrl, videoDesc, videoVisibility })
+  const videoTags = req.body.videoTags?JSON.parse(req.body.videoTags):['general']
+  console.log({videoTags})
+  console.log({ userId, videoName, videoUrl, videoDesc, videoVisibility,videoTags })
   try {
     const _id = uuidv4();
     const vid = new Video({
@@ -30,7 +32,8 @@ const uploadVideo = async (req, res) => {
       videoName,
       videoUrl,
       videoDesc,
-      videoVisibility
+      videoVisibility,
+      videoTags
     })
 
     await vid.save()
