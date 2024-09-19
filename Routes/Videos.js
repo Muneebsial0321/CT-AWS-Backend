@@ -21,6 +21,6 @@ router.get('/user/feed/:id',getMyFeed)
 // just gets all videos
 router.get('/videos/all',getAllVideos)
 
-router.delete('/:id',deleteVideo)
+router.post('/delete/:id',deleteVideo)
 
 module.exports = router

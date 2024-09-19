@@ -82,6 +82,7 @@ const getUserVideos = async (req, res) => {
 const getVideo = async (req, res) => {
   try {
     const vid = await Video.get(req.params.id)
+    // console.log({vid:vid.userId})
     const com = await Reviews.scan('reviewItemId').eq(req.params.id).exec()
     const { password, ...user } = await User.get(vid.userId);
     res.json({ count: vid.length, data: vid, commments: com, user: user })
@@ -121,8 +122,9 @@ const getMyFeed = async (req, res) => {
 
 }
 const deleteVideo = async (req, res) => {
+  console.log("deleting video")
   const Id = req.params.id
-  const pic = await Video.get(Id)
+  const pic = await Video.get(Id) 
   const key = pic.videoName;
   try {
     const params = {
