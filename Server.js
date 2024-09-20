@@ -67,6 +67,7 @@ app.use('/chatrooms',require('./Routes/ChatRoom'))
 app.use('/notifications',require('./Routes/Notifications'))
 app.use('/subscribe',require('./Routes/Subscribe'))
 app.use('/reviews',require('./Routes/Reviews'))
+app.use('/reply',require('./Routes/Reply'))
 
 
 // routes end

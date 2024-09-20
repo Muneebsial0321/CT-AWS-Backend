@@ -4,7 +4,8 @@ const dynamoose = require('dynamoose');
 const replySchema = new dynamoose.Schema({
 _id:String,
 reviewId:String,
-replyMessage:Number,
+userId:String,
+replyMessage:String,
 
 
 }, {
@@ -13,4 +14,4 @@ replyMessage:Number,
 
 const Reply = dynamoose.model('Replys', replySchema);
 
-module.exports = Replys;
+module.exports = Reply;
