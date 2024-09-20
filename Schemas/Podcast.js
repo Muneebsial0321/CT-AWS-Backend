@@ -34,7 +34,8 @@ const podcastSchema = new Schema({
     audioName:String,
     picName:String,
     picUrl:String,
-    audioUrl:String
+    audioUrl:String,
+    podcastDuration:String
 });
 
 const Podcast = dynamoose.model('Podcasts', podcastSchema);

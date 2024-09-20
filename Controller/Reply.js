@@ -7,7 +7,7 @@ const createReply =async( req,res )=>{
         const _id=uuidv4()
         const reply = new Reply({_id,...req.body})
         await reply.save()
-        res.json({message:success,reply})
+        res.json({message:"success",reply})
     } catch (error) {
          console.log(error)
          res.json({message:"error",error})
@@ -16,7 +16,7 @@ const createReply =async( req,res )=>{
 const getAllReply =async( req,res )=>{
     try {
         const reply = await Reply.scan().exec()
-        res.json({message:success,reply})
+        res.json({message:'success',reply})
     } catch (error) {
          console.log(error)
          res.json({message:"error",error})
