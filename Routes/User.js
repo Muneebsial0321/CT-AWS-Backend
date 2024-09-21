@@ -13,7 +13,7 @@ router.post('/search',searchUser)
 router.get('/',getAllUsers)
 router.get('/:id',getUser)
 router.post('/profilepic/:id',upload.single("profilePic"),updateUserPicture)
-router.put('/:id',updateUser)
+router.post('/update/:id',updateUser)
 router.delete('/:id',deleteUser) 
 
 module.exports = router

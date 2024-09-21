@@ -59,6 +59,7 @@ const getAllUsers = async (req, res) => {
 const updateUser = async (req, res) => {
 
     try {
+        console.log("updating")
         const updateData = { ...req.body };
         const user = await User.update({ Users_PK: req.params.id }, updateData);
         console.log({ "message": "success", data: user })
