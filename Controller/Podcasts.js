@@ -50,7 +50,7 @@ const getPodcast = async (req, res) => {
            return d 
             }))
         console.log({speaker,users})
-        res.status(200).json({...podcast,users});
+        res.status(200).json({...podcast,speakers:users});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

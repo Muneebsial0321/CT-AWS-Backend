@@ -53,6 +53,59 @@ const getBLockedUsers = async(req,res)=>{
 const adminAnalytics= async (req,res)=> {
 
 }
+// Adjust the path as necessary
 
 
-module.exports = {getEntreperneurs,getInvesters,get_Users,getBLockedUsers}
+const getUsersByDate = async (req, res) => {
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
+
+    const weekStart = new Date();
+    weekStart.setDate(weekStart.getDate() - weekStart.getDay()); // Start of the week (Sunday)
+    weekStart.setHours(0, 0, 0, 0);
+
+    const monthStart = new Date();
+    monthStart.setDate(1);
+    monthStart.setHours(0, 0, 0, 0);
+
+    try {
+        // Fetch all users
+        const users = await User.scan().exec();
+
+        // Filter users locally
+        const todayUsers = users.filter(user => {
+            const createdAt = new Date(user.createdAt);
+            return createdAt >= todayStart && createdAt <= todayEnd;
+        });
+
+        const weekUsers = users.filter(user => {
+            const createdAt = new Date(user.createdAt);
+            return createdAt >= weekStart;
+        });
+
+        const monthUsers = users.filter(user => {
+            const createdAt = new Date(user.createdAt);
+            return createdAt >= monthStart;
+        });
+
+        return res.json({
+            count:{
+                daily:todayUsers.length,
+                weekly:weekUsers.length,
+                monthly:monthUsers.length
+            },
+            todayUsers,
+            weekUsers,
+            monthUsers
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+
+
+module.exports = {getEntreperneurs,getInvesters,get_Users,getBLockedUsers,getUsersByDate}

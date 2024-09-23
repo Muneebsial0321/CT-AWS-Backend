@@ -35,7 +35,7 @@ const podcastSchema = new Schema({
     picName:String,
     picUrl:String,
     audioUrl:String,
-    podcastDuration:String,
+    podcastDuration:Number,
     speakerArray:{
         type:Array,
         schema:[String],
