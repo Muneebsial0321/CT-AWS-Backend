@@ -1,5 +1,6 @@
 const Review = require('../Schemas/Reviews');  // Assuming you saved your schema in 'models/review.js'
 const User = require('../Schemas/User');  // Assuming you saved your schema in 'models/review.js'
+const Reply = require('../Schemas/ReviewsReply');  // Assuming you saved your schema in 'models/review.js'
 const { v4: uuidv4 } = require('uuid');
 // Create a new review
 exports.createReview = async (req, res) => {
@@ -14,7 +15,7 @@ exports.createReview = async (req, res) => {
 };
 
 // Get all reviews
-exports.getAllVideoReviews = async (req, res) => {
+exports.getAllVideoReviews__lagacy = async (req, res) => {
     try {
         const reviews = await Review.scan('reviewItemId').eq(req.params.id).exec();
         const m =await Promise.all(reviews.map(async(e) => {
@@ -27,6 +28,26 @@ exports.getAllVideoReviews = async (req, res) => {
         res.status(500).json({ error: 'Error fetching reviews', details: error });
     }
 };
+
+
+exports.getAllVideoReviews = async (req, res) => {
+    try {
+        const reviews = await Review.scan('reviewItemId').eq(req.params.id).exec();
+        const m =await Promise.all(reviews.map(async(e) => {
+            let reply = []
+            // const reply = await Reply.scan('reviewId').eq(req.params.id).exec()
+              reply = await Reply.scan('reviewId').eq(e._id).exec() //takes review id
+              let {name,picUrl,Users_PK} = await User.get(e.userId)
+              return await {...e,sender:{name,picUrl,Users_PK,replies:reply.length}}
+          }))
+          
+        res.json(m);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching reviews', details: error });
+    }
+};
+
+
 exports.getAllReviews = async (req, res) => {
     try {
         const reviews = await Review.scan().exec();

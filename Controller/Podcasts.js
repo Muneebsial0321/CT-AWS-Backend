@@ -44,7 +44,7 @@ const getPodcast = async (req, res) => {
         if (!podcast) {
             return res.status(404).json({ message: 'Podcast not found' });
         }
-        const speaker =podcast.speakerArray?podcast.speakerArray:null
+        const speaker =podcast.speakerArray?podcast.speakerArray:[]
         const users = await Promise.all(speaker.map(async(e)=>{
            const {password,...d} =  await User.get(e)
            return d 
