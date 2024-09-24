@@ -32,7 +32,17 @@ const getJob= async (req, res) => {
 const getAllJobs= async (req, res) => {
     try {
         const jobs = await Job.scan().exec();
-        res.status(200).json({count:jobs.length,data:jobs});
+        const poster = await Promise.all(jobs.map(async(e)=>{
+        if(e.userId){
+            const {name,picUrl} = await User.get(e.userId);
+            return {poster:{name,picUrl},...e}   
+        }
+        else{
+            return {poster:'',...e}  
+        }
+        }))
+        // res.status(200).json({count:jobs.length,data:jobs});
+        res.status(200).json({poster});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

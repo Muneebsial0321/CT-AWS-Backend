@@ -84,6 +84,7 @@ const getVideo = async (req, res) => {
     const vid = await Video.get(req.params.id)
     // console.log({vid:vid.userId})
     const com = await Reviews.scan('reviewItemId').eq(req.params.id).exec()
+    
     const { password, ...user } = await User.get(vid.userId);
     res.json({ count: vid.length, data: vid, commments: com, user: user })
   } catch (error) {
