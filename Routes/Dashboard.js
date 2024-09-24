@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const {getAllUsers} = require('../Controller/User')
-const {getInvesters, get_Users,getEntreperneurs,getBLockedUsers,getUsersByDate}= require('../Controller/Dashboard')
+const {getInvesters, get_Users,getEntreperneurs,getBLockedUsers,getUsersByDate,getViewersByDate,getInvestersByDate,getEntByDate}= require('../Controller/Dashboard')
 const {getAllNotifications} = require('../Controller/Notifications')
 // const {getAllChatRooms} = require('../Controller/ChatRoom')
 
@@ -19,7 +19,13 @@ router.get('/entrepreneur',getEntreperneurs)
 router.get('/not',getAllNotifications)
 //http://localhost:5000/admin/blocked
 router.get('/blocked',getBLockedUsers)
-router.get('/data',getUsersByDate)
 // router.get('/cr',getAllChatRooms)   
+
+// analytics
+router.get('/info/users',getUsersByDate)
+router.get('/info/viewers',getViewersByDate)
+router.get('/info/investors',getInvestersByDate)
+router.get('/info/entrepreneur',getEntByDate)
+// router.get('/info/tickets',getUsersByDate)
 
 module.exports = router
