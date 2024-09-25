@@ -41,8 +41,7 @@ const getAllJobs= async (req, res) => {
             return {poster:'',...e}  
         }
         }))
-        // res.status(200).json({count:jobs.length,data:jobs});
-        res.status(200).json({poster});
+        res.status(200).json({count:poster.length,data:poster});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
