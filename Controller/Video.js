@@ -3,12 +3,13 @@
 const { client, PutItemCommand, GetItemCommand, UpdateItemCommand, DeleteItemCommand, ScanCommand } = require('../Config/aws-dynamoDB')
 const { v4: uuidv4 } = require('uuid');
 const { GetObjectCommand, DeleteObjectCommand, HeadObjectCommand } = require('@aws-sdk/client-s3');
-const { Readable } = require('stream');
+const { Readable } = require('stream'); 
 const s3 = require("../Config/aws-s3")
 const Video = require('../Schemas/Videos')
 const User = require('../Schemas/User')
 const Comments = require('../Schemas/VideoComments')
 const Reviews = require('../Schemas/Reviews')
+const Views = require('../Schemas/Views')
 
 
 
@@ -84,8 +85,30 @@ const getVideo = async (req, res) => {
     const vid = await Video.get(req.params.id)
     // console.log({vid:vid.userId})
     const com = await Reviews.scan('reviewItemId').eq(req.params.id).exec()
+    // exp
+    const _id = uuidv4()
+    const viewerId = req.cookies.user || ''
+    const viewItemId = req.params.id
+    const viewItemType = 'video'
+   
+    const existingView = await Views.scan()
+    .where("viewerId").eq(viewerId)
+    .and()
+    .where("viewItemId").eq(viewItemId)
+    .exec();
+
+  if (existingView.count == 0) {
+    const view = new Views({_id,viewItemId,viewerId,viewItemType})
+    await view.save()    
+  }
+
+
+
+    // exp  end
+
     
     const { password, ...user } = await User.get(vid.userId);
+    // res.json({ count:viewerId})
     res.json({ count: vid.length, data: vid, commments: com, user: user })
   } catch (error) {
     console.log(error)
