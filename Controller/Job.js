@@ -20,13 +20,12 @@ const getJob = async (req, res) => {
     try {
         const job = await Job.get(req.params.id);
         const user_ = await User.get(job.userId);
-        const { password, ...user } = user_
         const { picUrl,name, Users_PK} = user_
         const poster = { picUrl,name ,Users_PK }
         if (!job) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.status(200).json({poster, job, user });
+        res.status(200).json({poster, job});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
