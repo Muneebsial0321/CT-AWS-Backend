@@ -55,6 +55,9 @@ const jobSchema = new Schema({
   },
   travelRequirement: {
     type: String,
+  },
+  singleLang: {
+    type: String,
   }
 });
 
