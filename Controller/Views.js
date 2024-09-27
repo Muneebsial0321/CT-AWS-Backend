@@ -9,7 +9,33 @@ const createView =async(req,res)=>{
     await view.save()
     res.json({message:"success",view})
 }
-const getItemViews =async(req,res)=>{}
+const getItemViews =async(req,res)=>{
+    try {
+        const view = await Views.scan('viewItemId').eq(req.params.id).exec()
+        res.json({count:view.length,data:view})
+    } catch (error) {
+        console.log({error})
+        res.send(error)
+}
+
+}
+
+// getting for all vidoes that user watched
+
+const getUserWatchList =async(req,res)=>{
+
+    try {
+        const view = await Views.scan()
+        .where('viewItemType').eq('video')
+        .where('viewerId').eq(req.params.id)  // takes userID
+        .exec()
+        res.json({count:view.length,data:view})
+    } catch (error) {
+        console.log({error})
+        res.send(error)
+}
+
+}
 const getAllViews =async(req,res)=>{
     try {
         const view = await Views.scan().exec()
@@ -22,4 +48,4 @@ const getAllViews =async(req,res)=>{
 const deleteView =async(req,res)=>{}
 const getSingleView =async(req,res)=>{}
 
-module.exports = {getItemViews,createView,deleteView,getSingleView,getAllViews}
+module.exports = {getItemViews,createView,deleteView,getSingleView,getAllViews,getUserWatchList}
