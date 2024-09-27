@@ -21,9 +21,9 @@ const jobSchema = new Schema({
   companySize: {
     type: String,
   },
-  jobCategory: {
-    type: String,
-  },
+  // jobCategory: {
+  //   type: String,
+  // },
   workplaceType: {
     type: String,
   },
