@@ -6,7 +6,7 @@ const createJobApplication = async (req, res) => {
     let data = {...req.body}
     if(req.file){
         const resumeName = req.file.key
-        const resumeUrl = res.file.location
+        const resumeUrl = req.file.location
         data = {...data,resumeName,resumeUrl} 
     }
     const _id = uuidv4(); // Generate a unique ID
