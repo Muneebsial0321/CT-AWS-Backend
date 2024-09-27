@@ -29,8 +29,9 @@ const createPodcast = async (req, res) => {
         const _id = uuidv4();
         const seasonNumber = req.body.seasonNumber && +req.body.seasonNumber
         const episodeNumber  = req.body.episodeNumber &&  +req.body.episodeNumber 
+        const podcastDuration  = req.body.podcastDuration &&  +req.body.podcastDuration 
         // console.log({seasonNumber,episodeNumber})
-        const podcast = new Podcast({_id,...data,seasonNumber,episodeNumber})
+        const podcast = new Podcast({_id,...data,seasonNumber,episodeNumber,podcastDuration})
         await podcast.save() 
         res.json({message:"success",data:podcast})
     } catch (error) {
