@@ -10,6 +10,8 @@ const appliedJobsSchema = new dynamoose.Schema({
     email: String,
     userId: String,
     jobId: String,
+    countryCode: String,
+    additonalInfo: String,
     phoneNumber: String,
     resumeUrl: String,
     resumeName: String,
