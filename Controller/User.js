@@ -19,7 +19,7 @@ const createUser = async (req, res) => {
         console.log("creating new user")
           const newUser = new User({ Users_PK, signedInBy,...req.body}); 
           await newUser.save();
-          res.json({message:"success",newUser});
+          res.json({Users_PK:newUser.Users_PK});
      }
      else{
         console.log("already a userx")

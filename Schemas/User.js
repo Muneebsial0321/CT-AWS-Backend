@@ -46,8 +46,6 @@ const userSchema = new dynamoose.Schema({
     picName:String,
     isBlocked:String,
     picUrl:String,
-    cvName:String,
-    cvUrl:String,
     signedInBy:String,
     // geoPoints:String,
     latitude:String,
