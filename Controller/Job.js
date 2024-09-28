@@ -6,9 +6,14 @@ const find = require('../Functions/find')
 
 const createJob = async (req, res) => {
     try {
-        console.log(req.body)
+        let data = {...req.body}
+        if(req.file){
+            const logoName = req.file.key
+            const logoUrl = req.file.location
+            data = {...data,logoName,logoUrl} 
+        }
         const _id = uuidv4();
-        const newJob = new Job({ _id, ...req.body });
+        const newJob = new Job({ _id, ...data });
         await newJob.save();
         res.status(201).json({ message: "success", data: newJob });
         // res.json(req.body)

@@ -49,8 +49,10 @@ const userSchema = new dynamoose.Schema({
     cvName:String,
     cvUrl:String,
     signedInBy:String,
-    geoPoints:String,
-    videoTags:{
+    // geoPoints:String,
+    latitude:String,
+    longitude:String,
+    interests:{
         type:Array,
         schema: [String],
     },
