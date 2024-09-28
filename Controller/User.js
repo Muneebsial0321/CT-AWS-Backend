@@ -15,18 +15,24 @@ const createUser = async (req, res) => {
         // pre check
         const u = await User.scan('email').eq(req.body.email).exec()
         console.log(req.body.email)
-     if(u.length==0){
-        console.log("creating new user")
-          const newUser = new User({ Users_PK, signedInBy,...req.body}); 
-          await newUser.save();
-          res.json({Users_PK:newUser.Users_PK});
-     }
-     else{
-        console.log("already a userx")
-        res.json({message:"error",d:"already a user"});
-     }
+        if (u.length == 0) {
+            console.log("creating new user")
+            const newUser = new User({ Users_PK, signedInBy, ...req.body });
+            await newUser.save();
+            const data = {
+                name: newUser.name,
+                Users_PK: newUser.Users_PK,
+                role: newUser.role
+            }
+            //   res.json({Users_PK:newUser.Users_PK});
+            res.json(data);
+        }
+        else {
+            console.log("already a userx")
+            res.json({ message: "error", d: "already a user" });
+        }
 
-      
+
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: error.message });
@@ -34,7 +40,7 @@ const createUser = async (req, res) => {
 }
 const getUser = async (req, res) => {
     try {
-        const { password, ...user } = await User.get(req.params.id); 
+        const { password, ...user } = await User.get(req.params.id);
         const data = await __init__(req.params.id)
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
@@ -77,12 +83,12 @@ const updateUserPicture = async (req, res) => {
             // Handle file upload
             const picName = req.file.key;
             const picUrl = req.file.location;
-            console.log({picName,picUrl})
-            const user = await User.update({ Users_PK: req.params.id },{picName,picUrl});
+            console.log({ picName, picUrl })
+            const user = await User.update({ Users_PK: req.params.id }, { picName, picUrl });
             console.log({ "message": "success", data: user })
             res.json({ "message": "success", data: user });
         }
-        else{
+        else {
             res.send("no picture was uploaded")
         }
 
@@ -131,7 +137,7 @@ const __init__ = async (userId) => {
     // console.log(data)
     return await data
 }
-const login =async (req,res)=>{
+const login = async (req, res) => {
     // const {email,password} = req.body
     console.log("password")
     console.log(req.body)
@@ -149,7 +155,7 @@ const login =async (req,res)=>{
     // res.cookie('user',_id);
     // res.cookie('jwt', authtoken, { httpOnly: true, secure: false })
     // res.json({message:"success"})
-    
+
     // }
     // else if(password!=user[0].password){
     //     res.send("wrong password")
@@ -166,6 +172,6 @@ const login =async (req,res)=>{
     // res.json(data)
 
 
-} 
+}
 
-module.exports = { createUser, updateUser, getAllUsers, getUser, deleteUser, searchUser,updateUserPicture ,login}
+module.exports = { createUser, updateUser, getAllUsers, getUser, deleteUser, searchUser, updateUserPicture, login }
