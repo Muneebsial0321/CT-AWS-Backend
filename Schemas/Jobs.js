@@ -24,7 +24,7 @@ const jobSchema = new Schema({
   companyName: {
     type: String,
   },
-  logUrl: {
+  logoUrl: {
     type: String,
   },
   logoName: {
