@@ -8,10 +8,7 @@ const reportSchema = new dynamoose.Schema({
     },
     userId: String,
     reportItemId: String,
-    reportArray: {
-        type: Array,
-        schema: [String],
-    },
+    reportType:String,
     reportMessage: String,
 
 }, {

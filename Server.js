@@ -70,6 +70,7 @@ app.use('/reviews',require('./Routes/Reviews'))
 app.use('/reply',require('./Routes/Reply'))
 app.use('/views',require('./Routes/Views'))
 app.use('/appliedjobs',require('./Routes/AppliedJobs'))
+app.use('/reports',require('./Routes/Reports'))
 
 
 // routes end
