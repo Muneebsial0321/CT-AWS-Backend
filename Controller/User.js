@@ -137,83 +137,126 @@ const __init__ = async (userId) => {
 
 
     // exp
-    const videoReviews = (await Promise.all(videos.map(async(e)=>{
-            const reviews = await Reviews
+    const videoReviews = (await Promise.all(videos.map(async (e) => {
+        const reviews = await Reviews
             .scan('reviewItemId')
             .eq(e._id)
             .attributes(["reviewRatings"])
             .exec()
 
-            if (reviews.length !== 0) {
-                return reviews.map((review) => review.reviewRatings);
-            }
-            return [];
+        if (reviews.length !== 0) {
+            return reviews.map((review) => review.reviewRatings);
+        }
+        return [];
 
     }))).flat()
 
 
-    const podcastReviews = (await Promise.all(podcast.map(async(e)=>{
-            const reviews = await Reviews
+    const podcastReviews = (await Promise.all(podcast.map(async (e) => {
+        const reviews = await Reviews
             .scan('reviewItemId')
             .eq(e._id)
             .attributes(["reviewRatings"])
             .exec()
-            if (reviews.length !== 0) {
-                return reviews.map((review) => review.reviewRatings);
-            }
-            return [];
+        if (reviews.length !== 0) {
+            return reviews.map((review) => review.reviewRatings);
+        }
+        return [];
 
     }))).flat()
     // exp end
 
     // let data ={eventsId,jobsId,videosId,podcastsId}
-    let ratingArray =[...videoReviews,...podcastReviews]
-    const rating={
-        globalrating:mean(ratingArray),
-        totalRatings:ratingArray.length
+    let ratingArray = [...videoReviews, ...podcastReviews]
+    const rating = {
+        globalrating: mean(ratingArray),
+        totalRatings: ratingArray.length
     }
-    let data = {rating, events, videos, podcast, jobs }
+    let data = { rating, events, videos, podcast, jobs }
     return await data
 }
 
 
 
-const login = async (req, res) => {
-    // const {email,password} = req.body
-    console.log("password")
-    console.log(req.body)
-    res.send().end()
-    // console.log({email,password})
-    // const user = await User.scan('email').eq(email).exec()
-    // const data = await User.get(user[0].Users_PK)
-    // // console.log(data)
-    // if(password==user[0].password){  
-    // const _id = data.Users_PK
-    // const payload = {
-    //   user: _id
-    // }
-    // const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
-    // res.cookie('user',_id);
-    // res.cookie('jwt', authtoken, { httpOnly: true, secure: false })
-    // res.json({message:"success"})
+const localLogin = async (req, res) => {
+    const { email, password } = req.body
+    const user = await User.scan('email').eq(email).exec()
+    const data = await User.get(user[0].Users_PK)
+    if (data.signedInBy == 'local' && data.password == password) {
+        const _id = data.Users_PK
+        const payload = {
+            user: _id
+        }
+        const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
+        res.cookie('user', _id);
+        res.cookie('jwt', authtoken, { httpOnly: true, secure: false })
+        const data_ = {
+            name: data.name,
+            Users_PK: data.Users_PK,
+            role: data.role
+        }
+        //   res.json({Users_PK:newUser.Users_PK});
+        res.json(data_);
 
-    // }
-    // else if(password!=user[0].password){
-    //     res.send("wrong password")
-    // }
-
-    // const _id = data.Users_PK
-    // const payload = {
-    //   user: _id
-    // }
-    // const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
-    // res.cookie('user',_id);
-    // res.cookie('jwt', authtoken, { httpOnly: true, secure: false })
-    // res.redirect('http://localhost:5173/videos');
-    // res.json(data)
-
+    }
+    else if (password != user[0].password) {
+        res.send("wrong password")
+    }
 
 }
+const googleLogin = async (req, res) => {
+    const { email } = req.body
+    const user = await User.scan('email').eq(email).exec()
+    const data = await User.get(user[0].Users_PK)
+    if (data.signedInBy == 'google') {
+        const _id = data.Users_PK
+        const payload = {
+            user: _id
+        }
+        const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
+        res.cookie('user', _id);
+        res.cookie('jwt', authtoken, { httpOnly: true, secure: false })
+        const data_ = {
+            name: data.name,
+            Users_PK: data.Users_PK,
+            role: data.role
+        }
+        //   res.json({Users_PK:newUser.Users_PK});
+        res.json(data_);
+
+    }
+    else  {
+        res.send("wrong password")
+    }
+
+}
+const githubLogin = async (req, res) => {
+    const { email } = req.body
+    const user = await User.scan('email').eq(email).exec()
+    const data = await User.get(user[0].Users_PK)
+    if (data.signedInBy == 'github') {
+        const _id = data.Users_PK
+        const payload = {
+            user: _id
+        }
+        const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
+        res.cookie('user', _id);
+        res.cookie('jwt', authtoken, { httpOnly: true, secure: false })
+        const data_ = {
+            name: data.name,
+            Users_PK: data.Users_PK,
+            role: data.role
+        }
+        //   res.json({Users_PK:newUser.Users_PK});
+        res.json(data_);
+
+    }
+    else {
+        res.send("wrong password")
+    }
+
+}
+
 
 
 function mean(arr) {
@@ -223,4 +266,4 @@ function mean(arr) {
 }
 
 
-module.exports = { createUser, updateUser, getAllUsers, getUser, deleteUser, searchUser, updateUserPicture, login }
+module.exports = { createUser, updateUser, getAllUsers, getUser, deleteUser, searchUser, updateUserPicture, localLogin }
