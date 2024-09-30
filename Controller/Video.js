@@ -109,7 +109,7 @@ const getVideo = async (req, res) => {
     
     const { password, ...user } = await User.get(vid.userId);
     // res.json({ count:viewerId})
-    res.json({ count: vid.length, data: vid, commments: com, user: user })
+    res.json({ data: vid, commments: com, user: user })
   } catch (error) {
     console.log(error)
     res.json({ message: "error occured", error })

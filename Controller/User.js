@@ -2,6 +2,7 @@ const { v4: uuidv4 } = require('uuid');
 const User = require('../Schemas/User')
 const Podcasts = require('../Schemas/Podcast')
 const Videos = require('../Schemas/Videos')
+const Reviews = require('../Schemas/Reviews')
 const Jobs = require('../Schemas/Jobs')
 const Events = require('../Schemas/Events')
 const Pic = require('../Schemas/Picture')
@@ -133,10 +134,50 @@ const __init__ = async (userId) => {
     const videos = await Videos.scan('userId').eq(userId).exec()
     const podcast = await Podcasts.scan('userID').eq(userId).exec()
 
-    let data = { events, videos, podcast, jobs }
-    // console.log(data)
+
+
+    // exp
+    const videoReviews = (await Promise.all(videos.map(async(e)=>{
+            const reviews = await Reviews
+            .scan('reviewItemId')
+            .eq(e._id)
+            .attributes(["reviewRatings"])
+            .exec()
+
+            if (reviews.length !== 0) {
+                return reviews.map((review) => review.reviewRatings);
+            }
+            return [];
+
+    }))).flat()
+
+
+    const podcastReviews = (await Promise.all(podcast.map(async(e)=>{
+            const reviews = await Reviews
+            .scan('reviewItemId')
+            .eq(e._id)
+            .attributes(["reviewRatings"])
+            .exec()
+            if (reviews.length !== 0) {
+                return reviews.map((review) => review.reviewRatings);
+            }
+            return [];
+
+    }))).flat()
+    // exp end
+
+    // let data ={eventsId,jobsId,videosId,podcastsId}
+    let ratingArray =[...videoReviews,...podcastReviews]
+    const rating={
+        globalrating:mean(ratingArray),
+        totalRatings:ratingArray.length
+    }
+    let data = {rating, events, videos, podcast, jobs }
     return await data
 }
+
+
+
 const login = async (req, res) => {
     // const {email,password} = req.body
     console.log("password")
@@ -173,5 +214,13 @@ const login = async (req, res) => {
 
 
 }
+
+
+function mean(arr) {
+    if (arr.length === 0) return 0; // Handle empty array case
+    const sum = arr.reduce((acc, val) => acc + val, 0);
+    return sum / arr.length;
+}
+
 
 module.exports = { createUser, updateUser, getAllUsers, getUser, deleteUser, searchUser, updateUserPicture, login }
