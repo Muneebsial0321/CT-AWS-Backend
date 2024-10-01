@@ -41,12 +41,18 @@ const createUser = async (req, res) => {
 }
 const getUser = async (req, res) => {
     try {
-        const { password, ...user } = await User.get(req.params.id);
-        const data = await __init__(req.params.id)
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
+        const __user__ = await User.get(req.params.id);
+        if(__user__){
+            const { password, ...user } = __user__
+            const data = await __init__(req.params.id)
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+            res.status(200).json({ user, data });
         }
-        res.status(200).json({ user, data });
+        else{
+            res.status(200).json({user:"Does not exist"});
+        }
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

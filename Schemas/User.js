@@ -50,6 +50,7 @@ const userSchema = new dynamoose.Schema({
     // geoPoints:String,
     latitude:String,
     longitude:String,
+    fbId:String,
     interests:{
         type:Array,
         schema: [String],
