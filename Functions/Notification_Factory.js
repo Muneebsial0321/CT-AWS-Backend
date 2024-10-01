@@ -1,27 +1,30 @@
 const Notification = require('../Schemas/Notifications')
 const { v4: uuidv4 } = require('uuid');
 
-const Notification_Factory = async (adminId,userId,event, tableName ) => {
+const Notification_Factory = async (userId,event, tableName,desc_ ) => {
     // event is weather it was created or deleted
     try{
     const adminNote = new Notification({
         _id:uuidv4(),
         createdBy:userId,
-        for:process.env.ADMIN_ID,
+        for:'admin',
+        // for:process.env.ADMIN_ID,
         notiTitle:`${tableName} was ${event}`,
-        notiDesc:`${tableName} was ${event} by user: ${userId}`
+        notiDesc:`${desc_}`
 
     })
-    const userNote = new Notification({
-        _id:uuidv4(),
-        createdBy:userId,
-        for:userId,
-        notiTitle:`${tableName} was ${event}`,
-        notiDesc:`You ${event} a ${tableName}`
-
-    })
+    if(userId!=null){
+        const userNote = new Notification({
+            _id:uuidv4(),
+            createdBy:userId,
+            for:userId,
+            notiTitle:`${tableName} was ${event}`,
+            notiDesc:`You ${event} a ${tableName}`
+            
+        })
+        await userNote.save()
+    }
     await adminNote.save()
-    await userNote.save()
     console.log("notifications were created")}
     catch(e){
         console.log("error is ",e)

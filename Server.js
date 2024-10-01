@@ -23,7 +23,8 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    origin: process.env.FRONT_URL, // Your frontend URL
+    origin: "http://localhost:5173", // Your frontend URL
+    // origin: process.env.FRONT_URL, // Your frontend URL
     credentials: true
 }));
 // app.use(cors({

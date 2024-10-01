@@ -6,9 +6,20 @@ const { v4: uuidv4 } = require('uuid');
 exports.createReview = async (req, res) => {
     try {
         const _id = uuidv4()
-        const newReview = new Review({_id, ...req.body});
-        const savedReview = await newReview.save();
-        res.json({message:"success",savedReview});
+        const prev = await Review.scan('userId')
+        .eq(req.body.userId)
+        .where('reviewItemId')
+        .eq(req.body.reviewItemId)
+        .limit(1)
+        .exec()
+        if(prev.length==0){
+            const newReview = new Review({_id, ...req.body});
+            const savedReview = await newReview.save();
+            res.json({message:"success",savedReview});
+        }
+        else{
+            res.json({message:"already had a review",savedReview:prev[0]});
+        }
     } catch (error) {
         res.status(500).json({ error: 'Error creating review', details: error });
     }

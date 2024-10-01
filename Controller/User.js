@@ -7,6 +7,7 @@ const Jobs = require('../Schemas/Jobs')
 const Events = require('../Schemas/Events')
 const Pic = require('../Schemas/Picture')
 const jwt = require('jsonwebtoken')
+const nf = require('../Functions/Notification_Factory')
 
 
 const createUser = async (req, res) => {
@@ -20,6 +21,10 @@ const createUser = async (req, res) => {
             console.log("creating new user")
             const newUser = new User({ Users_PK, signedInBy, ...req.body });
             await newUser.save();
+
+            await nf(
+                Users_PK, "created", 'user', `A user was created of id:${Users_PK}`
+            )
             const data = {
                 name: newUser.name,
                 Users_PK: newUser.Users_PK,
@@ -42,7 +47,7 @@ const createUser = async (req, res) => {
 const getUser = async (req, res) => {
     try {
         const __user__ = await User.get(req.params.id);
-        if(__user__){
+        if (__user__) {
             const { password, ...user } = __user__
             const data = await __init__(req.params.id)
             if (!user) {
@@ -50,8 +55,8 @@ const getUser = async (req, res) => {
             }
             res.status(200).json({ user, data });
         }
-        else{
-            res.status(200).json({user:"Does not exist"});
+        else {
+            res.status(200).json({ user: "Does not exist" });
         }
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -181,9 +186,6 @@ const __init__ = async (userId) => {
     let data = { rating, events, videos, podcast, jobs }
     return await data
 }
-
-
-
 const localLogin = async (req, res) => {
     const { email, password } = req.body
     const user = await User.scan('email').eq(email).exec()
@@ -231,7 +233,7 @@ const googleLogin = async (req, res) => {
         res.json(data_);
 
     }
-    else  {
+    else {
         res.send("wrong password")
     }
 
@@ -263,8 +265,6 @@ const githubLogin = async (req, res) => {
 
 }
 
-
-
 function mean(arr) {
     if (arr.length === 0) return 0; // Handle empty array case
     const sum = arr.reduce((acc, val) => acc + val, 0);
@@ -272,4 +272,4 @@ function mean(arr) {
 }
 
 
-module.exports = { createUser, updateUser, getAllUsers, getUser, deleteUser, searchUser, updateUserPicture, localLogin }
+module.exports = { createUser, updateUser, getAllUsers, getUser, deleteUser, searchUser, updateUserPicture, localLogin, githubLogin, googleLogin }

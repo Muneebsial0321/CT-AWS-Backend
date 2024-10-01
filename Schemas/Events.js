@@ -65,11 +65,7 @@ const eventSchema = new Schema({
   },
   eventArray: {
     type: Array,
-    schema: [
-      {
-        type: Object,
-      },
-    ],
+    schema:[String],
   },
   mediaFiles: {
     type: Array,
