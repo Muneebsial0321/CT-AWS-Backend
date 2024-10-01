@@ -6,11 +6,11 @@ const find = require('../Functions/find')
 
 const createJob = async (req, res) => {
     try {
-        let data = {...req.body}
-        if(req.file){
+        let data = { ...req.body }
+        if (req.file) {
             const logoName = req.file.key
             const logoUrl = req.file.location
-            data = {...data,logoName,logoUrl} 
+            data = { ...data, logoName, logoUrl }
         }
         const _id = uuidv4();
         const newJob = new Job({ _id, ...data });
@@ -25,12 +25,12 @@ const getJob = async (req, res) => {
     try {
         const job = await Job.get(req.params.id);
         const user_ = await User.get(job.userId);
-        const { picUrl,name, Users_PK} = user_
-        const poster = { picUrl,name ,Users_PK }
+        const { picUrl, name, Users_PK } = user_
+        const poster = { picUrl, name, Users_PK }
         if (!job) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.status(200).json({poster, job});
+        res.status(200).json({ poster, job });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -38,28 +38,29 @@ const getJob = async (req, res) => {
 const getAllJobs = async (req, res) => {
     try {
         const jobs = await Job.scan().exec();
-        console.log("length is",jobs.length)
-        if(jobs.length>0){
-        const poster = await Promise.all(jobs.map(async (e) => {
-            if (e.userId) {
-                const _user_ = await User.get(e.userId);
-                const name =  _user_?.name || ''
-                const  picUrl  = _user_?.picUrl || ''
-                return { poster: { name, picUrl }, ...e }
-            }
-            else {
-                return {
-                    poster: {
-                        name: '',
-                        picUrl: ''
-                    }
-                    , ...e
+        console.log("length is", jobs.length)
+        if (jobs.length > 0) {
+            const poster = await Promise.all(jobs.map(async (e) => {
+                if (e.userId) {
+                    const _user_ = await User.get(e.userId);
+                    const name = _user_?.name || ''
+                    const picUrl = _user_?.picUrl || ''
+                    return { poster: { name, picUrl }, ...e }
                 }
-            }
-        }))
-        res.status(200).json({ count: poster.length, data: poster });}
-        else{
-            res.status(200).json({ count: jobs.length, data:jobs })
+                else {
+                    return {
+                        poster: {
+                            name: '',
+                            picUrl: ''
+                        }
+                        , ...e
+                    }
+                }
+            }))
+            res.status(200).json({ count: poster.length, data: poster });
+        }
+        else {
+            res.status(200).json({ count: jobs.length, data: jobs })
         }
     } catch (error) {
         res.status(500).json({ message: error.message });
