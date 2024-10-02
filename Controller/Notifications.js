@@ -1,4 +1,5 @@
 const Notification = require('../Schemas/Notifications')
+const User = require('../Schemas/User')
 
 const getNotification= async (req, res) => {
     try {
@@ -11,10 +12,24 @@ const getNotification= async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
-const getAllNotifications= async (req, res) => {
+const getAllNotifications__= async (req, res) => {
     try {
-        let notifications = await Notification.scan().exec();
-        res.status(200).json({count:notifications.length,data:notifications});
+        const notifications = await Notification.scan().exec();
+        const data = await Promise.all(notifications.map(async(e)=>{
+            if(e.createdBy!=null){
+                const user = await User.get(e.createdBy)
+                const picUrl = user?user.picUrl:''
+                const name = user?user.name:''
+                const user_= { Users_PK:e.createdBy,picUrl,name}
+                return {...e,user:user_}
+            }
+            else{
+                return {...e,Users_PK:e.createdBy,picUrl:"",name:""}
+
+            }
+        }))
+
+        res.status(200).json({count:data.length,data:data});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -28,6 +43,33 @@ const getMyNotifications= async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+const getAllNotifications = async (req, res) => {
+    try {
+        const notifications = await Notification.scan().exec();
+        const data = await Promise.all(notifications.map(async (e) => {
+            let user_ = { Users_PK: e.createdBy, picUrl: "", name: "" };
+            if (e.createdBy) {
+                try {
+                    const user = await User.get(e.createdBy);
+                    if (user) {
+                        user_ = { Users_PK: e.createdBy, picUrl: user.picUrl, name: user.name };
+                    }
+                } catch (userError) {
+                    console.error(`Failed to fetch user with ID ${e.createdBy}:`, userError);
+                }
+            }
+
+            return { ...e, user: user_ };
+        }));
+
+        res.status(200).json({ count: data.length, data: data });
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
 
 const deleteNotification=  async (req, res) => {
     try {

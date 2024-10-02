@@ -13,7 +13,8 @@ const nf = require('../Functions/Notification_Factory')
 const createUser = async (req, res) => {
     try {
         const Users_PK = uuidv4();
-        const signedInBy = 'local'
+        // const signedInBy = 'local'
+        const signedInBy = 'email'
         // pre check
         const u = await User.scan('email').eq(req.body.email).exec()
         console.log(req.body.email)
