@@ -190,7 +190,9 @@ const localLogin = async (req, res) => {
     const { email, password } = req.body
     const user = await User.scan('email').eq(email).exec()
     const data = await User.get(user[0].Users_PK)
-    if (data.signedInBy == 'local' && data.password == password) {
+    // to do to fixed local
+    console.log({data,bol:(data.signedInBy == 'local' && data.password == password)})
+    if (data.signedInBy == 'email' && data.password == password) {
         const _id = data.Users_PK
         const payload = {
             user: _id
@@ -209,6 +211,10 @@ const localLogin = async (req, res) => {
     }
     else if (password != user[0].password) {
         res.send("wrong password")
+    }
+    else{
+        res.json({message:"invalid credentials"})
+
     }
 
 }
