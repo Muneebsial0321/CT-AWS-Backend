@@ -183,4 +183,17 @@ const deleteVideo = async (req, res) => {
 }
 
 
-module.exports = { uploadVideo, viewVideo, getMyFeed, getUserVideos, getAllVideos, getVideo, deleteVideo }
+const __init__=async(req,res)=>{
+   const vidoes = await Video.scan().exec()
+    const data= await Promise.all(vidoes.map(async(e)=>{
+      const vid = await Video.get(e._id)
+      const com = await Reviews.scan('reviewItemId').eq(e._id).exec()
+      const { password, ...user } = await User.get(vid.userId);
+      return { data: vid, commments: com, user: user }
+    }))
+    res.json({count:data.length,data})
+
+}
+
+
+module.exports = { uploadVideo, viewVideo, getMyFeed, getUserVideos, getAllVideos, getVideo, deleteVideo ,__init__}
