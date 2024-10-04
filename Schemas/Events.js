@@ -67,6 +67,11 @@ const eventSchema = new Schema({
     type: Array,
     schema:[String],
   },
+  generalTicket:Number,
+  premiumTicket:Number,
+  vipTicket:Number,
+  startTime:String,
+  endTime:String,
   mediaFiles: {
     type: Array,
     schema: [
