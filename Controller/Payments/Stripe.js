@@ -4,47 +4,53 @@ const Event = require('../../Schemas/Events')
 const User = require('../../Schemas/User')
 // Mock database
 
-
+// event id e12345
 const products = [
   {
-    name: 'Premium Ticket',
-    price: 100, // Price in dollars (10.00 USD)
+    name: 'premiumTicket',
     quantity: 3, // Number of items for this product
   },
   {
-    name: 'Basic Ticket',
-    price: 50, // Price in dollars (50.00 USD)
+    name: 'generalTicket',
     quantity: 1, // Number of items for this product
   },
 ];
-const lineItems = products.map((product) => ({
-  price_data: {
-    currency: 'usd', // Use the appropriate currency
-    product_data: {
-      name: product.name, // Dynamically set the product name
-      description:product._id
+
+const getLineItems=(proArray,event)=>{
+// prodArray will have ticket name with there quantity.....
+//meanwhile event will have event object
+// it shall return lineitems
+  const lineItems = proArray.map((product) => ({
+    price_data: {
+      currency: 'usd', // Use the appropriate currency
+      product_data: {
+        name: product.name, // Dynamically set the product name
+        description:event._id
+      },
+      unit_amount: event[product.name] * 100, // Stripe expects the amount in cents (for USD)
+      // unit_amount: product.price * 100, // Stripe expects the amount in cents (for USD)
     },
-    unit_amount: product.price * 100, // Stripe expects the amount in cents (for USD)
-  },
-  quantity: product.quantity, // Quantity of the product
-}));
+    quantity: product.quantity, // Quantity of the product
+  }));
+  return lineItems
+
+}
 
 const paymentByStripe = async (req, res) => {
 
   // const event = await Event.get(req.params.id);
+  const event = await Event.get('e12345');
   // const seller = await User.get(userWhoCreatedEventID);
+  const seller = {email:"some email"}
   // const buyer = await User.get(req.body.id);
     // let userWhoCreatedEventID = event.eventCreatedBy;
     // let userWhoBoughtTicket = 'some name';
     // let eventID = event._id;
     // let eventPrice = event.eventTicketPrice;
     const sellerID = 'userWhoCreatedEventID';
-    const buyerName = 'some name';
+    const buyerID = 'userWhoCreatedEventID';
     const eventID = 'event_id';
-    const eventPrice = 50;
-    const ticketId = 'ticket_2'; // Use ticket_2 for testing purposes
-    const user = {email:"some email"}
-    const destination = {email:"some email"}
+    const destination = "account no"
     // const ticket = tickets.get(ticketId);
     // if (!ticket) {
     //   return res.status(404).json({ error: 'Ticket not found' });
@@ -53,23 +59,8 @@ const paymentByStripe = async (req, res) => {
     try {
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
-        line_items:lineItems,
-        // line_items: [
-        //   {
-        //     price_data: {
-        //       currency: 'usd',
-        //       product_data: {
-        //         name: `Event ID: ${eventID}`, // 
-        //         description: `\n\n\n\n\n\n\n\n
-        //         *USER ID*: ${userWhoCreatedEventID}\n\n
-        //         *EMAIL*: ${user.email}\n\n`
-            
-        //       },
-        //       unit_amount: parseInt(eventPrice)*100, // Ticket price in cents
-        //     },
-        //     quantity: 1,
-        //   },
-        // ],
+        line_items:getLineItems(products,event),
+        // line_items:lineItems,
         mode: 'payment',
         success_url: `${process.env.FRONT_URL}/paymentSuccess`, // Redirect after successful payment
         cancel_url: `${process.env.FRONT_URL}/paymentfailed`, // Redirect after canceled payment
@@ -79,14 +70,13 @@ const paymentByStripe = async (req, res) => {
           },
           metadata: {
             ticketEventId:eventID, 
-            ticketSellerId: userWhoCreatedEventID,
-            ticketSellerEmail:user.email,
-            ticketBuyerId: userWhoBoughtTicket
+            ticketSellerId: sellerID,
+            ticketSellerEmail:seller.email,
+            ticketBuyerId: buyerID
           },
      
         },
-      }); 
-  // console.log(session)
+      });
       res.json({
         sessionId: session.id,
          url: session.url 
