@@ -9,6 +9,7 @@ const createPodcast = async (req, res) => {
     try {
         console.log("creating podcast")
         let data = { ...req.body }
+        const speakerArray = req.body.eventArray?JSON.parse(req.body.speakerArray):[];
         if (req.files != null) {
             if (req.files.image!= null) {
                 const picName = req.files.image[0].key
@@ -31,7 +32,7 @@ const createPodcast = async (req, res) => {
         const episodeNumber  = req.body.episodeNumber &&  +req.body.episodeNumber 
         const podcastDuration  = req.body.podcastDuration &&  +req.body.podcastDuration 
         // console.log({seasonNumber,episodeNumber})
-        const podcast = new Podcast({_id,...data,seasonNumber,episodeNumber,podcastDuration})
+        const podcast = new Podcast({_id,...data,seasonNumber,episodeNumber,podcastDuration,speakerArray})
         await podcast.save() 
         res.json({message:"success",data:podcast})
     } catch (error) {
