@@ -9,7 +9,7 @@ const createPodcast = async (req, res) => {
     try {
         console.log("creating podcast")
         let data = { ...req.body }
-        const speakerArray = req.body.eventArray?JSON.parse(req.body.speakerArray):[];
+        const speakerArray = req.body.speakerArray?JSON.parse(req.body.speakerArray):[];
         if (req.files != null) {
             if (req.files.image!= null) {
                 const picName = req.files.image[0].key
