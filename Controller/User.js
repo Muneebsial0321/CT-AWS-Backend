@@ -154,7 +154,7 @@ const __init__ = async (userId) => {
         const vid = await Videos.get(e._id)
         const com = await Reviews.scan('reviewItemId').eq(e._id).exec()
         const { password, ...user } = await User.get(vid.userId);
-        return { data: vid, commments: com, user: user }}))
+        return { data: vid, reviews: com, user: user }}))
     // get all video data end
 
 
