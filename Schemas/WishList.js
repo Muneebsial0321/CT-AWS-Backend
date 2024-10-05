@@ -6,7 +6,7 @@ _id:{
     type:String,
     hashKey:true
 },
-wishItemType:String,//podcast , videos , events etc
+wishItemType:String,//podcast , video , event , job  etc
 wishItemId:String,
 userId:String,
 }, {

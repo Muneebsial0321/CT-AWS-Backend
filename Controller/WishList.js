@@ -1,3 +1,7 @@
+const Event = require('../Schemas/Events');
+const Job = require('../Schemas/Jobs');
+const Podcast = require('../Schemas/Podcast');
+const Video = require('../Schemas/Videos');
 const WishList = require('../Schemas/WishList');
 const { v4: uuidv4 } = require('uuid');
 
@@ -16,8 +20,8 @@ const createWishListItem = async (req, res) => {
 // Get a specific wishlist item by ID
 const getAllWishLists = async (req, res) => {
     try {
-        const wishListItem = await WishList.scan().exec()
-        res.json({count:wishListItem.length,data:wishListItem});
+        const data = await fun()
+        res.json({count:data.length,data});
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -43,5 +47,64 @@ const deleteWishListItem = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 };
+
+
+const fun=async()=>{
+    const wishListItem = await WishList.scan().exec()
+    let job = await Promise.all(wishListItem.map(async(e)=>{
+        if(e.wishItemType=='job'){
+            const job = await Job.get(e.wishItemId)
+            return job
+        }
+        else{
+            null
+        }
+     
+    
+    
+    }))
+    let event =await Promise.all(wishListItem.map(async(e)=>{
+        if(e.wishItemType=='event'){
+            const event = await Event.get(e.wishItemId)
+            return event
+        }
+        else{
+            null
+        }
+     
+    }))
+    let video =await Promise.all(wishListItem.map(async(e)=>{
+        if(e.wishItemType=='video'){
+            const video = await Video.get(e.wishItemId)
+            const com = await Reviews.scan('reviewItemId').eq(video._id).exec()
+            return {...video,reviews:com}
+        }
+        else{
+            null
+        }
+     
+    
+    
+    }))
+    let podcast =await Promise.all(wishListItem.map(async(e)=>{
+        if(e.wishItemType=='podcast'){
+            const podcast = await Podcast.get(e.wishItemId)
+            return podcast
+        }
+        else{
+            null
+        }
+     
+    
+    
+    }))
+
+    job= job.filter((e)=>e!=null)
+    event= event.filter((e)=>e!=null)
+    podcast= podcast.filter((e)=>e!=null)
+    video= video.filter((e)=>e!=null)
+    return {job,event,podcast,video }
+}
+
 
 module.exports = {createWishListItem,deleteWishListItem,getWishListItemById,getAllWishLists}

@@ -13,6 +13,7 @@ const createEvent = async (req, res) => {
         let eventCoverImg =''
         let eventCoverUrl = ''
         let mediaFiles = []
+        const eventArray = req.body.eventArray?JSON.parse(req.body.eventArray):[];
 
 
         if (req.files && req.files.coverImage) {
@@ -33,6 +34,7 @@ const createEvent = async (req, res) => {
             ...req.body,
             eventCoverImg,
             eventCoverUrl,
+            eventArray,
             mediaFiles
         });
 

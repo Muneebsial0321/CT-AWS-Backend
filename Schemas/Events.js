@@ -67,7 +67,7 @@ const eventSchema = new Schema({
     type: Array,
     schema:[String],
   },
-  generalTicket:Number,
+  basicTicket:Number,
   premiumTicket:Number,
   standardTicket:Number,
   startTime:String,
