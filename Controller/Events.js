@@ -41,9 +41,12 @@ const createEvent = async (req, res) => {
             eventCoverImg,
             eventCoverUrl,
             eventArray,
-            basicTicket,
-            premiumTicket,
-            standardTicket,
+            // basicTicket:basicTicket.toString()=='NaN'?0:+basicTicket,
+            // premiumTicket:premiumTicket.toString()=='NaN'?0:+premiumTicket,
+            // standardTicket:standardTicket.toString()=='NaN'?0:+standardTicket,
+            basicTicket: isNaN(Number(basicTicket)) ? 0 : Number(basicTicket),
+            premiumTicket: isNaN(Number(premiumTicket)) ? 0 : Number(premiumTicket),
+            standardTicket: isNaN(Number(standardTicket)) ? 0 : Number(standardTicket),
             mediaFiles
         });
 
