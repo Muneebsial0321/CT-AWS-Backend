@@ -143,8 +143,19 @@ async function find_(params) {
 const __init__ = async (userId) => {
     const events = await Events.scan('eventCreatedBy').eq(userId).exec()
     const jobs = await Jobs.scan('userId').eq(userId).exec()
-    const videos = await Videos.scan('userId').eq(userId).exec()
     const podcast = await Podcasts.scan('userID').eq(userId).exec()
+
+    const videos = await Videos.scan('userId').eq(userId).exec()
+    
+    
+    // get all video data
+    
+    const videoData= await Promise.all(videos.map(async(e)=>{
+        const vid = await Videos.get(e._id)
+        const com = await Reviews.scan('reviewItemId').eq(e._id).exec()
+        const { password, ...user } = await User.get(vid.userId);
+        return { data: vid, commments: com, user: user }}))
+    // get all video data end
 
 
 
@@ -184,7 +195,7 @@ const __init__ = async (userId) => {
         globalrating: mean(ratingArray),
         totalRatings: ratingArray.length
     }
-    let data = { rating, events, videos, podcast, jobs }
+    let data = { rating, events, videos:videoData, podcast, jobs }
     return await data
 }
 const localLogin = async (req, res) => {

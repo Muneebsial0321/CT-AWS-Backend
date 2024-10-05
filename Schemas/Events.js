@@ -69,7 +69,7 @@ const eventSchema = new Schema({
   },
   generalTicket:Number,
   premiumTicket:Number,
-  vipTicket:Number,
+  standardTicket:Number,
   startTime:String,
   endTime:String,
   mediaFiles: {
