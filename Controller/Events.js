@@ -14,7 +14,9 @@ const createEvent = async (req, res) => {
         let eventCoverUrl = ''
         let mediaFiles = []
         const eventArray = req.body.eventArray?JSON.parse(req.body.eventArray):[];
-
+        const basicTicket    = req.body.basicTicket && +req.body.basicTicket;
+        const standardTicket = req.body.standardTicket && +req.body.standardTicketnull;
+        const premiumTicket  = req.body.premiumTicket && +req.body.premiumTicket;
 
         if (req.files && req.files.coverImage) {
             eventCoverImg = req.files.coverImage[0].key || '';
@@ -35,6 +37,9 @@ const createEvent = async (req, res) => {
             eventCoverImg,
             eventCoverUrl,
             eventArray,
+            basicTicket,
+            premiumTicket,
+            standardTicket,
             mediaFiles
         });
 
