@@ -14,7 +14,6 @@ const createEvent = async (req, res) => {
         let eventCoverUrl = ''
         let mediaFiles = []
         const eventArray = req.body.eventArray?JSON.parse(req.body.eventArray):[];
-        console.log({eventArray})
         const basicTicket    = req.body.basicTicket?+req.body.basicTicket:0;
         const standardTicket = req.body.standardTicket?+req.body.standardTicketnull:0;
         const premiumTicket  = req.body.premiumTicket?+req.body.premiumTicket:0;
@@ -79,7 +78,6 @@ const getEvent = async (req, res) => {
 const getAllEvents = async (req, res) => {
     try {
         const events = await Event.scan().exec();
-        console.log(events)
         res.json({ count: events.length, data: events });
     } catch (error) {
         console.log(error)

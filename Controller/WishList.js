@@ -20,19 +20,21 @@ const createWishListItem = async (req, res) => {
 // Get a specific wishlist item by ID
 const getAllWishLists = async (req, res) => {
     try {
-        const data = await fun()
-        res.json({count:data.length,data});
+        const wishListItem = await WishList.scan().exec()
+        const data = await fun(wishListItem)
+        res.json({wishListItem,count:wishListItem.length,data});
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 };
 const getWishListItemById = async (req, res) => {
     try {
-        const wishListItem = await WishList.get(req.params.id);
+        const wishListItem = await WishList.scan('userId').eq(req.params.id).exec()
         if (!wishListItem) {
             return res.status(404).json({ message: 'WishList item not found' });
         }
-        res.status(200).json(wishListItem);
+        const data = await fun(wishListItem)
+        res.json(data);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -49,8 +51,8 @@ const deleteWishListItem = async (req, res) => {
 };
 
 
-const fun=async()=>{
-    const wishListItem = await WishList.scan().exec()
+const fun=async(wishListItem)=>{
+    
     let job = await Promise.all(wishListItem.map(async(e)=>{
         if(e.wishItemType=='job'){
             const job = await Job.get(e.wishItemId)
