@@ -7,14 +7,15 @@ const Ticket = require('../Schemas/Ticket')
 const { v4: uuidv4 } = require('uuid');
 
 
-let ticket;
-//http://localhost:5000/payments/stripe
-router.post('/stripe/:id',paymentByStripe)
 
+//http://localhost:5000/payments/stripe
+router.post('/stripe',paymentByStripe)
+ 
 const endpointSecret = process.env.STRIPE_WEBHOOK
 
 router.post('/webhook', express.raw({type: 'application/json'}),async (request, response) => {
   const sig = request.headers['stripe-signature'];
+  console.log("hook working")
 
   let event;
   try {
@@ -48,24 +49,20 @@ router.post('/webhook', express.raw({type: 'application/json'}),async (request, 
   //     console.log(`Unhandled event type ${event.type}`);
   // }
   try{
-  if(event.type=='payment.created'){
-    console.log("if1")
-    const {receipt_url}=event.data.object
-    ticket={...ticket,ticketReceiptUrl:receipt_url}
-  }
+  // if(event.type=='payment.created'){
+  //   console.log("if1")
+  //   const {receipt_url}=event.data.object
+  //   ticket={...ticket,ticketReceiptUrl:receipt_url}
+  // }
   if(event.type=='payment_intent.succeeded'){
     console.log("if2")
     const {metadata}=event.data.object
-        ticket={...ticket,...metadata}
+    const ticket={...metadata}
+    const _id = uuidv4();
+    const t = new Ticket({_id,...ticket})
+    const d= await t.save()
+    console.log({d})
   }
-  console.log({ticket})
-  const _id = uuidv4();
-  const t = new Ticket({_id,...ticket})
-  console.log("t ",t)
-  const d= await t.save()
-  console.log("d is")
-  console.log(d)
-
   response.send();}
   catch(e){
     console.log("error is",e)

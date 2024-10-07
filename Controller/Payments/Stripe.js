@@ -48,11 +48,11 @@ const paymentByStripe = async (req, res) => {
     const buyerID = req.body.buyerId;
 
    
-    console.log({token: jwtDataCreater({products,
-      sellerID,
-      eventID,
-      buyerID,
-    })})
+    // console.log({token: jwtDataCreater({products,
+    //   sellerID,
+    //   eventID,
+    //   buyerID,
+    // })})
     
     // if (!ticket) {
     //   return res.status(404).json({ error: 'Event not found' });

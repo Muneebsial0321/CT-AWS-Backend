@@ -10,7 +10,6 @@ const socketHandler = require('./Handlers/socketHandler');
 const redirectUri = 'http://localhost:5000/zoom/callback';
 const axios = require('axios');
 
-
  
 // middlewares
 app.use('/payment/webhook', express.raw({ type: 'application/json' }));
@@ -99,6 +98,10 @@ app.get('/zoom/callback', async (req, res) => {
     res.status(500).send(error);
   }
 });
+// for stripe
+
+
+
 
 server.listen(process.env.PORT, () => { console.log(`listening to port ${process.env.PORT}`) })
 
