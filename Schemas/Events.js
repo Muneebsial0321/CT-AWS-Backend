@@ -36,8 +36,27 @@ const eventSchema = new Schema({
   eventNO_of_People: {
     type: String,
   },
-  eventTicketType: {
-    type: String,
+  eventTicketArray: {
+    type: Array,
+    schema: [
+      {
+        type: Object,
+        schema: {
+          name: {
+            type: String,
+            required: true,
+          },
+          price: {
+            type: String,
+            required: true,
+          },
+          quantity: {
+            type: String,
+            required: true,
+          },
+        },
+      },
+    ],
   },
   eventNetworkOps: {
     type: String,
