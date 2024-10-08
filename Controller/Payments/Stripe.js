@@ -63,7 +63,8 @@ const paymentByStripe = async (req, res) => {
         payment_method_types: ['card'],
         line_items:getLineItems(products,event),
         mode: 'payment',
-        success_url: `${process.env.FRONT_URL}/paymentSuccess?token=${jwtDataCreater({products,sellerID,eventID,buyerID,})}`, // Redirect after successful payment
+        // success_url: `${process.env.FRONT_URL}/paymentSuccess?token=${jwtDataCreater({products,sellerID,eventID,buyerID,})}`, // Redirect after successful payment
+        success_url: `${process.env.FRONT_URL}/ticketdetails}`, // Redirect after successful payment
         cancel_url: `${process.env.FRONT_URL}/paymentfailed`, // Redirect after canceled payment
         payment_intent_data: {
           transfer_data: {
