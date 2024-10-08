@@ -8,6 +8,8 @@ const User = require('../Schemas/User');
 const createEvent = async (req, res) => {
     try {
 
+        console.log({eventdataIS:req.body})
+
         const _id = uuidv4();
         let eventCoverImg =''
         let eventCoverUrl = ''
