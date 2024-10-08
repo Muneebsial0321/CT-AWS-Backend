@@ -42,7 +42,7 @@ const eventSchema = new Schema({
       {
         type: Object,
         schema: {
-          name: {
+          ticketType: {
             type: String,
             required: true,
           },
