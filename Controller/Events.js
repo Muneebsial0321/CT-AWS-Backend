@@ -7,13 +7,13 @@ const User = require('../Schemas/User');
 
 const createEvent = async (req, res) => {
     try {
-        console.log("body is")
-        console.log(req.cookies) 
+
         const _id = uuidv4();
         let eventCoverImg =''
         let eventCoverUrl = ''
         let mediaFiles = []
         const eventArray = req.body.eventArray?JSON.parse(req.body.eventArray):[];
+        const eventTicketArray = req.body.eventArray?JSON.parse(req.body.eventTicketArray):[];
         const basicTicket    = req.body.basicTicket?+req.body.basicTicket:0;
         const standardTicket = req.body.standardTicket?+req.body.standardTicketnull:0;
         const premiumTicket  = req.body.premiumTicket?+req.body.premiumTicket:0;
@@ -40,6 +40,7 @@ const createEvent = async (req, res) => {
             eventCoverImg,
             eventCoverUrl,
             eventArray,
+            eventTicketArray,
             // basicTicket:basicTicket.toString()=='NaN'?0:+basicTicket,
             // premiumTicket:premiumTicket.toString()=='NaN'?0:+premiumTicket,
             // standardTicket:standardTicket.toString()=='NaN'?0:+standardTicket,
