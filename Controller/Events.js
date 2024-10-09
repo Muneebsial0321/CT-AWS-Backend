@@ -60,11 +60,22 @@ const getEvent = async (req, res) => {
     try {
         const event = await Event.get(req.params.id);
         const user =  await User.get(event.eventCreatedBy);
+        const speakers =  await Promise.all(event.eventArray.map(async(e)=>{
+            const user =  await User.get(e);
+            if(user){
+                return user
+            }
+            else{
+                null
+            }
+        }))
+        const filterSpeakers = speakers.filter((e)=>e!=null)
+
         
         if (!event) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.status(200).json({event,user});
+        res.status(200).json({event,user,speakers:filterSpeakers});
         // res.status(200).json({event});
     } catch (error) {
         res.status(500).json({ message: error.message });
