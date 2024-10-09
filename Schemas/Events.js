@@ -47,11 +47,11 @@ const eventSchema = new Schema({
             required: true,
           },
           price: {
-            type: String,
+            type: Number,
             required: true,
           },
           quantity: {
-            type: String,
+            type: Number,
             required: true,
           },
         },
@@ -122,7 +122,18 @@ module.exports = Event;
 //   "eventType": "Conference",
 //   "eventDuration": "3 hours",
 //   "eventNO_of_People": "200",
-//   "eventTicketType": "Paid",
+//   "eventTicketArray": [
+//     {
+//       "ticketType": "General Admission",
+//       "price": "100",
+//       "quantity": "150"
+//     },
+//     {
+//       "ticketType": "Premium Admission",
+//       "price": "200",
+//       "quantity": "50"
+//     }
+//   ],
 //   "eventNetworkOps": "Available",
 //   "eventCoverImg": "tech-conference-cover.jpg",
 //   "eventCoverUrl": "https://example.com/tech-conference-cover.jpg",
@@ -136,9 +147,9 @@ module.exports = Event;
 //     "Workshops",
 //     "Keynote Speakers"
 //   ],
-//   "generalTicket": 100,
+//   "basicTicket": 100,
 //   "premiumTicket": 50,
-//   "vipTicket": 25,
+//   "standardTicket": 25,
 //   "startTime": "2024-10-18T09:00:00Z",
 //   "endTime": "2024-10-18T12:00:00Z",
 //   "mediaFiles": [

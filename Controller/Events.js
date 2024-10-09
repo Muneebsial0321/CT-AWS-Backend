@@ -7,21 +7,16 @@ const User = require('../Schemas/User');
 
 const createEvent = async (req, res) => {
     try {
-
-        console.log({eventdataIS:req.body})
-
         const _id = uuidv4();
         let eventCoverImg =''
         let eventCoverUrl = ''
         let mediaFiles = []
         const eventArray = req.body.eventArray?JSON.parse(req.body.eventArray):[];
-        const eventTicketArray = req.body.eventArray?JSON.parse(req.body.eventTicketArray):[];
-        const basicTicket    = req.body.basicTicket?+req.body.basicTicket:0;
-        const standardTicket = req.body.standardTicket?+req.body.standardTicketnull:0;
-        const premiumTicket  = req.body.premiumTicket?+req.body.premiumTicket:0;
-        // const basicTicket    = req.body.basicTicket && +req.body.basicTicket;
-        // const standardTicket = req.body.standardTicket && +req.body.standardTicketnull;
-        // const premiumTicket  = req.body.premiumTicket && +req.body.premiumTicket;
+        const eventTicketArray = req.body.eventTicketArray?JSON.parse(req.body.eventTicketArray):[];
+        // const eventTicketArray = req.body.eventTicketArray
+        // const basicTicket    = req.body.basicTicket?+req.body.basicTicket:0;
+        // const standardTicket = req.body.standardTicket?+req.body.standardTicketnull:0;
+        // const premiumTicket  = req.body.premiumTicket?+req.body.premiumTicket:0;
 
         if (req.files && req.files.coverImage) {
             eventCoverImg = req.files.coverImage[0].key || '';
@@ -43,21 +38,18 @@ const createEvent = async (req, res) => {
             eventCoverUrl,
             eventArray,
             eventTicketArray,
-            // basicTicket:basicTicket.toString()=='NaN'?0:+basicTicket,
-            // premiumTicket:premiumTicket.toString()=='NaN'?0:+premiumTicket,
-            // standardTicket:standardTicket.toString()=='NaN'?0:+standardTicket,
-            basicTicket: isNaN(Number(basicTicket)) ? 0 : Number(basicTicket),
-            premiumTicket: isNaN(Number(premiumTicket)) ? 0 : Number(premiumTicket),
-            standardTicket: isNaN(Number(standardTicket)) ? 0 : Number(standardTicket),
+            // basicTicket: isNaN(Number(basicTicket)) ? 0 : Number(basicTicket),
+            // premiumTicket: isNaN(Number(premiumTicket)) ? 0 : Number(premiumTicket),
+            // standardTicket: isNaN(Number(standardTicket)) ? 0 : Number(standardTicket),
             mediaFiles
         });
 
-        console.log(newEvent)
+        console.log({eventTicketArray})
         await newEvent.save();
         const ad = process.env.ADMIN_ID
         await nf(ad,req.body.eventCreatedBy,'created','Event')
         res.json({ message: "success", data: newEvent });
-        console.log("saved")
+        // console.log("saved")
         //  res.send("done")
     } catch (error) {
         console.log(error)
