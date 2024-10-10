@@ -3,6 +3,7 @@ const Event = require('../Schemas/Events')
 const Notification = require('../Schemas/Notifications')
 const nf = require('../Functions/Notification_Factory');
 const User = require('../Schemas/User');
+const Ticket = require('../Schemas/Ticket');
 
 
 const createEvent = async (req, res) => {
@@ -60,6 +61,8 @@ const getEvent = async (req, res) => {
     try {
         const event = await Event.get(req.params.id);
         const user =  await User.get(event.eventCreatedBy);
+        const eventTickets =  await Ticket.scan('ticketEventId').eq(req.params.id).exec();
+
         const speakers =  await Promise.all(event.eventArray.map(async(e)=>{
             const user =  await User.get(e);
             if(user){
@@ -69,13 +72,23 @@ const getEvent = async (req, res) => {
                 null
             }
         }))
+        const participants =  await Promise.all(eventTickets.map(async(e)=>{
+            const user =  await User.get(e.ticketBuyerId);
+            if(user){
+                return user
+            }
+            else{
+                null
+            }
+        }))
         const filterSpeakers = speakers.filter((e)=>e!=null)
+        const filterParticipants = participants.filter((e)=>e!=null)
 
         
         if (!event) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.status(200).json({event,user,speakers:filterSpeakers});
+        res.status(200).json({event,user,speakers:filterSpeakers,participants:filterParticipants});
         // res.status(200).json({event});
     } catch (error) {
         res.status(500).json({ message: error.message });
