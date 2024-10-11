@@ -34,7 +34,10 @@ const getLineItems=(proArray,event)=>{
   return filteredData
 
 }
-
+const userAgent = async (req, res) => {
+  console.log(req.headers)
+  res.json({userAgent:req.headers['user-agent']})
+}
 const paymentByStripe = async (req, res) => {
 
     const event = await Event.get(req.body.eventId);
@@ -90,4 +93,4 @@ const paymentByStripe = async (req, res) => {
     }
   }
   
-module.exports = {paymentByStripe}
+module.exports = {paymentByStripe,userAgent}

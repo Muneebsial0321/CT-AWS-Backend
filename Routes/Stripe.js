@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {paymentByStripe} = require('../Controller/Payments/Stripe')
+const {paymentByStripe,userAgent} = require('../Controller/Payments/Stripe')
 const bodyParser = require("body-parser")
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 const Ticket = require('../Schemas/Ticket')
@@ -9,6 +9,7 @@ const { v4: uuidv4 } = require('uuid');
 
 
 //http://localhost:5000/payments/stripe
+router.get('/plt',userAgent)
 router.post('/stripe',paymentByStripe)
  
 const endpointSecret = process.env.STRIPE_WEBHOOK
