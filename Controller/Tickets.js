@@ -30,5 +30,21 @@ const getMyTickets = async (req,res)=>{
     }
 
 }
+const getEventTickets = async (req,res)=>{
+    try {
+        const id = req.params.id
+        const ticket = await Ticket.scan('ticketEventId').eq(id).exec()
+        res.json({
+            count:ticket.length,
+            data:ticket
+        })
+        
+    } catch (error) {
+        console.log(error)
+        res.send(error)
+        
+    }
 
-module.exports= {getAllTickets,getMyTickets}
+}
+
+module.exports= {getAllTickets,getMyTickets,getEventTickets}

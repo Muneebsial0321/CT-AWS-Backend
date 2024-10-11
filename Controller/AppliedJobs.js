@@ -43,6 +43,20 @@ const getJobApplications = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+const getMyApplications = async (req, res) => {
+  try {
+    const app = await AppliedJobs.scan('userId')
+    .eq(req.params.id)
+    .exec()
+    if (!app) {
+      return res.status(404).json({ error: 'Job Application not found' });
+    }
+    res.status(200).json({count:app.length,data:app});
+  } catch (error) {
+    console.error('Error fetching job application:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 
 const deleteJobApplication = async (req, res) => {
   try {
@@ -66,4 +80,5 @@ module.exports = {
   getAllJobApplications,
   getJobApplications,
   deleteJobApplication,
+  getMyApplications
 };
