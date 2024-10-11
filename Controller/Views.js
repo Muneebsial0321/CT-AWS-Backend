@@ -25,11 +25,18 @@ const getItemViews =async(req,res)=>{
 const getUserWatchList =async(req,res)=>{
 
     try {
-        const view = await Views.scan()
-        .where('viewItemType').eq('video')
-        .where('viewerId').eq(req.params.id)  // takes userID
+        // const view = await Views.scan()
+        // .where('viewItemType').eq('video')
+        // .where('viewerId').eq(req.params.id)  // takes userID
+        // .exec()
+        const view = await Views.scan('viewerId')
+        .eq(req.params.id)  // takes userID
         .exec()
-        res.json({count:view.length,data:view})
+        const event= view.filter((e)=>e.viewItemType=='event')
+        const video= view.filter((e)=>e.viewItemType=='video')
+        const podcast= view.filter((e)=>e.viewItemType=='podcast')
+        const job= view.filter((e)=>e.viewItemType=='job')
+        res.json({event,video,podcast,job})
     } catch (error) {
         console.log({error})
         res.send(error)

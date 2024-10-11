@@ -1,5 +1,6 @@
 const { v4: uuidv4 } = require('uuid'); // Ensure you have uuid installed
 const AppliedJobs = require('../Schemas/AppliedJobs'); // Adjust the path according to your project structure
+const Job = require('../Schemas/Jobs'); // Adjust the path according to your project structure
 
 const createJobApplication = async (req, res) => {
   try {
@@ -51,7 +52,18 @@ const getMyApplications = async (req, res) => {
     if (!app) {
       return res.status(404).json({ error: 'Job Application not found' });
     }
-    res.status(200).json({count:app.length,data:app});
+
+    const myJobs = await Promise.all(app.map(async(e)=>{
+      const job = await Job.get(e.jobId)
+      if(job){
+        return job
+      }
+      else{
+        return null
+      }
+    }))
+    const filteredJob = myJobs.filter((e)=>e!=null)
+    res.status(200).json({count:filteredJob.length,data:filteredJob});
   } catch (error) {
     console.error('Error fetching job application:', error);
     res.status(500).json({ error: 'Internal Server Error' });
