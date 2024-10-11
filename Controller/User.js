@@ -282,6 +282,24 @@ const githubLogin = async (req, res) => {
     }
 
 }
+const changePassword=async(req,res)=>{
+    try {
+    const {oldPass,newPass,userId} = req.body
+    const user= await User.get(userId)
+    if(user.signedInBy=='email' && user.password == oldPass){
+      const updatePass = await User.update({ Users_PK: userId }, {password:newPass});
+      if(updatePass){
+        res.json({message:"success"})
+      }
+    }
+    else{
+        res.json({message:"internal server error"})
+    }}
+    catch (error) {
+        console.log(error)
+        res.json({message:"internal server error",error})
+    }
+}
 
 function mean(arr) {
     if (arr.length === 0) return 0; // Handle empty array case
@@ -290,4 +308,4 @@ function mean(arr) {
 }
 
 
-module.exports = { createUser, updateUser, getAllUsers, getUser, deleteUser, searchUser, updateUserPicture, localLogin, githubLogin, googleLogin }
+module.exports = { createUser, updateUser, getAllUsers, getUser, deleteUser, searchUser, updateUserPicture, localLogin, githubLogin, googleLogin ,changePassword}
