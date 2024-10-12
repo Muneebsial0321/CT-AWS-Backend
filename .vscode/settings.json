@@ -1,0 +1,6 @@
+{
+    "yaml.schemas": {
+        "file:///c%3A/Users/PMYLS/.vscode/extensions/docsmsft.docs-yaml-1.0.5/dist/toc.schema.json": "/toc\\.yml/i",
+        "https://raw.githubusercontent.com/deployphp/deployer/master/src/schema.json": "file:///d%3A/code/Codes%20Thinker/Socail%20App/CT-AWS-Backend/CT-AWS-Backend/.github/workflows/deploy.yml"
+    }
+}

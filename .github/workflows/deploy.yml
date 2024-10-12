@@ -18,7 +18,7 @@ jobs:
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ubuntu
-        key: ${{ secrets.EC2_SSH_KEY }}
+        key: ${{ secrets.EC2_KEY }}
         script: |
           cd /home/ubuntu/CT-AWS-Backend  # Replace with your project directory
         
