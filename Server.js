@@ -9,17 +9,18 @@ const socketIo = require('socket.io');
 const socketHandler = require('./Handlers/socketHandler');
 const redirectUri = 'http://localhost:5000/zoom/callback';
 const axios = require('axios');
+const mbUploadLimit= '70mb'
 
  
 // middlewares
 app.use('/payment/webhook', express.raw({ type: 'application/json' }));
 // Increase request payload size limit
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+app.use(express.json({ limit:mbUploadLimit }));
+app.use(express.urlencoded({ limit:mbUploadLimit, extended: true }));
 
 // Or if using body-parser middleware
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(bodyParser.json({ limit:mbUploadLimit}));
+app.use(bodyParser.urlencoded({ limit:mbUploadLimit, extended: true }));
 app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   origin: "http://localhost:5173", // Your frontend URL
