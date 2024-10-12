@@ -1,0 +1,35 @@
+name: Simple CI/CD Pipeline with Restarts
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v0.1.4
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ubuntu
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          cd /home/ubuntu/CT-AWS-Backend  # Replace with your project directory
+        
+          # Pull the latest changes from the main branch
+          git pull origin main
+
+          # Install dependencies (optional, if needed after each pull)
+          npm install
+
+          # Restart the Node.js app using PM2
+          pm2 restart all
+
+          # Restart Nginx to ensure the reverse proxy picks up any changes
+          sudo systemctl restart nginx
