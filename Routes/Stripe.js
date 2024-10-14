@@ -28,35 +28,10 @@ router.post('/webhook', express.raw({type: 'application/json'}),async (request, 
     return;
   }  
     
-  // Handle the event
-  // switch (event.type) {
-  //   case 'payment.created':
-  //     console.log("pay created")
-  //     const {receipt_url}=event.data.object
-  //     ticket={...ticket,receipt_url}
-  //     break;
 
-  //   case 'payment_intent.succeeded':
-
-
-  //     console.log("payintent")
-  //     const {metadata}=event.data.object
-  //     ticket={...ticket,metadata}
-  //     break;
-
-
-  //   // ... handle other event types
-  //   default:
-  //     console.log(`Unhandled event type ${event.type}`);
-  // }
   try{
-  // if(event.type=='payment.created'){
-  //   console.log("if1")
-  //   const {receipt_url}=event.data.object
-  //   ticket={...ticket,ticketReceiptUrl:receipt_url}
-  // }
   if(event.type=='payment_intent.succeeded'){
-    console.log("if2")
+    console.log({event:event.data})
     const {metadata}=event.data.object
     const ticket={...metadata}
     const _id = uuidv4();

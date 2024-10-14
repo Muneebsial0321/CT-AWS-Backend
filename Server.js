@@ -10,6 +10,8 @@ const socketHandler = require('./Handlers/socketHandler');
 const redirectUri = 'http://localhost:5000/zoom/callback';
 const axios = require('axios');
 const mbUploadLimit= '70mb'
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
+
 
  
 // middlewares
@@ -72,7 +74,26 @@ app.use('/wishlist', require('./Routes/WishList'))
 
 
 // routes end
-
+const fun =async()=>{
+  // const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+  // console.log(paymentIntent);
+  const successfulPaymentIntents = await stripe.paymentIntents.list({
+    limit: 10,  // Adjust the limit based on how many you want to retrieve
+    // status: 'succeeded',  // Filter for successful payments
+  });
+  const d = successfulPaymentIntents.data.filter((e)=>e.status=='succeeded')
+  
+  // console.log({d});
+  const mt= d.map((e)=>{
+    console.log("metadata")
+    console.log(e.metadata)
+  })
+  // This will give an array of successful PaymentIntent objects
+  // console.log(successfulPaymentIntents);  // This will give an array of successful PaymentIntent objects
+  
+// console.log(paymentIntents.data); 
+}
+// fun()
 
 // Use the socket handler
 socketHandler(io);
