@@ -35,19 +35,23 @@ const getUserWatchList =async(req,res)=>{
         const view = await Views.scan('viewerId')
         .eq(req.params.id)  // takes userID
         .exec()
-        const event= view.filter((e)=>e.viewItemType=='event')
         const video= view.filter((e)=>e.viewItemType=='video')
         const data= await Promise.all(video.map(async(e)=>{
             const vid = await Videos.get(e.viewerId)
-            // const com = await Reviews.scan('reviewItemId').eq(e._id).exec()          
+            if(vid){
+                const com = await Reviews.scan('reviewItemId').eq(e._id).exec()          
                 // const { password, ...user } = await User.get(vid.userId);
-                return  vid 
-                // return { data: vid,  }
+                
+                return { viddo: vid,com:com  }
+            }
+            else{
+                return null
+            }
             }
           ))
+          const filterData = data.filter((e)=>e!==null)
         const podcast= view.filter((e)=>e.viewItemType=='podcast')
-        const job= view.filter((e)=>e.viewItemType=='job')
-        res.json({video:data,podcast})
+        res.json({video:filterData,podcast})
         // res.json({video:data,podcast})
     } catch (error) {
         console.log({error})
