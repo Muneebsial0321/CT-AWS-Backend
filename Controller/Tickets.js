@@ -46,5 +46,8 @@ const getEventTickets = async (req,res)=>{
     }
 
 }
+const createTicket= async () =>{
+    
+}
 
 module.exports= {getAllTickets,getMyTickets,getEventTickets}

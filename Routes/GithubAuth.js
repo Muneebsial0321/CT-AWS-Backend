@@ -42,7 +42,7 @@ passport.use(
       console.log(profile)
       try {
         let user=profile
-        const name = user.displayName
+        const name =  user.displayName?user.displayName:profile.username 
         const userName = profile.username
         const role = 'viewer'
         const signedInBy = 'github'

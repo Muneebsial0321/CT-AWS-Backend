@@ -65,7 +65,13 @@ router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const subscriptions = await Subscription.scan('subscriberId').eq(id).exec();
-        res.status(200).json(subscriptions);
+        const data = await Promise.all(subscriptions.map(async (e) =>{
+            const user = await User.get(e.subscriberId)
+            return {
+                ...e,user  }
+                
+            }))
+        res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
