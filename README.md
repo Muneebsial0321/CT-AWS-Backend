@@ -1,4 +1,7 @@
 # CT-AWS-Backend
-deployed
-commit_id=01.
+npm install
+pm2 restart all
+sudo nginx -t
+sudo systemctl restart nginx
+
  
