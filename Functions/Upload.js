@@ -17,6 +17,6 @@ const upload = multer({
             cb(null, Date.now().toString() + '-' + file.originalname);
         },
     }),
-    limits: { fileSize: 7 * 1024 * 1024 }, // Limit file size to 50 MB,
+    limits: { fileSize: 70 * 1024 * 1024 }, // Limit file size to 50 MB,
 });
 module.exports = upload
