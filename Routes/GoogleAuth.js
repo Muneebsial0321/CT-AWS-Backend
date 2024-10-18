@@ -34,9 +34,7 @@ passport.use(
   new OAuth2Strategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    // clientID: process.env.CLIENT_ID_OLD,
-    // clientSecret: process.env.CLIENT_SECRET_OLD,
-    callbackURL: "https://api.teq.com/auth/google",
+    callbackURL: "https://api.teqtak.com/auth/google",
     scope: ["profile", "email"]
   },
 
