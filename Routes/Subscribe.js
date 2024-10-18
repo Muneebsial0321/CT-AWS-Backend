@@ -72,7 +72,7 @@ router.get('/:id', async (req, res) => {
         const { id } = req.params;
         const subscriptions = await Subscription.scan('subscriberId').eq(id).exec();
         const data = await Promise.all(subscriptions.map(async (e) =>{
-            const user = await User.get(e.subscriberId)
+            const user = await User.get(e.subscribedToId)
             const picUrl=user?.picUrl?user.picUrl:null
             const name=user?.name?user.name:null  
             const Users_PK=user?.Users_PK?user.Users_PK:null
