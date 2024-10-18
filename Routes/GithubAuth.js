@@ -33,7 +33,7 @@ passport.use(
   new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: "/auth/github",
+    callbackURL: "https://api.teq.com/auth/github",
     // scope: ["profile", "email"]
   },
 
