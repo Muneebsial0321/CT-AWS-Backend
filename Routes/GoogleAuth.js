@@ -36,7 +36,7 @@ passport.use(
     clientSecret: process.env.CLIENT_SECRET,
     // clientID: process.env.CLIENT_ID_OLD,
     // clientSecret: process.env.CLIENT_SECRET_OLD,
-    callbackURL: "/auth/google",
+    callbackURL: "https://api.teq.com/auth/google",
     scope: ["profile", "email"]
   },
 
