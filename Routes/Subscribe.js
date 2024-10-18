@@ -50,11 +50,17 @@ router.get('/my/:id', async (req, res) => {
         const subscriptions = await Subscription.scan('subscribedToId').eq(id).exec();
         const data = await Promise.all(subscriptions.map(async (e) =>{
             const user = await User.get(e.subscriberId)
+            const picUrl=user?.picUrl?user.picUrl:null
+            const name=user?.name?user.name:null  
+            const Users_PK=user?.Users_PK?user.Users_PK:null
             return {
-                ...e,user  }
+                ...e,user:{picUrl,name,Users_PK}  
+             }
+                // ...e,user:{picUrl,name,Users_PK,...user}  }
                 
             }))
-        res.status(200).json(data);
+        const filterData=data.filter((e)=>e.user.Users_PK!=null)
+        res.status(200).json(filterData);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -67,11 +73,14 @@ router.get('/:id', async (req, res) => {
         const subscriptions = await Subscription.scan('subscriberId').eq(id).exec();
         const data = await Promise.all(subscriptions.map(async (e) =>{
             const user = await User.get(e.subscriberId)
+            const picUrl=user?.picUrl?user.picUrl:null
+            const name=user?.name?user.name:null  
+            const Users_PK=user?.Users_PK?user.Users_PK:null
             return {
-                ...e,user  }
-                
-            }))
-        res.status(200).json(data);
+                ...e,user:{picUrl,name,Users_PK}  
+        }}))
+        const filterData=data.filter((e)=>e.user.Users_PK!=null)
+        res.status(200).json(filterData);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
