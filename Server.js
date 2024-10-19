@@ -126,16 +126,3 @@ app.get('/zoom/callback', async (req, res) => {
 
 
 server.listen(process.env.PORT, () => { console.log(`listening to port ${process.env.PORT}`) })
-
-
-// Product.query('category')
-//   .eq('Electronics')
-//   .sort('descending')
-//   .limit(5)
-//   .exec()
-//   .then((products) => {
-//     console.log(products);
-//   })
-//   .catch((err) => {
-//     console.error(err);
-//   });
