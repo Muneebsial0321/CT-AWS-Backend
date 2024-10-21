@@ -10,15 +10,15 @@ const User = require('../Schemas/User')
 const jwt = require('jsonwebtoken')
 
 // setup session
-app.use(session({
-  secret: "YOUR SECRET KEY",
-  resave: false,
-  saveUninitialized: true
-}))
+// app.use(session({
+//   secret: "YOUR SECRET KEY",
+//   resave: false,
+//   saveUninitialized: true
+// }))
 
 // setuppassport
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 passport.use(
   new OAuth2Strategy({
@@ -35,7 +35,6 @@ passport.use(
         const email = profile.email
         const role = 'viewer'
         const signedInBy = 'google'
-
         let Users_PK = uuidv4();
         let users = await User.scan('email').eq(email).exec()
    
@@ -61,15 +60,15 @@ passport.use(
   )
 )
 
-passport.serializeUser((user, done) => {
-  // console.log('Serializing user:', user); // Debug: log user being serialized
-  done(null, user);
-});
+// passport.serializeUser((user, done) => {
+//   // console.log('Serializing user:', user); // Debug: log user being serialized
+//   done(null, user);
+// });
 
-passport.deserializeUser((user, done) => {
-  // console.log('Deserializing user:', user); // Debug: log user being deserialized
-  done(null, user);
-});
+// passport.deserializeUser((user, done) => {
+//   // console.log('Deserializing user:', user); // Debug: log user being deserialized
+//   done(null, user);
+// });
 
 // initial google ouath login
 app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
@@ -89,20 +88,12 @@ app.get('/auth/google/callback',
     res.cookie('jwt', authtoken, { httpOnly: true, secure: true ,sameSite: 'None',})
     res.setHeader('Set-Cookie', [
       'token=some-token-value; HttpOnly; Secure; Max-Age=86400', // 1 day expiration
-      'user=JohnDoe; Path=/; SameSite=Strict' // Another cookie with specific attributes
+      'user_=JohnDoe; Path=/;' // Another cookie with specific attributes
     ]);
     console.log("cookies set by google",{authtoken,_id})
     res.redirect('http://localhost:5173/videos');
   }
 );
-
-
-app.get("/login/success", client_, async (req, res) => {
-  console.log("user is")
-  console.log(req.cookies.user)
-  res.json({ "working": "true" })
-})
-
 
 app.get("/logout", (req, res, next) => {
   req.logout(function (err) {
