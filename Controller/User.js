@@ -30,9 +30,10 @@ const createUser = async (req, res) => {
                 Users_PK: newUser.Users_PK,
                 role: newUser.role
             }
+            const expirationDate = new Date(Date.now() + 3600 * 1000);
             const authtoken = jwt.sign({_id:data.Users_PK}, process.env.JWT_SECRET);
-            res.cookie('user', data.Users_PK, { httpOnly: false });
-            res.cookie('jwt', authtoken, { httpOnly: true, secure: true, sameSite: 'None' });
+            res.cookie('user', data.Users_PK, { httpOnly: false ,expires: expirationDate});
+            res.cookie('jwt', authtoken, { httpOnly: true, secure: true, sameSite: 'None',expires: expirationDate });
             res.json(data);
         }
         else {
