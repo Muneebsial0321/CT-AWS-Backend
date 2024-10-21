@@ -17,6 +17,23 @@ app.get('/', (req, res) => {
         console.log({error})
 }
 });
+app.get("/s", (req, res) => {
+  if (req.isAuthenticated()) {
+    // User is authenticated, you can access user info from req.user
+    res.json({
+      loggedIn: true,
+      user: req.user, // This will contain user information from the session
+      message: "User is logged in."
+    });
+  } else {
+    // User is not authenticated
+    res.json({
+      loggedIn: false,
+      message: "User is not logged in."
+    });
+  }
+});
+
 
 module.exports = app
 

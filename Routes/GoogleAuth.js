@@ -24,16 +24,6 @@ async function find_(params) {
 //   resave: false,
 //   saveUninitialized: true
 // }))
-app.use(session({
-  secret: "SESSION_SECRET",  // Use an environment variable for your session secret
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,
-    secure: true  ,// true if in production
-    sameSite: 'None',  // Required for cross-origin requests
-  }
-}));
 
 // setuppassport
 app.use(passport.initialize());
@@ -103,6 +93,7 @@ app.get('/auth/google',
     }
     const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
     res.cookie('user',_id,{httpOnly:false});
+    res.cookie('google',"just checking",{httpOnly:false});
     res.cookie('jwt', authtoken, { httpOnly: true, secure: true ,sameSite: 'None',})
     console.log("cookies set by google",{authtoken,_id})
     res.redirect('http://localhost:5173/videos');
