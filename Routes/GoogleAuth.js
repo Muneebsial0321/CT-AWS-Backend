@@ -98,7 +98,6 @@ app.get('/auth/google',
   passport.authenticate('google', { failureRedirect: 'http://localhost:5173/login' }),
   async (req, res) => {
     const data = await User.get(req.user)
-    // console.log(data.Users_PK)
     const _id = data.Users_PK
     const payload = {
       user: _id

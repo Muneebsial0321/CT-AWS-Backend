@@ -52,6 +52,7 @@ const io = new socketIo.Server(server, {
 app.use('/', require('./Routes/GithubAuth'))
 app.use('/', require('./Routes/FacebookAuth'))
 app.use('/', require('./Routes/GoogleAuth'))
+app.use('/cookies', require('./Routes/cookie-check'))
 app.use('/users', require('./Routes/User'))
 app.use('/jobs', require('./Routes/Job'))
 app.use('/events', require('./Routes/Event'))
