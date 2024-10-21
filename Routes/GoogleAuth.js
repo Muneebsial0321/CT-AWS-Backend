@@ -26,7 +26,7 @@ async function find_(params) {
 //   saveUninitialized: true
 // }))
 app.use(session({
-  secret: process.env.SESSION_SECRET,  // Use an environment variable for your session secret
+  secret: "SESSION_SECRET",  // Use an environment variable for your session secret
   resave: false,
   saveUninitialized: false,
   cookie: {
