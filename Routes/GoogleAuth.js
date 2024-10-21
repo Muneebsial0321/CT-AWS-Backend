@@ -87,6 +87,10 @@ app.get('/auth/google/callback',
     res.cookie('user',_id,{httpOnly:false});
     res.cookie('google',"just checking",{httpOnly:false});
     res.cookie('jwt', authtoken, { httpOnly: true, secure: true ,sameSite: 'None',})
+    res.setHeader('Set-Cookie', [
+      'token=some-token-value; HttpOnly; Secure; Max-Age=86400', // 1 day expiration
+      'user=JohnDoe; Path=/; SameSite=Strict' // Another cookie with specific attributes
+    ]);
     console.log("cookies set by google",{authtoken,_id})
     res.redirect('http://localhost:5173/videos');
   }
