@@ -4,7 +4,6 @@ const session = require("express-session");
 const passport = require("passport");
 const OAuth2Strategy = require("passport-google-oauth2").Strategy;
 const app = express.Router()
-// const { client, PutItemCommand } = require('../Config/aws-dynamoDB')
 const { v4: uuidv4 } = require('uuid');
 const client_ = require('../Middlewares/Client')
 const User = require('../Schemas/User')

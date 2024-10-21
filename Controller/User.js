@@ -13,7 +13,6 @@ const nf = require('../Functions/Notification_Factory')
 const createUser = async (req, res) => {
     try {
         const Users_PK = uuidv4();
-        // const signedInBy = 'local'
         const signedInBy = 'email'
         // pre check
         const u = await User.scan('email').eq(req.body.email).exec()
@@ -31,7 +30,9 @@ const createUser = async (req, res) => {
                 Users_PK: newUser.Users_PK,
                 role: newUser.role
             }
-            //   res.json({Users_PK:newUser.Users_PK});
+            const authtoken = jwt.sign({_id:data.Users_PK}, process.env.JWT_SECRET);
+            res.cookie('user', data.Users_PK, { httpOnly: false });
+            res.cookie('jwt', authtoken, { httpOnly: true, secure: true, sameSite: 'None' });
             res.json(data);
         }
         else {
