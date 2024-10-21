@@ -211,16 +211,18 @@ const localLogin = async (req, res) => {
         const payload = {
             user: _id
         }
+        const expirationDate = new Date(Date.now() + 3600 * 1000);
         const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
-        res.cookie('user', _id);
-        res.cookie('jwt', authtoken, { httpOnly: true, secure: false })
+        res.cookie('user', data.Users_PK, { httpOnly: false ,expires: expirationDate});
+        res.cookie('jwt', authtoken, { httpOnly: true, secure: true, sameSite: 'None',expires: expirationDate });
+        
         const data_ = {
             name: data.name,
             Users_PK: data.Users_PK,
             role: data.role
         }
         //   res.json({Users_PK:newUser.Users_PK});
-        res.json(data_);
+        res.redirect('localhost:5173/videos');
 
     }
     else if (password != user[0].password) {
