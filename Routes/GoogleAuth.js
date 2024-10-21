@@ -85,13 +85,14 @@ app.get('/auth/google/callback',
     const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
     res.cookie('user',_id,{httpOnly:false});
     res.cookie('jwt', authtoken, { httpOnly: true, secure: true ,sameSite: 'None',})
-    res.redirect(`http://localhost:5173/videos?authtoken=${authtoken}&user=${_id}`);
+    res.redirect(`https://api.teqtak.com/boarding?authtoken=${authtoken}&user=${_id}`);
   }
 );
 
 // double redirect
 app.get('/boarding',async(req,res)=>{
   const {authtoken,user} = req.query
+  console.log({query:req.query})
   res.cookie('user',user,{httpOnly:false});
   res.cookie('jwt', authtoken, { httpOnly: true, secure: true ,sameSite: 'None',})
   res.redirect('http://localhost:5173/videos')
