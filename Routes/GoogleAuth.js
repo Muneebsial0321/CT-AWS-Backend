@@ -39,7 +39,6 @@ passport.use(
   },
 
     async (accessToken, refreshToken, profile, done) => {
-      console.log(profile)
       try {
         let user
         const name = profile.name.givenName
@@ -53,9 +52,6 @@ passport.use(
         if (users.length > 0) {
           Users_PK = users[0].Users_PK
           user=Users_PK
-          
-          console.log("user already exists")
-          console.log({Users_PK})
         }
         else {
           user=Users_PK
@@ -100,6 +96,7 @@ app.get('/auth/google',
     const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
     res.cookie('user',_id);
     res.cookie('jwt', authtoken, { httpOnly: true, secure: false })
+    console.log("cookies set by google")
     res.redirect('http://localhost:5173/videos');
   }
 );
