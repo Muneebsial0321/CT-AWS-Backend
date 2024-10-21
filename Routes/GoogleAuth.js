@@ -9,15 +9,6 @@ const client_ = require('../Middlewares/Client')
 const User = require('../Schemas/User')
 const jwt = require('jsonwebtoken')
 
-async function find_(params) {
-  let scan = await User.scan();
-  scan = await scan.where('email').contains(params);
-  const result = await scan.exec();
-  return { count: result.length, data: result };
-}
-
-
-
 // setup session
 app.use(session({
   secret: "YOUR SECRET KEY",
@@ -33,7 +24,7 @@ passport.use(
   new OAuth2Strategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "https://api.teqtak.com/auth/google",
+    callbackURL: "https://api.teqtak.com/auth/google/callback",
     scope: ["profile", "email"]
   },
 
@@ -81,12 +72,13 @@ passport.deserializeUser((user, done) => {
 });
 
 // initial google ouath login
-app.get("/auth", passport.authenticate("google", { scope: ["profile", "email"] }));
+app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
-app.get('/auth/google',
+app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: 'http://localhost:5173/login' }),
   async (req, res) => {
     const data = await User.get(req.user)
+    console.log({data})
     const _id = data.Users_PK
     const payload = {
       user: _id
