@@ -93,8 +93,8 @@ app.get('/auth/google/callback',
 app.get('/boarding',async(req,res)=>{
   const {authtoken,user} = req.query
   console.log({query:req.query})
-  res.cookie('user',user,{httpOnly:false});
-  res.cookie('jwt', authtoken, { httpOnly: true, secure: true ,sameSite: 'None',})
+  res.cookie('user',user);
+  res.cookie('jwt', authtoken, { httpOnly: true, secure: true ,sameSite: 'None'})
   res.redirect('http://localhost:5173/videos')
 
 
