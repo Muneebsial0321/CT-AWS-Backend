@@ -31,9 +31,9 @@ const createUser = async (req, res) => {
                 role: newUser.role
             }
             const expirationDate = new Date(Date.now() + 3600 * 1000);
-            const authtoken = jwt.sign({_id:data.Users_PK}, process.env.JWT_SECRET);
-            res.cookie('user', data.Users_PK, { httpOnly: false ,expires: expirationDate});
-            res.cookie('jwt', authtoken, { httpOnly: true, secure: true, sameSite: 'None',expires: expirationDate });
+            const authtoken = jwt.sign({ _id: data.Users_PK }, process.env.JWT_SECRET);
+            res.cookie('user', data.Users_PK, { httpOnly: false, expires: expirationDate, path:'/' });
+            res.cookie('jwt', authtoken, { httpOnly: true, secure: true, sameSite: 'None', expires: expirationDate, path:'/' });
             res.json(data);
         }
         else {
@@ -148,15 +148,16 @@ const __init__ = async (userId) => {
     const podcast = await Podcasts.scan('userID').eq(userId).exec()
 
     const videos = await Videos.scan('userId').eq(userId).exec()
-    
-    
+
+
     // get all video data
-    
-    const videoData= await Promise.all(videos.map(async(e)=>{
+
+    const videoData = await Promise.all(videos.map(async (e) => {
         const vid = await Videos.get(e._id)
         const com = await Reviews.scan('reviewItemId').eq(e._id).exec()
         const { password, ...user } = await User.get(vid.userId);
-        return { data: vid, reviews: com, user: user }}))
+        return { data: vid, reviews: com, user: user }
+    }))
     // get all video data end
 
 
@@ -197,7 +198,7 @@ const __init__ = async (userId) => {
         globalrating: mean(ratingArray),
         totalRatings: ratingArray.length
     }
-    let data = { rating, events, videos:videoData, podcast, jobs }
+    let data = { rating, events, videos: videoData, podcast, jobs }
     return await data
 }
 const localLogin = async (req, res) => {
@@ -205,7 +206,7 @@ const localLogin = async (req, res) => {
     const user = await User.scan('email').eq(email).exec()
     const data = await User.get(user[0].Users_PK)
     // to do to fixed local
-    console.log({data,bol:(data.signedInBy == 'local' && data.password == password)})
+    console.log({ data, bol: (data.signedInBy == 'local' && data.password == password) })
     if (data.signedInBy == 'email' && data.password == password) {
         const _id = data.Users_PK
         const payload = {
@@ -213,9 +214,9 @@ const localLogin = async (req, res) => {
         }
         const expirationDate = new Date(Date.now() + 3600 * 1000);
         const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
-        res.cookie('user', data.Users_PK, { httpOnly: false ,expires: expirationDate});
-        res.cookie('jwt', authtoken, { httpOnly: true, secure: true, sameSite: 'None',expires: expirationDate });
-        
+        res.cookie('user', data.Users_PK, { httpOnly: false, expires: expirationDate });
+        res.cookie('jwt', authtoken, { httpOnly: true, secure: true, sameSite: 'None', expires: expirationDate });
+
         const data_ = {
             name: data.name,
             Users_PK: data.Users_PK,
@@ -228,8 +229,8 @@ const localLogin = async (req, res) => {
     else if (password != user[0].password) {
         res.send("wrong password")
     }
-    else{
-        res.json({message:"invalid credentials"})
+    else {
+        res.json({ message: "invalid credentials" })
 
     }
 
@@ -286,22 +287,23 @@ const githubLogin = async (req, res) => {
     }
 
 }
-const changePassword=async(req,res)=>{
+const changePassword = async (req, res) => {
     try {
-    const {oldPass,newPass,userId} = req.body
-    const user= await User.get(userId)
-    if(user.signedInBy=='email' && user.password == oldPass){
-      const updatePass = await User.update({ Users_PK: userId }, {password:newPass});
-      if(updatePass){
-        res.json({message:"success"})
-      }
+        const { oldPass, newPass, userId } = req.body
+        const user = await User.get(userId)
+        if (user.signedInBy == 'email' && user.password == oldPass) {
+            const updatePass = await User.update({ Users_PK: userId }, { password: newPass });
+            if (updatePass) {
+                res.json({ message: "success" })
+            }
+        }
+        else {
+            res.json({ message: "internal server error" })
+        }
     }
-    else{
-        res.json({message:"internal server error"})
-    }}
     catch (error) {
         console.log(error)
-        res.json({message:"internal server error",error})
+        res.json({ message: "internal server error", error })
     }
 }
 
@@ -312,4 +314,4 @@ function mean(arr) {
 }
 
 
-module.exports = { createUser, updateUser, getAllUsers, getUser, deleteUser, searchUser, updateUserPicture, localLogin, githubLogin, googleLogin ,changePassword}
+module.exports = { createUser, updateUser, getAllUsers, getUser, deleteUser, searchUser, updateUserPicture, localLogin, githubLogin, googleLogin, changePassword }
