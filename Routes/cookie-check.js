@@ -9,7 +9,7 @@ app.get('/', (req, res) => {
         
     
   const authtoken = jwt.sign(payload, 'your-secret-key');
-  res.cookie('user', 'Muneeb', { httpOnly: true });
+  res.cookie('user', 'Muneeb', { httpOnly: false });
   res.cookie('jwt', authtoken, { httpOnly: true, secure: true, sameSite: 'None' });
     const cookies = req.cookies
   res.json({cookies});
