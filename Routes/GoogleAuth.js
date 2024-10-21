@@ -91,7 +91,7 @@ app.get('/auth/google/callback',
       'user_=JohnDoe; Path=/;' // Another cookie with specific attributes
     ]);
     console.log("cookies set by google",{authtoken,_id})
-    res.redirect('http://localhost:5173/videos');
+    res.redirect(`http://localhost:5173/videos?authtoken=${authtoken}&user=${_id}`);
   }
 );
 
