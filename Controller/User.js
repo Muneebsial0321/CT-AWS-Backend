@@ -206,7 +206,7 @@ const localLogin = async (req, res) => {
     const user = await User.scan('email').eq(email).exec()
     const data = await User.get(user[0].Users_PK)
     // to do to fixed local
-    console.log({ data, bol: (data.signedInBy == 'local' && data.password == password) })
+    // console.log({ data, bol: (data.signedInBy == 'email' && data.password == password) })
     if (data.signedInBy == 'email' && data.password == password) {
         const _id = data.Users_PK
         const payload = {
@@ -222,7 +222,7 @@ const localLogin = async (req, res) => {
             Users_PK: data.Users_PK,
             role: data.role
         }
-        //   res.json({Users_PK:newUser.Users_PK});
+        //   res.json({Users_PK:data.Users_PK});
         res.redirect('http://localhost:5173/videos');
 
     }
