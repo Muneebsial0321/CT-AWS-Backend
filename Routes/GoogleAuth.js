@@ -19,11 +19,11 @@ async function find_(params) {
 
 
 // setup session
-// app.use(session({
-//   secret: "YOUR SECRET KEY",
-//   resave: false,
-//   saveUninitialized: true
-// }))
+app.use(session({
+  secret: "YOUR SECRET KEY",
+  resave: false,
+  saveUninitialized: true
+}))
 
 // setuppassport
 app.use(passport.initialize());
