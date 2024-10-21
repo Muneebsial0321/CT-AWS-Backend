@@ -95,8 +95,8 @@ app.get('/auth/google',
     }
     const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
     res.cookie('user',_id);
-    res.cookie('jwt', authtoken, { httpOnly: true, secure: false })
-    console.log("cookies set by google")
+    res.cookie('jwt', authtoken, { httpOnly: true, secure: true ,sameSite: 'None',})
+    console.log("cookies set by google",{authtoken,_id})
     res.redirect('http://localhost:5173/videos');
   }
 );
