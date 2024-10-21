@@ -222,7 +222,7 @@ const localLogin = async (req, res) => {
             role: data.role
         }
         //   res.json({Users_PK:newUser.Users_PK});
-        res.redirect('localhost:5173/videos');
+        res.redirect('http://localhost:5173/videos');
 
     }
     else if (password != user[0].password) {
