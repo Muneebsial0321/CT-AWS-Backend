@@ -86,7 +86,7 @@ app.get('/auth/google/callback',
     res.cookie('user',_id,{httpOnly:false});
     res.cookie('jwt', authtoken, { httpOnly: true, secure: true ,sameSite: 'None',})
     // res.redirect(`https://api.teqtak.com/boarding?authtoken=${authtoken}&user=${_id}`);
-    res.redirect(`http://localhost:5173/bording?authtoken=${authtoken}&user=${user}`)
+    res.redirect(`http://localhost:5173/bording?authtoken=${authtoken}&user=${_id}`)
   }
 );
 
