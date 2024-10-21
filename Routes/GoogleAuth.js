@@ -31,7 +31,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',  // true if in production
+    secure: true  // true if in production
     sameSite: 'None',  // Required for cross-origin requests
   }
 }));
