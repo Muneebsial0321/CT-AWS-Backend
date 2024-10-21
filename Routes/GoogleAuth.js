@@ -20,11 +20,21 @@ async function find_(params) {
 
 
 // setup session
+// app.use(session({
+//   secret: "YOUR SECRET KEY",
+//   resave: false,
+//   saveUninitialized: true
+// }))
 app.use(session({
-  secret: "YOUR SECRET KEY",
+  secret: process.env.SESSION_SECRET,  // Use an environment variable for your session secret
   resave: false,
-  saveUninitialized: true
-}))
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',  // true if in production
+    sameSite: 'None',  // Required for cross-origin requests
+  }
+}));
 
 // setuppassport
 app.use(passport.initialize());
