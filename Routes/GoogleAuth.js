@@ -74,7 +74,7 @@ passport.use(
 app.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 
 app.get('/auth/google/callback',
-  passport.authenticate('google', { failureRedirect: 'http://localhost:5173/login' }),
+  passport.authenticate('google', {session:false ,failureRedirect: 'http://localhost:5173/login' }),
   async (req, res) => {
     const data = await User.get(req.user)
     console.log({data})
