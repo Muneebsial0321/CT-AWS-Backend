@@ -84,16 +84,20 @@ app.get('/auth/google/callback',
     }
     const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
     res.cookie('user',_id,{httpOnly:false});
-    res.cookie('google',"just checking",{httpOnly:false});
     res.cookie('jwt', authtoken, { httpOnly: true, secure: true ,sameSite: 'None',})
-    res.setHeader('Set-Cookie', [
-      'token=some-token-value; HttpOnly; Secure; Max-Age=86400', // 1 day expiration
-      'user_=JohnDoe; Path=/;' // Another cookie with specific attributes
-    ]);
-    console.log("cookies set by google",{authtoken,_id})
     res.redirect(`http://localhost:5173/videos?authtoken=${authtoken}&user=${_id}`);
   }
 );
+
+// double redirect
+app.get('/boarding',async(req,res)=>{
+  const {authtoken,user} = req.query
+  res.cookie('user',user,{httpOnly:false});
+  res.cookie('jwt', authtoken, { httpOnly: true, secure: true ,sameSite: 'None',})
+  res.redirect('http://localhost:5173/videos')
+
+
+})
 
 app.get("/logout", (req, res, next) => {
   req.logout(function (err) {
