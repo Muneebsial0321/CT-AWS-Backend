@@ -3,6 +3,7 @@ const Job = require('../Schemas/Jobs');
 const Podcast = require('../Schemas/Podcast');
 const User = require('../Schemas/User');
 const Video = require('../Schemas/Videos');
+const Reviews = require('../Schemas/Reviews');
 const WishList = require('../Schemas/WishList');
 const { v4: uuidv4 } = require('uuid');
 
@@ -10,6 +11,7 @@ const { v4: uuidv4 } = require('uuid');
 const createWishListItem = async (req, res) => {
     try {
         const _id = uuidv4();
+        // {{{{{{{{{((((((((((?????already present check to-do
         const newWishListItem = new WishList({_id,...req.body});
         const savedWishListItem = await newWishListItem.save();
         res.status(201).json(savedWishListItem);
@@ -22,9 +24,7 @@ const createWishListItem = async (req, res) => {
 const getAllWishLists = async (req, res) => {
     try {
         const wishListItem = await WishList.scan().exec()
-        // const data = await fun(wishListItem)
         res.json({wishListItem,count:wishListItem.length});
-        // res.json({wishListItem,count:wishListItem.length,data});
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -51,6 +51,9 @@ const deleteWishListItem = async (req, res) => {
 
 
 const fun=async(wishListItem)=>{
+    try {
+        
+   
     
     let job = await Promise.all(wishListItem.map(async(e)=>{
         if(e.wishItemType=='job'){
@@ -82,20 +85,21 @@ const fun=async(wishListItem)=>{
             return { data: vid, commments: com, user: user }
         }
         else{
-            null
+           return null
         }
     }))
     let podcast =await Promise.all(wishListItem.map(async(e)=>{
         if(e.wishItemType=='podcast'){
             const podcast = await Podcast.get(e.wishItemId)
-            return podcast
+            if(podcast){
+                const com = await Reviews.scan('reviewItemId').eq(podcast._id).exec()
+                const { password, ...user } = await User.get(podcast.userID);
+                return { data: podcast, commments: com, user: user || null}
+            }
+            else{
+                return null
+            }
         }
-        else{
-            null
-        }
-     
-    
-    
     }))
 
     job= job.filter((e)=>e!=null)
@@ -103,6 +107,9 @@ const fun=async(wishListItem)=>{
     podcast= podcast.filter((e)=>e!=null)
     video= video.filter((e)=>e!=null)
     return {job,event,podcast,video }
+} catch (error) {
+  console.log({error})       
+}
 }
 
 const videoDataGenerator=async(vidoes)=>{
