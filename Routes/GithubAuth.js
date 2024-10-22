@@ -18,27 +18,27 @@ async function find_(params) {
 
 
 
-// setup session
-app.use(session({
-  secret: "YOUR SECRET KEY",
-  resave: false,
-  saveUninitialized: true
-}))
+// // setup session
+// app.use(session({
+//   secret: "YOUR SECRET KEY",
+//   resave: false,
+//   saveUninitialized: true
+// }))
 
-// setuppassport
-app.use(passport.initialize());
-app.use(passport.session());
+// // setuppassport
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 passport.use(
   new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: "https://api.teqtak.com/auth/github",
+    callbackURL: "https://api.teqtak.com/auth/github/callback",
     // scope: ["profile", "email"]
   },
 
     async (accessToken, refreshToken, profile, done) => {
-        console.log("github")
+      console.log("github")
       console.log(profile)
       try {
         let user=profile
@@ -73,24 +73,23 @@ passport.use(
   )
 )
 
-passport.serializeUser((user, done) => {
-  // console.log('Serializing user:', user); // Debug: log user being serialized
-  done(null, user);
-});
+// passport.serializeUser((user, done) => {
+//   // console.log('Serializing user:', user); // Debug: log user being serialized
+//   done(null, user);
+// });
 
-passport.deserializeUser((user, done) => {
-  // console.log('Deserializing user:', user); // Debug: log user being deserialized
-  done(null, user);
-});
+// passport.deserializeUser((user, done) => {
+//   // console.log('Deserializing user:', user); // Debug: log user being deserialized
+//   done(null, user);
+// });
 
 // initial github
-app.get('/auth', passport.authenticate('github', { scope: [ 'user:email' ] }));
+app.get('/auth/github', passport.authenticate('github', { scope: [ 'user:email' ] }));
 
-app.get('/auth/github', 
-    passport.authenticate('github', { failureRedirect: '/faliure' }),
+app.get('/auth/github/callback', 
+    passport.authenticate('github', {session:false, failureRedirect: '/faliure' }),
     async  (req, res) => {
-          const data = await User.get(req.user)
-    // console.log(data.Users_PK)
+    const data = await User.get(req.user)
     const _id = data.Users_PK
     const payload = {
       user: _id
@@ -98,7 +97,9 @@ app.get('/auth/github',
     const authtoken = jwt.sign(payload, process.env.JWT_SECRET);
     res.cookie('user',_id);
     res.cookie('jwt', authtoken, { httpOnly: true, secure: false })
-      res.redirect('http://localhost:5173/videos');  // You can change this to any route
+    // res.redirect('http://localhost:5173/videos');   
+    res.redirect(`http://localhost:5173/bording?authtoken=${authtoken}&user=${_id}`)
+   
     }
   );
 app.get("/login/success", client_, async (req, res) => {

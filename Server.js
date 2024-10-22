@@ -73,6 +73,7 @@ app.use('/views', require('./Routes/Views'))
 app.use('/appliedjobs', require('./Routes/AppliedJobs'))
 app.use('/reports', require('./Routes/Reports'))
 app.use('/wishlist', require('./Routes/WishList'))
+app.use('/block', require('./Routes/Blocked'))
 
 
 // routes end
