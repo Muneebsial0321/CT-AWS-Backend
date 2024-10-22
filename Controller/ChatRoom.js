@@ -58,7 +58,7 @@ const getMyChatRooms = async (req, res) => {
       }
     }
     ))
-    const filteredRooms=myRooms.filter((e)=>e!==null)
+    const filteredRooms=myRooms.filter((e)=>e!=null)
     res.status(200).json({ count: filteredRooms.length, data: filteredRooms });
   } catch (error) {
     console.error(error);
