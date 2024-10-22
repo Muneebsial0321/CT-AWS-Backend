@@ -3,12 +3,12 @@ const router = express.Router();
 const {createBlockedUser,getBlockedUsers,unblockUser} = require('../Controller/Blocked');
 
 // Route to block a user
-router.post('/block',createBlockedUser);
+router.post('/',createBlockedUser);
 
 // Route to get all blocked users for a specific user
-router.get('/blocked/:userID',getBlockedUsers);
+router.get('/',getBlockedUsers);
 
 // Route to unblock a user (delete blocked user entry)
-router.delete('/unblock/:id',unblockUser );
+router.delete('/:id',unblockUser );
 
 module.exports = router;
