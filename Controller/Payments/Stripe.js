@@ -91,7 +91,7 @@ const paymentByStripe = async (req, res) => {
       line_items: getLineItems(products, event),
       mode: 'payment',
       // success_url: `${process.env.FRONT_URL}/paymentSuccess?token=${jwtDataCreater({products,sellerID,eventID,buyerID,})}`, // Redirect after successful payment
-      success_url: `https://api.teqtak.com/ticket/gen?token=${jwtGen(metadata)}`, // Redirect after successful payment
+      success_url: `https://api.teqtak.com/tickets/gen?token=${jwtGen(metadata)}`, // Redirect after successful payment
       // success_url: `${process.env.FRONT_URL}/ticketdetails?eventid=${eventID}&buyerid=${buyerID}`, // Redirect after successful payment
       cancel_url: `${process.env.FRONT_URL}/paymentfailed`, // Redirect after canceled payment
       payment_intent_data: {
