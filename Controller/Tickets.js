@@ -1,4 +1,5 @@
 const Ticket = require('../Schemas/Ticket')
+const Event = require('../Schemas/Events')
 const jwt = require("jsonwebtoken")
 const { v4: uuidv4 } = require('uuid');
 
@@ -21,9 +22,20 @@ const getMyTickets = async (req,res)=>{
     try {
         const id = req.params.id
         const ticket = await Ticket.scan('ticketBuyerId').eq(id).exec()
+        const data= await Promise.all(ticket.map(async(e)=>{
+            const event = await Event.get(e.ticketEventId) 
+            if(event){
+                return {...e,event}
+            }
+            else{
+                return {...e,event:null}
+            }
+
+
+        }))
         res.json({
-            count:ticket.length,
-            data:ticket
+            count:data.length,
+            data:data
         })
         
     } catch (error) {
