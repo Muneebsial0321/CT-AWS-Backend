@@ -53,8 +53,16 @@ const getMyChatRooms = async (req, res) => {
       if (e.users.includes(id)) {
         let data = e.users.filter((e) => e != id)
         let sender = await User.get(data[0])
-        console.log({sender}) 
-        return await { ...e, sender }
+        if(sender){
+          return  { ...e, sender }
+        }
+        else{
+          return  { ...e, sender:{
+            picUrl:"",
+            name:"",
+            Users_PK:null
+          } }
+        }
       }
     }
     ))
