@@ -36,7 +36,6 @@ const getUserWatchList = async (req, res) => {
             .eq(req.params.id)  // takes userID
             .exec()
 
-
         const video = view.filter((e) => e.viewItemType == 'video')
 
 
