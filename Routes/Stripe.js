@@ -31,13 +31,13 @@ router.post('/webhook', express.raw({type: 'application/json'}),async (request, 
 
   try{
   if(event.type=='payment_intent.succeeded'){
-    console.log({event:event.data})
+    console.log("payment success full")
     const {metadata}=event.data.object
     const ticket={...metadata}
     const _id = uuidv4();
     const t = new Ticket({_id,...ticket})
     const d= await t.save()
-    console.log({d})
+    console.log("ticket saved")
   }
   response.send();}
   catch(e){
