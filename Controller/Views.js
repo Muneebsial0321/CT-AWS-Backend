@@ -35,12 +35,17 @@ const getUserWatchList = async (req, res) => {
         const view = await Views.scan('viewerId')
             .eq(req.params.id)  // takes userID
             .exec()
+
+
         const video = view.filter((e) => e.viewItemType == 'video')
+
+
         const data = await Promise.all(video.map(async (e) => {
             const vid = await Videos.get(e.viewItemId)
             if (vid) {
                 const com = await Reviews.scan('reviewItemId').eq(e._id).exec()
-                return { video: vid, com: com }
+                const { password, ...user } = await User.get(vid.userId);
+                return { data: vid, commments: com, user: user }
             }
             else {
                 return null

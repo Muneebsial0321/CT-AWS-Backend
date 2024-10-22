@@ -1,6 +1,7 @@
 const Event = require('../Schemas/Events');
 const Job = require('../Schemas/Jobs');
 const Podcast = require('../Schemas/Podcast');
+const User = require('../Schemas/User');
 const Video = require('../Schemas/Videos');
 const WishList = require('../Schemas/WishList');
 const { v4: uuidv4 } = require('uuid');
@@ -21,8 +22,9 @@ const createWishListItem = async (req, res) => {
 const getAllWishLists = async (req, res) => {
     try {
         const wishListItem = await WishList.scan().exec()
-        const data = await fun(wishListItem)
-        res.json({wishListItem,count:wishListItem.length,data});
+        // const data = await fun(wishListItem)
+        res.json({wishListItem,count:wishListItem.length});
+        // res.json({wishListItem,count:wishListItem.length,data});
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -30,9 +32,6 @@ const getAllWishLists = async (req, res) => {
 const getWishListItemById = async (req, res) => {
     try {
         const wishListItem = await WishList.scan('userId').eq(req.params.id).exec()
-        if (!wishListItem) {
-            return res.status(404).json({ message: 'WishList item not found' });
-        }
         const data = await fun(wishListItem)
         res.json(data);
     } catch (error) {
@@ -79,14 +78,12 @@ const fun=async(wishListItem)=>{
         if(e.wishItemType=='video'){
             const video = await Video.get(e.wishItemId)
             const com = await Reviews.scan('reviewItemId').eq(video._id).exec()
-            return {...video,reviews:com}
+            const { password, ...user } = await User.get(vid.userId);
+            return { data: vid, commments: com, user: user }
         }
         else{
             null
         }
-     
-    
-    
     }))
     let podcast =await Promise.all(wishListItem.map(async(e)=>{
         if(e.wishItemType=='podcast'){
@@ -107,6 +104,18 @@ const fun=async(wishListItem)=>{
     video= video.filter((e)=>e!=null)
     return {job,event,podcast,video }
 }
+
+const videoDataGenerator=async(vidoes)=>{
+    // const vidoes = await Video.scan().exec()
+     const data= await Promise.all(vidoes.map(async(e)=>{
+       const vid = await Video.get(e._id)
+       const com = await Reviews.scan('reviewItemId').eq(e._id).exec()
+       const { password, ...user } = await User.get(vid.userId);
+       return { data: vid, commments: com, user: user }
+     }))
+    return data
+ 
+ }
 
 
 module.exports = {createWishListItem,deleteWishListItem,getWishListItemById,getAllWishLists}
