@@ -1,5 +1,6 @@
 const Views = require('../Schemas/Views')
 const Videos = require('../Schemas/Videos')
+const Podcast = require('../Schemas/Podcast')
 const Reviews = require('../Schemas/Reviews')
 const User = require('../Schemas/User')
 const { v4: uuidv4 } = require('uuid');
@@ -25,7 +26,7 @@ const getItemViews = async (req, res) => {
 
 // getting for all vidoes that user watched
 
-const getUserWatchList = async (req, res) => {
+const getUserWatchList__lagacy = async (req, res) => {
 
     try {
         // const view = await Views.scan()
@@ -61,6 +62,21 @@ const getUserWatchList = async (req, res) => {
     }
 
 }
+const getUserWatchList = async (req, res) => {
+
+    try {
+        const view = await Views.scan('viewerId')
+            .eq(req.params.id)  // takes userID
+            .exec()
+        const data = await fun(view)
+        res.json(data)
+        // res.json({video:data,podcast})
+    } catch (error) {
+        console.log({ error })
+        res.send(error)
+    }
+
+}
 const getAllViews = async (req, res) => {
     try {
         const view = await Views.scan().exec()
@@ -72,5 +88,39 @@ const getAllViews = async (req, res) => {
 }
 const deleteView = async (req, res) => { }
 const getSingleView = async (req, res) => { }
+const fun=async(wishListItem)=>{
+    try {
+    let video =await Promise.all(wishListItem.map(async(e)=>{
+        if(e.viewItemType=='video'){
+            const video = await Videos.get(e.viewItemId)
+            const com = await Reviews.scan('reviewItemId').eq(video._id).exec()
+            const { password, ...user } = await User.get(video.userId);
+            return { data: video, commments: com, user: user || null }
+        }
+        else{
+           return null
+        }
+    }))
+    let podcast =await Promise.all(wishListItem.map(async(e)=>{
+        if(e.wishItemType=='podcast'){
+            const podcast = await Podcast.get(e.viewItemId)
+            if(podcast){
+                const com = await Reviews.scan('reviewItemId').eq(podcast._id).exec()
+                const { password, ...user } = await User.get(podcast.userID);
+                return { data: podcast, commments: com, user: user || null}
+            }
+            else{
+                return null
+            }
+        }
+    }))
+
+    podcast= podcast.filter((e)=>e!=null)
+    video= video.filter((e)=>e!=null)
+    return {podcast,video}
+} catch (error) {
+  console.log({error})       
+}
+}
 
 module.exports = { getItemViews, createView, deleteView, getSingleView, getAllViews, getUserWatchList }
