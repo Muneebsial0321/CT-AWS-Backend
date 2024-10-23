@@ -40,6 +40,20 @@ const getBlockedUsers = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+const getMyBlocks = async (req, res) => {
+  try {
+    const blockedUsers = await BlockedUser.scan('userId').eq(req.params.id).exec();
+    const data= await Promise.all(blockedUsers.map(async(e)=>{
+      const user= await User.get(e.blockedId)
+      return user?user:null
+    }))
+    const filteredData=data.filter((e)=>e!=null)
+    res.status(200).json({count:filteredData.length,data:filteredData});
+  } catch (error) {
+    console.error('Error fetching blocked users:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 
 // Unblock a user
 const unblockUser = async (req, res) => {
@@ -56,5 +70,6 @@ const unblockUser = async (req, res) => {
 module.exports = {
   createBlockedUser,
   getBlockedUsers,
-  unblockUser
+  unblockUser,
+  getMyBlocks
 };

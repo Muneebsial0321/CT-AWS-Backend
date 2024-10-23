@@ -33,3 +33,4 @@ jobs:
 
           # Restart Nginx to ensure the reverse proxy picks up any changes
           sudo systemctl restart nginx
+        debug: true  # This enables more detailed logging
