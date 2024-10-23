@@ -102,7 +102,7 @@ const fun=async(wishListItem)=>{
         }
     }))
     let podcast =await Promise.all(wishListItem.map(async(e)=>{
-        if(e.wishItemType=='podcast'){
+        if(e.viewItemType=='podcast'){
             const podcast = await Podcast.get(e.viewItemId)
             if(podcast){
                 const com = await Reviews.scan('reviewItemId').eq(podcast._id).exec()
