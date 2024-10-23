@@ -7,33 +7,30 @@ const cookie = require("cookie-parser")
 const bodyParser = require("body-parser")
 const socketIo = require('socket.io');
 const socketHandler = require('./Handlers/socketHandler');
-const redirectUri = 'http://localhost:5000/zoom/callback';
+const redirectUri = `${process.env.BACK_URL}/zoom/callback`;
 const axios = require('axios');
-const mbUploadLimit= '70mb'
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 
- 
+
 // middlewares
+// webhook usage
 app.use('/payment/webhook', express.raw({ type: 'application/json' }));
-// Increase request payload size limit
+
+// upload limit usage
+const mbUploadLimit= '70mb'
 app.use(express.json({ limit:mbUploadLimit }));
 app.use(express.urlencoded({ limit:mbUploadLimit, extended: true }));
-
-// Or if using body-parser middleware
 app.use(bodyParser.json({ limit:mbUploadLimit}));
 app.use(bodyParser.urlencoded({ limit:mbUploadLimit, extended: true }));
+
+
 app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  origin: "http://localhost:5173", // Your frontend URL
-  // origin: process.env.FRONT_URL, // Your frontend URL
+  // origin: "http://localhost:5173", // Your frontend URL
+  origin: process.env.FRONT_URL, // Your frontend URL
   credentials: true
 }));
-// app.use(cors({
-//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-//     origin: '*', // Your frontend URL
-
-// }));
 app.use(cookie())
 // middlewares end   
 
@@ -49,7 +46,6 @@ const io = new socketIo.Server(server, {
 
 // routes
 
-// app.use('/', require('./Routes/BETA_Google_Auth'))
 app.use('/', require('./Routes/GithubAuth'))
 // app.use('/', require('./Routes/FacebookAuth'))
 app.use('/', require('./Routes/GoogleAuth'))

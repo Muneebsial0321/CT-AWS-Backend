@@ -3,7 +3,7 @@ const e = require('express');
 const ChatRoom = require('../Schemas/ChatRoom');
 const clientID = process.env.ZOOM_ID
 const axios = require('axios');
-const redirectUri = 'http://localhost:5000/zoom/callback';
+const redirectUri = `${process.env.BACK_URL}/zoom/callback`;
 
 
 const socketHandler = (io) => {
