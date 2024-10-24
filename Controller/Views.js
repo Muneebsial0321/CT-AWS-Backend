@@ -6,13 +6,26 @@ const User = require('../Schemas/User')
 const { v4: uuidv4 } = require('uuid');
 
 const createView = async (req, res) => {
+    try {
+    const check= await Views.scan()
+    .where('viewItemId').eq(req.body.viewItemId)
+    .where('viewerId').eq(req.body.viewerId).exec()
+    if(check && check.length>0){
+        res.json({"message":"already present"})
+    }
+    else{
     const _id = uuidv4()
     const view = new Views({
         _id, ...req.body
     })
     await view.save()
     res.json({ message: "success", view })
+}} catch (error) {
+ console.log(error)
+ res.json({message:"internal server error"})       
 }
+}
+
 const getItemViews = async (req, res) => {
     try {
         const view = await Views.scan('viewItemId').eq(req.params.id).exec()
