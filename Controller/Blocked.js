@@ -44,7 +44,7 @@ const getMyBlocks = async (req, res) => {
       const u = user?user:null
       return {...e,user:u}
     }))
-    const filteredData=data.filter((e)=>e!=null)
+    const filteredData=data.filter((e)=>e.user!=null)
     res.status(200).json({count:filteredData.length,data:filteredData});
   } catch (error) {
     console.error('Error fetching blocked users:', error);
