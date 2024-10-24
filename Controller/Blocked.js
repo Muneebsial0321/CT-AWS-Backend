@@ -45,7 +45,8 @@ const getMyBlocks = async (req, res) => {
     const blockedUsers = await BlockedUser.scan('userId').eq(req.params.id).exec();
     const data= await Promise.all(blockedUsers.map(async(e)=>{
       const user= await User.get(e.blockedId)
-      return user?user:null
+      const u = user?user:null
+      return {...e,user:u}
     }))
     const filteredData=data.filter((e)=>e!=null)
     res.status(200).json({count:filteredData.length,data:filteredData});
